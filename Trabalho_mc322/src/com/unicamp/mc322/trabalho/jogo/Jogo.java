@@ -7,6 +7,6 @@ import com.unicamp.mc322.trabalho.jogo.expansao.Expansao;
 import com.unicamp.mc322.trabalho.jogo.expansao.Regiao;
 
 public class Jogo {
-	private Map<Regiao, Expansao> expansoes = new HashMap<Regiao, Expansao>();
+	private Map<String, Expansao> expansoes = new HashMap<String, Expansao>();
 
 }
