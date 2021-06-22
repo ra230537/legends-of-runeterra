@@ -7,6 +7,6 @@ public class SelecionaCombate extends Efeito {
     public SelecionaCombate(){
         super(MomentosDoTurno.ANTES_ATAQUE);
     }
-    //uma unica vez apos o uso dessa carta, duas unidades ser√£o escolhidas e entrar√£o em conflito direto
+    //uma unica vez apos o uso dessa carta, duas unidades ser„o escolhidas e entrar„o em conflito direto
     //nao precisa ser durante a rodada de ataque ou defesa
 }
