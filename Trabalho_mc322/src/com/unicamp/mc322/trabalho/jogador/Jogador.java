@@ -6,6 +6,7 @@ import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 
 public class Jogador {
+	private String nick;
 	private String id;
 	private int vida = 20;
 	private int mana = 1;
@@ -13,8 +14,8 @@ public class Jogador {
 	private Carta[] mao = new Carta[10]; //na mão é possivel ter no maximo 10 cartas, qualquer outra carta retirada do baralho sera descartada;
 	private Carta[] baralho= new Carta[40];
 	
-	public Jogador(String nomeJogador) {
-		this.criarId(nomeJogador);
+	public Jogador(String nickJogador) {
+		this.nick = nickJogador;
 	}
 	
 	private String obterTagRandom() {
@@ -22,8 +23,8 @@ public class Jogador {
 		return String.format("%04d", random.nextInt(10000));
 	}
 	
-	private void criarId(String nome) {
-		this.id = nome + "#" + this.obterTagRandom();
+	public void criarId() {
+		this.id = nick + "#" + this.obterTagRandom();
 	}
 	
 	public String getId() {
