@@ -26,7 +26,7 @@ public class Jogo {
 	}
 	
 	public void criarUsuario(String nome) {
-		Jogador novoJogador = new Jogador(nome);
+		Jogador novoJogador = new Jogador(nome, this);
 		do {
 		// Faz com que não exista 2 ids iguais cadastrados;
 			novoJogador.criarId();
