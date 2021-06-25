@@ -48,13 +48,25 @@ public class Jogador {
 	}
 	
 	public void criarNovoDeck(String nome) {
+	//Cria um novo deck de cartas e é dado um nome para ele;
 		Deck novoDeck = new Deck(nome);
 		//...
 		//...
 		decks.put(nome, novoDeck);
 	}
 	
+	public void editarDeck(String nome) {
+	//Dado o nome do deck do jogador permitir edicao;
+		
+	}
+	
+	public void deletarDeck(String nome) {
+	//Deleta o deck associado ao jogador, dado o nome do deck;
+		decks.remove(nome);
+	}
+	
 	public void setMainDeck(String nome) {
+	//Seta um deck como default para o jogador;
 		this.mainDeck = decks.get(nome);
 	}
 
