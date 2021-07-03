@@ -10,9 +10,8 @@ public class Expansao {
 	private String nome;
 	private Regiao regiao;
 	private List<Carta> cartas = new ArrayList<Carta>();
-
-	
-	
+	//como inserir as cartas na região?
+	//porque um nome?
 	public Expansao(String nome, Regiao regiao) {
 		this.nome = nome;
 		this.regiao = regiao;

@@ -7,4 +7,7 @@ public class Barreira extends Efeito {
     public Barreira(){
         super(MomentosDoTurno.APOS_INVOCACAO);
     }
+    //da a algum aliado um escudo que iompede que esse monstro sofra dano no proximo round
+    //obs:caso um monstro com barreira receba outra barreira, o efeito se extenderá por mais um round
+    //deve ser perguntado ao monstro invocado qual aliado que ele quer usar a barreira
 }

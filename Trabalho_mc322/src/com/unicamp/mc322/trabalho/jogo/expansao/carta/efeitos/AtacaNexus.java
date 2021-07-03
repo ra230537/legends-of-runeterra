@@ -7,4 +7,5 @@ public class AtacaNexus extends Efeito {
 	public AtacaNexus(){
         super(MomentosDoTurno.ANTES_ATAQUE);
     }//da a alguma unidade a possibilidade de golpear o nexus inimigo diretamente
+    //deve ser usada antes do ataque do monstro, deve ser peerguntado a ele qual alvo deseja atacar
 }

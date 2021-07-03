@@ -1,5 +1,8 @@
 package com.unicamp.mc322.trabalho.jogo;
 
+import com.unicamp.mc322.trabalho.jogador.Jogador;
+import com.unicamp.mc322.trabalho.jogo.expansao.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

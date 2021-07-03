@@ -38,12 +38,22 @@ public class Jogador {
 		return id;
 	}
 	
+	public void imprimirId() {
+	//METODO DE TESTE (***APAGAR DEPOIS)
+		System.out.printf("%s", this.getId());
+	}
+	
 	public void jogarTurno(Mesa mesa) {
 		
 	}
 	
-	public void addNovoDeck(String nomeDeck, Deck novoDeck) {
-		decks.put(nomeDeck, novoDeck);
+	public void criarNovoDeck(String nome) {
+	//Cria um novo deck de cartas e é dado um nome para ele;
+		Deck novoDeck = new Deck(nome);
+		//...
+		//...
+		decks.put(nome, novoDeck);
+
 	}
 	
 	public void editarDeck(String nome) {

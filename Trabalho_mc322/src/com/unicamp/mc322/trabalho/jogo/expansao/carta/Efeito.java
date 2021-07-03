@@ -7,4 +7,8 @@ public abstract class Efeito {
     protected Efeito(MomentosDoTurno momentoQueSeraLido){
         this.momentoQueSeraLido = momentoQueSeraLido;    
     }
+
+    public void usarEfeito() {
+
+    }
 }

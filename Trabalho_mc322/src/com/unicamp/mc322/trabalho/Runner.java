@@ -10,5 +10,4 @@ public class Runner {
 		jogo.criarUsuario("Roberto");
 		jogo.criarUsuario("Roberto");
 	}
-
 }
