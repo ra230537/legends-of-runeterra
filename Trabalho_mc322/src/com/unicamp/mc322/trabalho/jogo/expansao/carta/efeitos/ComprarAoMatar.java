@@ -7,4 +7,12 @@ public class ComprarAoMatar extends Efeito {
     public ComprarAoMatar(){
         super(MomentosDoTurno.APOS_ATACAR);//compra uma carta se esse monstro destruir uma unidade inimiga
     }
+
+    @Override
+    public void usarEfeito() {
+        /**
+         * verifica se a unidade inimiga a frente está com 0 pontos de vida
+         * se sim, compra uma carta
+         */
+    }
 }

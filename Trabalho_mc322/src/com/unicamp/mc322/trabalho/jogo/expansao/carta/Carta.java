@@ -6,6 +6,7 @@ import java.util.Collections;
 import com.unicamp.mc322.trabalho.jogo.expansao.Regiao;
 
 public class Carta {
+	private boolean temBarreira;
 	private String nome;
 	private int custo;
 	private Regiao regiao;
