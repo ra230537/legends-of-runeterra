@@ -9,4 +9,12 @@ public class Deck {
 	public Deck(String nome) {
 		this.nome = nome;
 	}
+	
+	public void setNovoNome(String novoNome) {
+		this.nome = novoNome;
+	}
+	
+	public String getNome() {
+		return nome;
+	}
 }

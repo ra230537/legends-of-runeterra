@@ -47,13 +47,27 @@ public class Jogador {
 		
 	}
 	
-	public void criarNovoDeck(String nome) {
-	//Cria um novo deck de cartas e é dado um nome para ele;
-		Deck novoDeck = new Deck(nome);
-		//...
-		//...
+	private void atribuirNomeUnico(String nome, Deck deck) {
+		//Evita nomes repetidos;
+		String novoNome = nome;
+		if(decks.containsKey(nome)) {
+			int i = 1;
+			do {
+				novoNome = nome;
+				novoNome += " (" + i + ")";
+				i++;
+			} while(decks.containsKey(novoNome));
+			deck.setNovoNome(novoNome);
+		}
+		
+	}
+	
+	public void addNovoDeck(String nome, Deck novoDeck) {
+	//add um novo deck;
+		this.atribuirNomeUnico(nome, novoDeck);
 		decks.put(nome, novoDeck);
-
+		System.out.printf("Novo deck \"%s\" adcionado aos decks de %s", novoDeck.getNome(), this.id);
+		
 	}
 	
 	public void editarDeck(String nome) {
