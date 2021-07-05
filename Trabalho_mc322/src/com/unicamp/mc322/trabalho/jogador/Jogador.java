@@ -1,8 +1,6 @@
 package com.unicamp.mc322.trabalho.jogador;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import com.unicamp.mc322.trabalho.jogo.Jogo;
 import com.unicamp.mc322.trabalho.jogo.Mesa;
