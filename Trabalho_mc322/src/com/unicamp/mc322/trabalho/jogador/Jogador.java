@@ -7,80 +7,73 @@ import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 
 public class Jogador {
-	private String nick;
-	private String id;
-	private Jogo jogoPertencente;
-	private int vida = 20;
-	private int mana = 1;
-	private int manaFeitico = 0;
-	private Carta[] mao = new Carta[10]; //na mão é possivel ter no maximo 10 cartas, qualquer outra carta retirada do baralho sera descartada;
-	private Map<String, Deck> decks = new HashMap<String, Deck>(); //dicionario com os decks salvos pelo jogador e o nome dado para o deck como key;
-	private Deck mainDeck; //Deck principal apontado pelo jogador;
-	
-	public Jogador(String nickJogador, Jogo jogo) {
-		this.nick = nickJogador;
-		this.jogoPertencente = jogo;
-	}
-	
-	private String obterTagRandom() {
-		Random random = new Random();
-		return String.format("%04d", random.nextInt(10000));
-	}
-	
-	public void criarId() {
-		this.id = nick + "#" + this.obterTagRandom();
-	}
-	
-	public String getId() {
-	//retorna o id do jogador(nome#DDDD) sendo DDDD 4 digitos ;
-		return id;
-	}
-	
-	public void imprimirId() {
-	//METODO DE TESTE (***APAGAR DEPOIS)
-		System.out.printf("%s", this.getId());
-	}
-	
-	public void jogarTurno(Mesa mesa) {
-		
-	}
-	
-	private void atribuirNomeUnico(String nome, Deck deck) {
-		//Evita nomes repetidos;
-		String novoNome = nome;
-		if(decks.containsKey(nome)) {
-			int i = 1;
-			do {
-				novoNome = nome;
-				novoNome += " (" + i + ")";
-				i++;
-			} while(decks.containsKey(novoNome));
-			deck.setNovoNome(novoNome);
-		}
-		
-	}
-	
-	public void addNovoDeck(String nome, Deck novoDeck) {
-	//add um novo deck;
-		this.atribuirNomeUnico(nome, novoDeck);
-		decks.put(nome, novoDeck);
-		System.out.printf("Novo deck \"%s\" adcionado aos decks de %s", novoDeck.getNome(), this.id);
-		
-	}
-	
-	public void editarDeck(String nome) {
-	//Dado o nome do deck do jogador permitir edicao;
-		
-	}
-	
-	public void deletarDeck(String nome) {
-	//Deleta o deck associado ao jogador, dado o nome do deck;
-		decks.remove(nome);
-	}
-	
-	public void setMainDeck(String nome) {
-	//Seta um deck como default para o jogador;
-		this.mainDeck = decks.get(nome);
-	}
+    private Usuario usuario;
+    private Deck deckEscolhido;
+    private int vida = 20;
+    private int mana = 1;
+    private int manaFeitico = 0;
+    //na mão é possivel ter no maximo 10 cartas, qualquer outra carta retirada do baralho sera descartada;
+    private ArrayList <Carta> mao = new ArrayList<>(); //utilizado um arraylist pois eh mais facil de trabalhar com remoçaão
+    public Jogador(Usuario usuario) {
+        this.usuario = usuario;
+        Map<String, Deck> listaDecks = obterListaDecks(usuario);
+        //o deck escolhido precisa ser uma copia da lista de decks para que nao haja alteração no modelo de deck
+        deckEscolhido = perguntarDeckUsuario(listaDecks);
+        //função que coloca as cartas na mao do jogador
+        //função que permite o jogador escolher trocar as 4 cartas iniciais que vem em sua mao
+    }
 
+    private Deck perguntarDeckUsuario(Map<String, Deck> listaDecks) {
+        System.out.print("Qual deck da lista abaixo você deseja usar?\n");
+        Set<String> nomeDecks = obterSetNomes(listaDecks);
+
+        for (String deck : nomeDecks) {
+            System.out.printf("%s\n", deck);
+        }
+        String respostaUsuario = obterResposta();
+        return obterDeckEscolhido(respostaUsuario, listaDecks);
+    }
+
+    private Map<String, Deck> obterListaDecks(Usuario usuario) {
+        return usuario.getDecks();
+    }
+
+    private Set<String> obterSetNomes(Map<String, Deck> listaDecks) {
+        return listaDecks.keySet();
+    }
+
+    private String obterResposta() {
+        Scanner scan = new Scanner(System.in);
+        return scan.nextLine();
+    }
+
+    private Deck obterDeckEscolhido(String nomeDeck, Map<String, Deck> listaDecks) {
+        return listaDecks.get(nomeDeck);
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public int getMana() {
+        return mana;
+    }
+
+    public int getManaFeitico() {
+        return manaFeitico;
+    }
+
+    public int getVida() {
+        return vida;
+    }
+
+    public ArrayList<Carta> getMao() {
+        return mao;
+    }
+
+    public void puxarCarta(){
+        //pega a carta de cima do deck padrao utilizado
+        Carta cartaPuxada = deckEscolhido.tirarCartaTopo();
+        mao.add(cartaPuxada);
+    }
 }

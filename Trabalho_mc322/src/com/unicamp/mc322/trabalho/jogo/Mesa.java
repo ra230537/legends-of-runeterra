@@ -8,13 +8,12 @@ public class Mesa {
 	private Jogador[] jogadores	= new Jogador[2];
 
 	public Mesa(Jogador J1, Jogador J2) {
-		
 		jogadores[0] = J1;
 		jogadores[1] = J2;
 	}
-	
-	public void JogarCarta(Carta c, Jogador J) {
-		
+
+	public Carta[][] getCartasNaMesa() {
+		return CartasNaMesa;
 	}
 
 	public Jogador[] getJogadores() {
