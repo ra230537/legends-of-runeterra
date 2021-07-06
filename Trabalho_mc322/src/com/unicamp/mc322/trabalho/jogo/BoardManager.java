@@ -47,7 +47,7 @@ public class BoardManager {
         if (j2AindaPodePuxarCarta){
             puxarCarta(jogador2);
         }else{
-            System.out.print("Jogador 2 com numero maximo de cartas em mão1\n");
+            System.out.print("Jogador 2 com numero maximo de cartas em mão!\n");
         }
     }
 
