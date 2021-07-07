@@ -1,5 +1,6 @@
 package com.unicamp.mc322.trabalho.jogo.expansao.carta.efeitos;
 
+import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.MomentosDoTurno;
 
@@ -9,7 +10,7 @@ public class CurarUnidadeCompletamente extends Efeito {
     public CurarUnidadeCompletamente(){
         super(MomentosDoTurno.APOS_INVOCACAO);
     }//restaura todos os pontos de defesa de uma unidade uma unica vez
-    public void usarEfeito() {
+    public void usarEfeito(Mesa mesa) {
         int resposta = interagirComUsuario();
         //faz vida_atual do monstro ser igual a vida_maxima
     }

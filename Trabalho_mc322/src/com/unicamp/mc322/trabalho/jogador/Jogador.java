@@ -9,14 +9,18 @@ import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 public class Jogador {
     private Usuario usuario;
     private Deck deckEscolhido;
-    private int vida = 20;
-    private int mana = 1;
+    private int vida;
+    private int mana ;
+    private int manaAtual;
     private int manaFeitico = 0;
     //na mão é possivel ter no maximo 10 cartas, qualquer outra carta retirada do baralho sera descartada;
     private ArrayList <Carta> mao = new ArrayList<>(); //utilizado um arraylist pois eh mais facil de trabalhar com remoçaão
     public Jogador(Usuario usuario) {
         this.usuario = usuario;
         Map<String, Deck> listaDecks = obterListaDecks(usuario);
+        vida = 20;
+        mana = 1;
+        manaAtual = 1;
         //o deck escolhido precisa ser uma copia da lista de decks para que nao haja alteração no modelo de deck
         deckEscolhido = perguntarDeckUsuario(listaDecks);
         //função que coloca as cartas na mao do jogador
@@ -75,5 +79,19 @@ public class Jogador {
         //pega a carta de cima do deck padrao utilizado
         Carta cartaPuxada = deckEscolhido.tirarCartaTopo();
         mao.add(cartaPuxada);
+    }
+
+    public int getManaAtual() {
+        return manaAtual;
+    }
+
+    public Deck getDeckEscolhido() {
+        return deckEscolhido;
+    }
+    public void diminuirManaAtual(int valor){
+        manaAtual-=valor;
+    }
+    public void adicionarCartaCampo(Carta carta){
+        //ajeitar o campo colocar um array de 4 espaços de listas
     }
 }

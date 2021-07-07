@@ -1,5 +1,6 @@
 package com.unicamp.mc322.trabalho.jogo.expansao.carta.efeitos;
 
+import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.MomentosDoTurno;
 
@@ -13,7 +14,7 @@ public class BuffAliadoUnico extends Efeito {
     }//da a algum aliado escolhido pelo jogador ataque e defesa extra
 
     @Override
-    public void usarEfeito() {
+    public void usarEfeito(Mesa mesa) {
         int resposta = interagirComUsuario();
         //incrementa a vida e o poder da carta que receber esse buff
     }

@@ -1,6 +1,12 @@
 package com.unicamp.mc322.trabalho.jogo;
 
 import com.unicamp.mc322.trabalho.jogador.Jogador;
+import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
+import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
+import com.unicamp.mc322.trabalho.jogo.expansao.carta.MomentosDoTurno;
+
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class BoardManager {
     Mesa mesa;
@@ -59,5 +65,98 @@ public class BoardManager {
     }
     private void puxarCarta(Jogador jogador){
         jogador.puxarCarta();
+    }
+
+    private void permitirJogarCarta(Jogador jogador,Mesa mesa){
+        /*
+        pergunta ao jogador se ele quer jogar uma carta
+        se sim pergunta a ele qual o numero do indice da carta que ele quer jogar (pode perguntar
+        o nome tambem porque a carta foi implementada usando um ArrayList entao nao tem problema
+        eu acho que se pah ainda tem um dicionario entao se pah que vai ser mais facil ainda escolher
+        qual a carta basta pegar a string que o usuario digitar, converter ela no endereço da carta e pegar
+        o endereço
+        dai, se o usuario escolher uma carta valida
+        verifica se tem energia pra usar, tira da mao dele, atualiza a energia atual do jogador
+        , coloca no jogo e ve se tem algum efeito que pode ser usado no momento
+        se ele escolher uma carta invalida manda ele escolher dnv pq nao tem carta valida
+
+         */
+        Carta cartaEscolhida = null;
+        if(jogadorQuerJogarCarta() && jogadorPodeJogarCarta(jogador)){
+            //colocar uma exceção do jogador decidir nao jogar a carta
+            boolean cartaErradaEscolhida = true;
+            while(cartaErradaEscolhida){
+                try{
+                    cartaEscolhida = perguntarCartaDesejada(jogador);
+                    cartaErradaEscolhida = false;
+                }catch (Exception NullPointerException){
+                    System.out.print("Você digitou um nome de carat invalido, tente novamente!\n");
+                }
+            }
+
+            atualizarManaJogador(cartaEscolhida,jogador);
+            colocarCartaEmCampo(jogador);
+            ArrayList<Efeito> listaEfeitos = listarEfeitos(jogador);
+            for(Efeito efeito: listaEfeitos){
+                if(permitirUsoEfeito(efeito)){
+                    cartaEscolhida.ativarEfeito(efeito,mesa);
+                }
+            }
+        }
+
+    }
+    private boolean verificarUsoEfeito(Efeito efeito, MomentosDoTurno momentoDoTurno){
+        return efeito.getMomentoQueSeraLido() == momentoDoTurno;
+
+    }
+    private boolean jogadorQuerJogarCarta(){
+        System.out.print("Deseja jogar uma carta? (y/n) \n");
+        Scanner scan = new Scanner(System.in);
+        String resposta = scan.nextLine();
+        if(resposta.equals("y") || resposta.equals("Y") ){
+            return true;
+        }else if(resposta.equals("n") || resposta.equals("N")){
+            return false;
+        }else{
+            System.out.print("Escolha uma carta válida!\n");
+            return jogadorQuerJogarCarta();
+        }
+    }
+    private boolean jogadorPodeJogarCarta(Jogador jogador){
+        ArrayList<Carta> mao = jogador.getMao();
+        int mana = jogador.getMana();
+        for(Carta carta : mao){
+            if (carta.getCusto() <= jogador.getManaAtual()){
+                return true;
+            }
+        }
+        return false;
+    }
+    private Carta perguntarCartaDesejada(Jogador jogador){
+        System.out.print("Qual carta você deseja usar?\n");
+        String nomeCarta = obterNomeCarta();
+        return acharCartaPeloNome(nomeCarta,jogador);
+    }
+    private String obterNomeCarta(){
+        Scanner scan = new Scanner(System.in);
+        return scan.nextLine();
+    }
+    private Carta acharCartaPeloNome(String nomeCarta,Jogador jogador){
+        ArrayList <Carta> mao = jogador.getMao();
+        for(Carta carta : mao){
+            if (carta.getNome().equals(nomeCarta)){
+                return carta;
+            }
+        }
+        return null;
+    }
+
+    private void atualizarManaJogador(Carta cartaEscolhida,Jogador jogador){
+        int custoCarta = cartaEscolhida.getCusto();
+        jogador.diminuirManaAtual(custoCarta);
+    }
+    private void colocarCartaEmCampo(Jogador jogador,Carta cartaEscolhida){
+        ArrayList <Carta> mao = jogador.getMao();
+        jogador.
     }
 }

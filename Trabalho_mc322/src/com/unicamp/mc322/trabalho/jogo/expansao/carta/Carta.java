@@ -3,6 +3,7 @@ package com.unicamp.mc322.trabalho.jogo.expansao.carta;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.Regiao;
 
 public class Carta {
@@ -36,8 +37,19 @@ public class Carta {
 	 * recebe um dos efeitos que a carta possui e que foi permitido ser usado pelo board manager
 	 * manda a mensagem para a classe efeito de que ela pode usa-lo.
 	 */
-	public void ativarEfeito(Efeito efeito){
-		efeito.usarEfeito();
+	public void ativarEfeito(Efeito efeito, Mesa mesa){
+		efeito.usarEfeito(mesa);
 	}
 
+	public ArrayList<Efeito> getListaEfeitos() {
+		return listaEfeitos;
+	}
+
+	public int getCusto() {
+		return custo;
+	}
+
+	public String getNome() {
+		return nome;
+	}
 }

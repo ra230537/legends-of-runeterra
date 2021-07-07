@@ -1,5 +1,6 @@
 package com.unicamp.mc322.trabalho.jogo.expansao.carta.efeitos;
 
+import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.MomentosDoTurno;
 
@@ -13,7 +14,7 @@ public class SelecionaCombate extends Efeito {
     //nao precisa ser durante a rodada de ataque ou defesa
 
     @Override
-    public void usarEfeito() {
+    public void usarEfeito(Mesa mesa) {
         int indiceMonstroAliado = interagirComUsuario();
         int indiceMonstroInimigo = interagirComUsuario();
         //escolhe o aliado e o inimigo e usa o comando atacar e defender respectivamente

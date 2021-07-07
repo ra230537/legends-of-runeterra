@@ -1,5 +1,6 @@
 package com.unicamp.mc322.trabalho.jogo.expansao.carta.efeitos;
 
+import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.MomentosDoTurno;
 
@@ -13,7 +14,7 @@ public class AtacaNexus extends Efeito {
 
     @Override
     //passar o mapa como parametro pras cartas. porque ai elas vao ter conhecimento do jogo inteiro
-    public void usarEfeito() {
+    public void usarEfeito(Mesa mesa) {
         String resposta = interagirComUsuario();
         if (resposta.equals("s")){
             //ataca diretamente o nexus inimigo ao inves da carta que está defendendo

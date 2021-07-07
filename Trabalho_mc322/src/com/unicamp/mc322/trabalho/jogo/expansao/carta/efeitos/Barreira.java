@@ -1,5 +1,6 @@
 package com.unicamp.mc322.trabalho.jogo.expansao.carta.efeitos;
 
+import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.MomentosDoTurno;
 
@@ -14,7 +15,7 @@ public class Barreira extends Efeito {
     //deve ser perguntado ao monstro invocado qual aliado que ele quer usar a barreira
     @Override
     //passar o mapa como parametro pras cartas. porque ai elas vao ter conhecimento do jogo inteiro
-    public void usarEfeito() {
+    public void usarEfeito(Mesa mesa) {
         int resposta = interagirComUsuario();
         //torna o atributo temBarreira na carta escolhida como true por uma rodada
 

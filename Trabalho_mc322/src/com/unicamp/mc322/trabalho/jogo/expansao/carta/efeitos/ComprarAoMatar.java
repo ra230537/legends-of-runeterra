@@ -1,5 +1,6 @@
 package com.unicamp.mc322.trabalho.jogo.expansao.carta.efeitos;
 
+import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.MomentosDoTurno;
 
@@ -9,7 +10,7 @@ public class ComprarAoMatar extends Efeito {
     }
 
     @Override
-    public void usarEfeito() {
+    public void usarEfeito(Mesa mesa) {
         /**
          * verifica se a unidade inimiga a frente está com 0 pontos de vida
          * se sim, compra uma carta

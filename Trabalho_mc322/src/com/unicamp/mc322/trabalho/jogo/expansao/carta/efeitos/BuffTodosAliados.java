@@ -1,9 +1,8 @@
 package com.unicamp.mc322.trabalho.jogo.expansao.carta.efeitos;
 
+import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.MomentosDoTurno;
-
-import java.util.Scanner;
 
 public class BuffTodosAliados extends Efeito {
     int buffAtaque;
@@ -15,7 +14,7 @@ public class BuffTodosAliados extends Efeito {
     }
 
     @Override
-    public void usarEfeito() {
+    public void usarEfeito(Mesa mesa) {
         //da a todos as cartas da mesa um bonus de ataque e defesa
     }
 

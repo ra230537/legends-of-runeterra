@@ -1,5 +1,6 @@
 package com.unicamp.mc322.trabalho.jogo.expansao.carta.efeitos;
 
+import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.MomentosDoTurno;
 
@@ -11,7 +12,7 @@ public class GolpeAoNexus extends Efeito {
     }
 
     @Override
-    public void usarEfeito() {
+    public void usarEfeito(Mesa mesa) {
         //causa o dano que lhe é dado como atributo ao nexus inimigo
     }
 }
