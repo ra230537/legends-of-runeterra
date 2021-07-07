@@ -58,9 +58,12 @@ public class Usuario {
 
     }
 
-    public void editarDeck(String nome) {
-        //Dado o nome do deck do jogador permitir edicao;
+    public Map<String, Deck> getDecks() {
+        return decks;
+    }
 
+    public Deck getDeck(String nome) {
+        return decks.get(nome);
     }
 
     public void deletarDeck(String nome) {
@@ -68,12 +71,17 @@ public class Usuario {
         decks.remove(nome);
     }
 
+    public void imprimirDecks() {
+        for(Deck deck : decks.values()) {
+            deck.imprimirDeck();
+            System.out.println();
+        }
+    }
+
     public void setMainDeck(String nome) {
         //Seta um deck como default para o jogador;
         this.mainDeck = decks.get(nome);
     }
 
-    public Map<String, Deck> getDecks() {
-        return decks;
-    }
+
 }

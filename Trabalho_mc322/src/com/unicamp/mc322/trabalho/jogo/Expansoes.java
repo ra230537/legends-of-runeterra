@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.unicamp.mc322.trabalho.jogo.expansao.Expansao;
-import com.unicamp.mc322.trabalho.jogo.expansao.Regiao;
+import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 
 public class Expansoes {
 	private Map<Regiao, Expansao> expansoesMap = new HashMap<Regiao, Expansao>();
@@ -21,8 +21,13 @@ public class Expansoes {
 			throw new GameException("Região já cadastrada no jogo.");
 		}	
 	}
+
+	public void addCarta(Regiao regiao, Carta novaCarta) {
+		//Add uma nova carta na expansao;
+		expansoesMap.get(regiao).addCarta(novaCarta);
+	}
 	
-	public void imprimirExpansoes() {
+	public void imprimirNomeExpansoes() {
 		// Imprime uma lista das expansoes, com seu nome e sua regiao.
 		String info = "";
 		for(Expansao expansao : expansoesList) {
@@ -32,6 +37,17 @@ public class Expansoes {
 		System.out.println(info);
 	}
 
+	public void imprimirCartasExpansoes() {
+		for(Expansao expansao : expansoesList) {
+			expansao.imprimirCartas();
+			System.out.println();
+		}
+	}
+
+	public Carta getCarta(String nome) {
+		//Dado
+		return carta;
+	}
 }
 
 

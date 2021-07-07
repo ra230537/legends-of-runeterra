@@ -3,6 +3,7 @@ package com.unicamp.mc322.trabalho.jogo;
 import com.unicamp.mc322.trabalho.jogador.Jogador;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
+import com.unicamp.mc322.trabalho.jogo.expansao.carta.Feitico;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.MomentosDoTurno;
 
 import java.util.ArrayList;
@@ -20,10 +21,12 @@ public class BoardManager {
 
          2)jogador 1 decide jogar uma carta
          -se a carta for jogada o board manager ve se a carta tem o efeito possivel de ser utlizado, ou seja um efeito que é habilitado assim que a carta eh evocada
+         - Diminui a mana do jogador 1
 
          3)jogador 2 decide jogar uma carta
          -leitura da carta lançada pelo board manager
          //esse procedimento se repete até o momento que o jogador 1 (atacante) resolver fazer seu ataque
+         -Diminui a mana do jogador 2
 
          4)jogador 1 escolhe quais monstros irão atacar
          -para cada monstro que o jogador 1 coloca no ataque o board manager verifica se ele possui algum efeito que possa ser usado antes do ataque (ex: atacar nexus),
@@ -34,13 +37,16 @@ public class BoardManager {
 
          6)cada carta do jogador 1 ataca enquanto os do jogador 2 defendem
          -board manager verifica efeito tanto de pos ataque, no caso do jogador 1 quanto de pos defesa, no caso do jogador 2
+         -Se nao tiver nenhuma carta defendendo o dano é direto no nexus
 
          7)fim da rodada
          - o board manager le novamente todas as cartas para ver se alguma possui efeito que é ativado apos uma rodada de ataque/defesa.
 
-         8)rodada é finalizada as posições de ataque e defesa se invertem.*/
-
+         8)rodada é finalizada as posições de ataque e defesa se invertem, a mana que sobrou de cada jogador é adicionada a mana de feitiço.
+        */
     }
+
+
     private void realizarCompra(Jogador jogador1,Jogador jogador2){
         //jogador 1 e 2 compram uma carta
         boolean j1AindaPodePuxarCarta = verificarNumeroDeCartas(jogador1);
@@ -68,6 +74,7 @@ public class BoardManager {
     }
 
     private void permitirJogarCarta(Jogador jogador,Mesa mesa){
+
         /*
         pergunta ao jogador se ele quer jogar uma carta
         se sim pergunta a ele qual o numero do indice da carta que ele quer jogar (pode perguntar
@@ -79,10 +86,10 @@ public class BoardManager {
         verifica se tem energia pra usar, tira da mao dele, atualiza a energia atual do jogador
         , coloca no jogo e ve se tem algum efeito que pode ser usado no momento
         se ele escolher uma carta invalida manda ele escolher dnv pq nao tem carta valida
-
          */
+
         Carta cartaEscolhida = null;
-        if(jogadorQuerJogarCarta() && jogadorPodeJogarCarta(jogador)){
+        if(jogadorQuerJogarCarta() && jogadorPodeJogarCarta(jogador,mesa)){
             //colocar uma exceção do jogador decidir nao jogar a carta
             boolean cartaErradaEscolhida = true;
             while(cartaErradaEscolhida){
@@ -95,8 +102,8 @@ public class BoardManager {
             }
 
             atualizarManaJogador(cartaEscolhida,jogador);
-            colocarCartaEmCampo(jogador);
-            ArrayList<Efeito> listaEfeitos = listarEfeitos(jogador);
+            colocarCartaEmCampo(jogador,cartaEscolhida);
+            ArrayList<Efeito> listaEfeitos = listarEfeitos(cartaEscolhida);
             for(Efeito efeito: listaEfeitos){
                 if(permitirUsoEfeito(efeito)){
                     cartaEscolhida.ativarEfeito(efeito,mesa);
@@ -105,6 +112,11 @@ public class BoardManager {
         }
 
     }
+
+    private boolean permitirUsoEfeito(Efeito efeito) {
+        
+    }
+
     private boolean verificarUsoEfeito(Efeito efeito, MomentosDoTurno momentoDoTurno){
         return efeito.getMomentoQueSeraLido() == momentoDoTurno;
 
@@ -113,6 +125,7 @@ public class BoardManager {
         System.out.print("Deseja jogar uma carta? (y/n) \n");
         Scanner scan = new Scanner(System.in);
         String resposta = scan.nextLine();
+        scan.close();
         if(resposta.equals("y") || resposta.equals("Y") ){
             return true;
         }else if(resposta.equals("n") || resposta.equals("N")){
@@ -122,14 +135,23 @@ public class BoardManager {
             return jogadorQuerJogarCarta();
         }
     }
-    private boolean jogadorPodeJogarCarta(Jogador jogador){
+    private boolean jogadorPodeJogarCarta(Jogador jogador,Mesa mesa){
         ArrayList<Carta> mao = jogador.getMao();
-        int mana = jogador.getMana();
+        int mana = jogador.getManaAtual();
+        if(numeroCartasCampoExcedido(mesa)){
+            return false;
+        }
         for(Carta carta : mao){
-            if (carta.getCusto() <= jogador.getManaAtual()){
+            if (carta.getTipo() == true && carta.getCusto() <= (mana + jogador.getManaFeitico())){
+                return true;
+            }
+            if (carta.getCusto() <= mana){
                 return true;
             }
         }
+        return false;
+    }
+    private boolean numeroCartasCampoExcedido(Mesa mesa){
         return false;
     }
     private Carta perguntarCartaDesejada(Jogador jogador){
@@ -153,10 +175,19 @@ public class BoardManager {
 
     private void atualizarManaJogador(Carta cartaEscolhida,Jogador jogador){
         int custoCarta = cartaEscolhida.getCusto();
+        if(cartaEscolhida.getTipo() == true){
+            custoCarta = custoCarta - jogador.getManaFeitico();
+            jogador.diminuirManaFeitico(jogador.getManaFeitico());
+        }
         jogador.diminuirManaAtual(custoCarta);
     }
     private void colocarCartaEmCampo(Jogador jogador,Carta cartaEscolhida){
-        ArrayList <Carta> mao = jogador.getMao();
-        jogador.
+        jogador.removerCartaMao(cartaEscolhida);
+        jogador.adicionarCartaCampo(cartaEscolhida);
+
     }
+    private ArrayList<Efeito> listarEfeitos(Carta cartaEscolhida){
+        return cartaEscolhida.getListaEfeitos();
+    }
+
 }

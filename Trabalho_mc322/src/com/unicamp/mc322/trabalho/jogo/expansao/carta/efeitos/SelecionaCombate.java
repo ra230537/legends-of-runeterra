@@ -15,13 +15,20 @@ public class SelecionaCombate extends Efeito {
 
     @Override
     public void usarEfeito(Mesa mesa) {
-        int indiceMonstroAliado = interagirComUsuario();
-        int indiceMonstroInimigo = interagirComUsuario();
+        int indiceMonstroAliado = interagirComUsuario1();
+        int indiceMonstroInimigo = interagirComUsuario2();
         //escolhe o aliado e o inimigo e usa o comando atacar e defender respectivamente
     }
-    public int interagirComUsuario(){
+    public int interagirComUsuario1(){
+        // imprimir a mesa
         Scanner respostaUsuario = new Scanner(System.in);
-        System.out.println("Digite a posição que o monstro se encontra: ");
+        System.out.println("Digite a posição que o monstro aliado se encontra: ");
+        return respostaUsuario.nextInt();
+    }
+    public int interagirComUsuario2(){
+        // imprimir a mesa
+        Scanner respostaUsuario = new Scanner(System.in);
+        System.out.println("Digite a posição que o monstro inimigo se encontra: ");
         return respostaUsuario.nextInt();
     }
 }

@@ -12,4 +12,9 @@ public class Monstro extends Carta {
         this.ataque = ataque;
         this.traco = traco;
     }
+
+    @Override
+    public void imprimirCarta() {
+        System.out.printf("|<MONSTRO> Nome: %s vida: %d custo: %d efeitos:  |", this.getNome(), this.getNome(),this.getCusto());
+    }
 }

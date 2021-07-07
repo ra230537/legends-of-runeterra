@@ -7,6 +7,7 @@ import com.unicamp.mc322.trabalho.jogo.expansao.carta.MomentosDoTurno;
 import java.util.Scanner;
 
 public class Barreira extends Efeito {
+
     public Barreira(){
         super(MomentosDoTurno.APOS_INVOCACAO);
     }
@@ -16,13 +17,24 @@ public class Barreira extends Efeito {
     @Override
     //passar o mapa como parametro pras cartas. porque ai elas vao ter conhecimento do jogo inteiro
     public void usarEfeito(Mesa mesa) {
+        mesa.imprimirMesa();
         int resposta = interagirComUsuario();
         //torna o atributo temBarreira na carta escolhida como true por uma rodada
+        try{
+            //saber qual dos jogadores jogou a carta pra saber em qual arraylist ir pra aplicar o efeito
+        }catch(Exception NullPointerException) {
+            System.out.print("Posição Invalida\n");
+        }
 
     }
     private int interagirComUsuario(){
-        Scanner respostaUsuario = new Scanner(System.in);
-        System.out.println("Digite a posição do aliado que receberá barreira? "); //COLOCAR EXCEÇÃO PARA ENTRADAS INVALIDAS
+        Scanner respostaUsuario = null;
+        try {
+            respostaUsuario = new Scanner(System.in);
+            System.out.println("Digite a posição do aliado que receberá barreira! ");
+        } catch (Exception IllegalArgumentException) {
+            System.out.print("Tipo invalido\n");
+        }
         return respostaUsuario.nextInt();
     }
 }

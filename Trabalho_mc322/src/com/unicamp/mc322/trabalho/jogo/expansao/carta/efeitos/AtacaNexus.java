@@ -19,7 +19,7 @@ public class AtacaNexus extends Efeito {
         if (resposta.equals("s")){
             //ataca diretamente o nexus inimigo ao inves da carta que está defendendo
         }else{
-            /** verifica se há campeão defensor
+            /* verifica se há campeão defensor
              * se sim, a carta atacante usa a função atacar enquanto a defensora usa a função defender
              * se não, ataca o nexus
              */

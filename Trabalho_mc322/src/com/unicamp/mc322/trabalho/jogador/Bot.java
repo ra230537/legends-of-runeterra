@@ -7,7 +7,7 @@ public class Bot extends Jogador {
 	//quando for para jogar vs computador criar classe bot, com metodos para jogar automatico;
 	
 	public Bot(String nomeJogador, Jogo jogo) {
-		super(nomeJogador, jogo);
+		super(Usuario usuario);
 	}
 
 	@Override

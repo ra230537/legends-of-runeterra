@@ -10,11 +10,12 @@ public class Jogador {
     private Usuario usuario;
     private Deck deckEscolhido;
     private int vida;
-    private int mana ;
+    private int mana;
     private int manaAtual;
     private int manaFeitico = 0;
+    private ArrayList <Carta> cartasEmCampo = new ArrayList<>();
     //na mão é possivel ter no maximo 10 cartas, qualquer outra carta retirada do baralho sera descartada;
-    private ArrayList <Carta> mao = new ArrayList<>(); //utilizado um arraylist pois eh mais facil de trabalhar com remoçaão
+    private ArrayList <Carta> mao = new ArrayList<>();
     public Jogador(Usuario usuario) {
         this.usuario = usuario;
         Map<String, Deck> listaDecks = obterListaDecks(usuario);
@@ -88,10 +89,24 @@ public class Jogador {
     public Deck getDeckEscolhido() {
         return deckEscolhido;
     }
+
     public void diminuirManaAtual(int valor){
         manaAtual-=valor;
     }
+
+    public void diminuirManaFeitico(int valor){
+        manaFeitico-=valor;
+    }
+
     public void adicionarCartaCampo(Carta carta){
         //ajeitar o campo colocar um array de 4 espaços de listas
+        cartasEmCampo.add(carta);
+    }
+
+    public ArrayList<Carta> getCartasEmCampo() {
+        return cartasEmCampo;
+    }
+    public void removerCartaMao(Carta carta){
+        mao.remove(carta);
     }
 }

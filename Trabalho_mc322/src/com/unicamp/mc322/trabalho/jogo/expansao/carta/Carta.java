@@ -4,32 +4,37 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import com.unicamp.mc322.trabalho.jogo.Mesa;
-import com.unicamp.mc322.trabalho.jogo.expansao.Regiao;
+import com.unicamp.mc322.trabalho.jogo.Regiao;
 
 public class Carta {
 	private boolean temBarreira;
+	private boolean tipo; //False = monstro, true = feitiço
 	private String nome;
 	private int custo;
 	private Regiao regiao;
 	private ArrayList<Efeito> listaEfeitos = new ArrayList<>(); //uma carta pode ter mais de um Efeito
 	
-	protected Carta(String nome, int custo, Efeito... efeitos){
+	protected Carta(String nome, int custo, boolean tipo, Efeito... efeitos){
+		this.tipo = tipo;
         this.nome = nome;
         this.custo = custo;
         Collections.addAll(listaEfeitos,efeitos);
 	}
-	
+
+
 	public void setRegiao(Regiao regiao) {
 		this.regiao = regiao;
 	}
-	
-	public void imprimirCarta() {
-	//Imprime a carta
+
+	public Regiao getRegiao() {
+		return regiao;
 	}
 
-	public ArrayList <Efeito> mostrarEfeitos(){
-		return listaEfeitos;
+	public void imprimirCarta() {
+		//imprime carta
 	}
+
+
 
 	/**
 	 *
@@ -52,4 +57,9 @@ public class Carta {
 	public String getNome() {
 		return nome;
 	}
+
+	public boolean getTipo(){
+		return tipo;
+	}
+
 }

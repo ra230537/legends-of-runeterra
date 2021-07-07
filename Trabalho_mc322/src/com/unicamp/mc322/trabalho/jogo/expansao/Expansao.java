@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.unicamp.mc322.trabalho.jogo.GameException;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
+import com.unicamp.mc322.trabalho.jogo.Regiao;
 
 public class Expansao {
 	private String nome;
@@ -12,11 +13,12 @@ public class Expansao {
 	private List<Carta> cartas = new ArrayList<Carta>();
 	//como inserir as cartas na região?
 	//porque um nome?
+
 	public Expansao(String nome, Regiao regiao) {
 		this.nome = nome;
 		this.regiao = regiao;
 	}
-	
+
 	public String getNome() {
 		return nome;
 	}
@@ -25,8 +27,8 @@ public class Expansao {
 		return regiao;
 	}
 	
-	public void criarCarta(Carta novaCarta) {
-	//cria uma nova carta que será linkada a expansão
+	public void addCarta(Carta novaCarta) {
+	//add uma nova carta que será linkada a expansão
 		if(!cartas.contains(novaCarta)) {
 			novaCarta.setRegiao(regiao);
 			cartas.add(novaCarta);
@@ -40,6 +42,7 @@ public class Expansao {
 	
 	public void imprimirCartas() {
 	//Imprime cartas presentes na expansão;
+		System.out.println(nome + "(Regiao: " + regiao + "):");
 		for(int i = 0; i < cartas.size(); i++) {
 			cartas.get(i).imprimirCarta();
 			if((i+1) % 3 == 0) {
