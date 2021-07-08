@@ -57,6 +57,7 @@ public class Carta {
 		return nome;
 	}
 
+
 	public boolean getTipo(){
 		return tipo;
 	}

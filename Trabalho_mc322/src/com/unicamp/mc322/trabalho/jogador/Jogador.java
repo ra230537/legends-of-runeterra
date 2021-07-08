@@ -103,7 +103,15 @@ public class Jogador {
         //ajeitar o campo colocar um array de 4 espaços de listas
         cartasEmCampo.add(carta);
     }
-
+    public void removerCartaCampo(Carta carta){
+        cartasEmCampo.remove(carta);
+    }
+    public void adicionarCartaBatalha(Carta carta){
+        cartasBatalhando.add(carta);
+    }
+    public void removerCartaBatalha(Carta carta){
+        cartasBatalhando.remove(carta);
+    }
     public ArrayList<Carta> getCartasEmCampo() {
         return cartasEmCampo;
     }
@@ -114,5 +122,21 @@ public class Jogador {
 
     public ArrayList<Carta> getCartasBatalhando() {
         return cartasBatalhando;
+    }
+    public boolean acharCartaCampoNome (String nome){
+        for(Carta carta: cartasEmCampo){
+            if (carta.getNome().equals(nome)){
+                return true;
+            }
+        }
+        return false;
+    }
+    public Carta converterNomeCarta (String nome){
+        for(Carta carta: cartasEmCampo){
+            if (carta.getNome().equals(nome)){
+                return carta;
+            }
+        }
+        return null;
     }
 }
