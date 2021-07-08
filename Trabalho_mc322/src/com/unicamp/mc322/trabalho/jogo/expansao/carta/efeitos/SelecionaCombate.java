@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class SelecionaCombate extends Efeito {
     public SelecionaCombate(){
-        super(MomentosDoTurno.ANTES_ATAQUE);
+        super(MomentosDoTurno.ANTES_BATALHA);
     }
     //uma unica vez apos o uso dessa carta, duas unidades serão escolhidas e entrarão em conflito direto
     //nao precisa ser durante a rodada de ataque ou defesa

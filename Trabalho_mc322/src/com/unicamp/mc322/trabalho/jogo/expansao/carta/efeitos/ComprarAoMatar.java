@@ -6,7 +6,7 @@ import com.unicamp.mc322.trabalho.jogo.expansao.carta.MomentosDoTurno;
 
 public class ComprarAoMatar extends Efeito {
     public ComprarAoMatar(){
-        super(MomentosDoTurno.APOS_ATACAR);//compra uma carta se esse monstro destruir uma unidade inimiga
+        super(MomentosDoTurno.APOS_BATALHA);//compra uma carta se esse monstro destruir uma unidade inimiga
     }
 
     @Override

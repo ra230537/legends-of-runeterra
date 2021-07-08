@@ -45,7 +45,7 @@ public class Jogo {
 
     public void realizarPartidaVsComputador(String idUsuario) {
         Jogador jogador = new Jogador(usuarios.get(idUsuario));
-        Bot bot = new Bot();
+        Bot bot = new Bot(new Usuario("Bot"));
 
         this.realizarPartida(jogador, bot);
     }
@@ -75,7 +75,7 @@ public class Jogo {
         return mesa.getJogadores()[1];
     }
 
-    public void criarUsuario(String nome) {
+    public Usuario criarUsuario(String nome) {
         Usuario novoUsuario = new Usuario(nome);
         do {
             // Faz com que não exista 2 ids iguais cadastrados;
@@ -84,7 +84,7 @@ public class Jogo {
         nicksUtilizados.add(novoUsuario.getId());
         usuarios.put(novoUsuario.getId(), novoUsuario);
         System.out.printf("Novo jogador cadastrado com o id: %s\n", novoUsuario.getId());
-
+        return novoUsuario;
     }
 
     public void imprimirListaExpansoes() {

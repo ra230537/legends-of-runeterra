@@ -7,14 +7,15 @@ import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 
 public class Jogador {
+    //na mão é possivel ter no maximo 10 cartas, qualquer outra carta retirada do baralho sera descartada;
     private Usuario usuario;
     private Deck deckEscolhido;
     private int vida;
     private int mana;
     private int manaAtual;
     private int manaFeitico = 0;
+    private ArrayList <Carta> cartasBatalhando = new ArrayList<>();
     private ArrayList <Carta> cartasEmCampo = new ArrayList<>();
-    //na mão é possivel ter no maximo 10 cartas, qualquer outra carta retirada do baralho sera descartada;
     private ArrayList <Carta> mao = new ArrayList<>();
     public Jogador(Usuario usuario) {
         this.usuario = usuario;
@@ -106,7 +107,12 @@ public class Jogador {
     public ArrayList<Carta> getCartasEmCampo() {
         return cartasEmCampo;
     }
+
     public void removerCartaMao(Carta carta){
         mao.remove(carta);
+    }
+
+    public ArrayList<Carta> getCartasBatalhando() {
+        return cartasBatalhando;
     }
 }

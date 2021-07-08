@@ -21,7 +21,6 @@ public class Carta {
         Collections.addAll(listaEfeitos,efeitos);
 	}
 
-
 	public void setRegiao(Regiao regiao) {
 		this.regiao = regiao;
 	}
