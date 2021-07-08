@@ -87,12 +87,8 @@ public class BoardManager {
 
     private ArrayList<String> interagirComUsuarioDefensor(Jogador jogadorDefensor) {
         String nomeMonstro;
-
         ArrayList<String> listaCartasDefesa = inicializarArrayList(numeroCartasAtacando());
-
-        System.out.printf("Escolha as cartas que serão usadas para defender" +
-                " e em seguida digite a posição desejada (0 a %d)." +
-                " Digite 'sair' para finalizar\n",numeroCartasAtacando()-1);
+        mensagemParaUsuario();
         listarCartasCampo(jogadorDefensor);
         Scanner scan = new Scanner(System.in);
         do {
@@ -119,7 +115,11 @@ public class BoardManager {
         }
         return listaCartasDefesa;
     }
-
+    private void mensagemParaUsuario(){
+        System.out.printf("Escolha as cartas que serão usadas para defender" +
+                " e em seguida digite a posição desejada (0 a %d)." +
+                " Digite 'sair' para finalizar\n",numeroCartasAtacando()-1);
+    }
     private int numeroCartasAtacando(){
         return jogadorAtacante.getCartasBatalhando().size();
     }
@@ -288,8 +288,7 @@ public class BoardManager {
     }
 
     private boolean numeroCartasCampoExcedido(Jogador jogador) {
-
-        return false;
+        return jogador.getCartasEmCampo().size() < 6;
     }
 
     private Carta perguntarCartaDesejada(Jogador jogador) {
