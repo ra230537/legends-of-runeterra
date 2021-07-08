@@ -23,10 +23,15 @@ public class Mesa {
 		return cartasNaMesa;
 	}
 
-	public Jogador[] getJogadores() {
+	public Jogador getJogador1() {
+		return jogadores[0];
+	}
+	public Jogador getJogador2() {
+		return jogadores[1];
+	}
+	public jogadores[] getJogadores(){
 		return jogadores;
 	}
-
 	public void imprimirMesa(){
 
 	}

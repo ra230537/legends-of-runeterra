@@ -2,9 +2,8 @@ package com.unicamp.mc322.trabalho.jogador;
 
 import java.util.*;
 
-import com.unicamp.mc322.trabalho.jogo.Jogo;
-import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
+import com.unicamp.mc322.trabalho.jogo.expansao.carta.Monstro;
 
 public class Jogador {
     //na mão é possivel ter no maximo 10 cartas, qualquer outra carta retirada do baralho sera descartada;
@@ -14,8 +13,8 @@ public class Jogador {
     private int mana;
     private int manaAtual;
     private int manaFeitico = 0;
-    private ArrayList <Carta> cartasBatalhando = new ArrayList<>();
-    private ArrayList <Carta> cartasEmCampo = new ArrayList<>();
+    private ArrayList <Monstro> cartasBatalhando = new ArrayList<>();
+    private ArrayList <Monstro> cartasEmCampo = new ArrayList<>();
     private ArrayList <Carta> mao = new ArrayList<>();
     public Jogador(Usuario usuario) {
         this.usuario = usuario;
@@ -99,20 +98,20 @@ public class Jogador {
         manaFeitico-=valor;
     }
 
-    public void adicionarCartaCampo(Carta carta){
+    public void adicionaMonstroCampo(Monstro carta){
         //ajeitar o campo colocar um array de 4 espaços de listas
         cartasEmCampo.add(carta);
     }
-    public void removerCartaCampo(Carta carta){
+    public void removerMonstroCampo(Carta carta){
         cartasEmCampo.remove(carta);
     }
-    public void adicionarCartaBatalha(Carta carta){
+    public void adicionarCartaBatalha(Monstro carta){
         cartasBatalhando.add(carta);
     }
-    public void removerCartaBatalha(Carta carta){
+    public void removerCartaBatalha(Monstro carta){
         cartasBatalhando.remove(carta);
     }
-    public ArrayList<Carta> getCartasEmCampo() {
+    public ArrayList<Monstro> getCartasEmCampo() {
         return cartasEmCampo;
     }
 
@@ -120,7 +119,7 @@ public class Jogador {
         mao.remove(carta);
     }
 
-    public ArrayList<Carta> getCartasBatalhando() {
+    public ArrayList<Monstro> getCartasBatalhando() {
         return cartasBatalhando;
     }
     public boolean acharCartaCampoNome (String nome){
@@ -138,5 +137,13 @@ public class Jogador {
             }
         }
         return null;
+    }
+    public void ImprimirCartasEmCampo(){
+
+    }
+    public int DiminuirVida(int valor){
+        vida = vida - valor;
+        System.out.println("Vida atual: " + vida);
+        return vida;
     }
 }

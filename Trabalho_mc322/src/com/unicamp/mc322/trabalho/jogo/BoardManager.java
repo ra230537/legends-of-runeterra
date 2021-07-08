@@ -32,6 +32,7 @@ import com.unicamp.mc322.trabalho.jogador.Jogador;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.MomentosDoTurno;
+import com.unicamp.mc322.trabalho.jogo.expansao.carta.Monstro;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -126,6 +127,7 @@ public class BoardManager {
 
     private void colocarCartasDefesa(Jogador jogadorDefensor, ArrayList<String> listaCartasDefesa) {
         for (String nomeCarta : listaCartasDefesa) {
+
             Carta cartaParaDefesa = converterNomeCarta(jogadorDefensor, nomeCarta);
             moverMonstro(jogadorDefensor, cartaParaDefesa);
         }
@@ -191,7 +193,7 @@ public class BoardManager {
 
     private void moverMonstro(Jogador jogador, Carta carta) {
         jogador.adicionarCartaBatalha(carta);
-        jogador.removerCartaCampo(carta);
+        jogador.removerMonstroCampo(carta);
     }
 
     private void realizarCompra(Jogador jogador1, Jogador jogador2) {
@@ -238,17 +240,29 @@ public class BoardManager {
             }
 
             atualizarManaJogador(cartaEscolhida, jogador);
-            colocarCartaEmCampo(jogador, cartaEscolhida);
+            if (ehMonstro(cartaEscolhida)){
+                colocarMonstroEmCampo(jogador, (Monstro) cartaEscolhida);
+            }
+
             ArrayList<Efeito> listaEfeitos = listarEfeitos(cartaEscolhida);
             for (Efeito efeito : listaEfeitos) {
                 if (permitirUsoEfeito(efeito, momentoDoTurno)) {
-                    cartaEscolhida.ativarEfeito(efeito, mesa);
+                    cartaEscolhida.ativarEfeito(efeito, jogador, mesa, cartaEscolhida);
                 }
             }
+
         }
 
     }
 
+    private boolean ehMonstro (Carta cartaEscolhida){
+        return !cartaEscolhida.ehFeitico();
+    }
+    private void colocarMonstroEmCampo(Jogador jogador, Monstro cartaEscolhida) {
+        jogador.adicionaMonstroCampo(cartaEscolhida);
+        jogador.removerCartaMao(cartaEscolhida);
+
+    }
 
     private boolean permitirUsoEfeito(Efeito efeito, MomentosDoTurno momentoDoTurno) {
         return efeito.getMomentoQueSeraLido() == momentoDoTurno;
@@ -277,7 +291,7 @@ public class BoardManager {
             return false;
         }
         for (Carta carta : mao) {
-            if (carta.getTipo() && carta.getCusto() <= (mana + jogador.getManaFeitico())) {
+            if (carta.ehFeitico() && carta.getCusto() <= (mana + jogador.getManaFeitico())) {
                 return true;
             }
             if (carta.getCusto() <= mana) {
@@ -321,18 +335,14 @@ public class BoardManager {
 
     private void atualizarManaJogador(Carta cartaEscolhida, Jogador jogador) {
         int custoCarta = cartaEscolhida.getCusto();
-        if (cartaEscolhida.getTipo() == true) {
+        if (cartaEscolhida.ehFeitico()) {
             custoCarta = custoCarta - jogador.getManaFeitico();
             jogador.diminuirManaFeitico(jogador.getManaFeitico());
         }
         jogador.diminuirManaAtual(custoCarta);
     }
 
-    private void colocarCartaEmCampo(Jogador jogador, Carta cartaEscolhida) {
-        jogador.removerCartaMao(cartaEscolhida);
-        jogador.adicionarCartaCampo(cartaEscolhida);
 
-    }
 
     private ArrayList<Efeito> listarEfeitos(Carta cartaEscolhida) {
         return cartaEscolhida.getListaEfeitos();

@@ -103,7 +103,8 @@ public class Jogo {
         expansoes.imprimirCartasExpansoes();
         System.out.println("\nEscolha suas cartas(digite a regiao e depois o nome da carta):");
         for(int i = 0; i < 40; i++) {
-
+            novoDeck.addCarta();
+            System.out.println("Carta adicionada!");
         }
         //...
         //...
@@ -133,7 +134,8 @@ public class Jogo {
             case "Add":
                 //Add carta
                 System.out.println("Digite o nome da carta que deseja adicionar:\n");
-                deckEditado.addCarta(comandos.nextLine());
+                Carta novaCarta = new Carta(); //Cria um clone da carta baseada na carta escolhida;
+                deckEditado.addCarta(novaCarta);
                 break;
         }
 

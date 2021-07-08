@@ -11,7 +11,7 @@ public class Deck {
 	private String nome;
 	private Estado estado = Estado.Inutilizavel;
 	private Stack <Carta> deckStack = new Stack<Carta>();
-	//private Map<String, Carta> deckMap = new HashMap<String, Carta>(); Permite encontrar carta pelo nome com mais facilidade
+	private Map<String, Carta> deckMap = new HashMap<String, Carta>(); //Permite encontrar carta pelo nome com mais facilidade
 	
 	public Deck(String nome) {
 		this.nome = nome;
@@ -44,8 +44,13 @@ public class Deck {
 	}
 
 	public void removerCarta(String nomeCarta) {
-
-
+		if(deckMap.containsKey(nomeCarta)) {
+			deckStack.remove(deckMap.get(nomeCarta));
+			deckMap.remove(nomeCarta);
+		}
+		else {
+			throw new GameException("O deck não contem uma carta com esse nome");
+		}
 	}
 
 	public void addCarta(Carta novaCarta) {
@@ -53,7 +58,7 @@ public class Deck {
 			throw new GameException("Deck já possui numero maximo de cartas");
 		}
 		else {
-
+			deckMap.put(novaCarta.getNome(), novaCarta);
 			deckStack.add(novaCarta);
 		}
 
