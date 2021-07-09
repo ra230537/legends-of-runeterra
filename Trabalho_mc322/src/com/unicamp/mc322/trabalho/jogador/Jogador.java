@@ -122,6 +122,7 @@ public class Jogador {
     public ArrayList<Monstro> getCartasBatalhando() {
         return cartasBatalhando;
     }
+
     public boolean acharCartaCampoNome (String nome){
         for(Carta carta: cartasEmCampo){
             if (carta.getNome().equals(nome)){
@@ -130,6 +131,13 @@ public class Jogador {
         }
         return false;
     }
+
+    /**
+     *
+     * @param nome
+     * @return null quando o nome da carta não é encontrado e o objeto carta quando esse possui
+     * o nome informado no parametro
+     */
     public Carta converterNomeCarta (String nome){
         for(Carta carta: cartasEmCampo){
             if (carta.getNome().equals(nome)){
@@ -141,9 +149,8 @@ public class Jogador {
     public void ImprimirCartasEmCampo(){
 
     }
-    public int DiminuirVida(int valor){
+    public void DiminuirVida(int valor){
         vida = vida - valor;
         System.out.println("Vida atual: " + vida);
-        return vida;
     }
 }

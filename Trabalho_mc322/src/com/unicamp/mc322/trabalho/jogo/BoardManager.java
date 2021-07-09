@@ -34,6 +34,7 @@ import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.MomentosDoTurno;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Monstro;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -51,18 +52,25 @@ public class BoardManager {
     }
 
     public boolean executarPassosJogo() {
-
+        String resposta;
         realizarCompra(jogadorAtacante, jogadorDefensor);
+        Scanner scan = new Scanner(System.in);
+        //decidir quando acabara
+        do{
 
-        permitirJogarCarta(jogadorAtacante, mesa, MomentosDoTurno.APOS_INVOCACAO);
-        if (jogadorDefensorMorreu(jogadorDefensor)) {
-            return false;
-        }
+            permitirJogarCarta(jogadorAtacante, mesa, MomentosDoTurno.APOS_INVOCACAO);
+            if (jogadorDefensorMorreu(jogadorDefensor)) {
+                return false;
+            }
 
-        permitirJogarCarta(jogadorDefensor, mesa, MomentosDoTurno.APOS_INVOCACAO);
-        if (jogadorAtacanteMorreu(jogadorAtacante)) {
-            return false;
-        }
+            permitirJogarCarta(jogadorDefensor, mesa, MomentosDoTurno.APOS_INVOCACAO);
+            if (jogadorAtacanteMorreu(jogadorAtacante)) {
+                return false;
+            }
+            System.out.print("Atacante,se desejar atacar escreva 'atacar'. Se desejar pular o ataque escreva 'pular'" +
+                    "se deseja continuar a jogar digite qualquer letra");
+            resposta = scan.nextLine();
+        }while(!(resposta.equals("atacar") || resposta.equals("pular")));
         //so vai escolher os monstros que vao atacar
         escolherMonstrosAtaque(jogadorAtacante);
         //so vai escolher os monstros que vao defender
@@ -73,10 +81,43 @@ public class BoardManager {
             return false;
         }
         //ve se os monstros que restam tem algum efeito pos batalha e tira os monstros mortos de campo
-        verificarMonstrosPosBatalha(mesa, MomentosDoTurno.APOS_BATALHA);
+        verificarMonstrosPosBatalha(jogadorAtacante,jogadorDefensor, MomentosDoTurno.APOS_BATALHA);
         //inverter as posiçoes de quem é o atacante e quem é o defensor
         return executarPassosJogo();
 
+    }
+
+    private void verificarMonstrosPosBatalha(Jogador jogadorDefensor,Jogador jogadorAtacante, MomentosDoTurno aposBatalha) {
+        //verificar se algum deles possui efeito pos batalha
+        //verificar os monstros mortos
+        //remover os monstros da batalha e colocar no campod
+        //jogar os monstros mortos no campo no lixo
+        ArrayList <Monstro>
+    }
+
+    private void permitirBatalha(Jogador jogadorAtacante, Mesa mesa, MomentosDoTurno antesBatalha) {
+        ArrayList<Monstro> monstrosEmBatalha = jogadorAtacante.getCartasBatalhando();
+        int numeroMonstrosBatalha = monstrosEmBatalha.size();
+        for (int i = 0; i < numeroMonstrosBatalha; i++) {
+            Monstro monstro = monstrosEmBatalha.get(i);
+            for (Efeito efeito : monstro.getListaEfeitos()) {
+                if (podeUsarEfeito(efeito, antesBatalha)) {
+                    monstro.ativarEfeito(efeito, jogadorAtacante, mesa, monstro);
+                }
+            }
+            Jogador jogadorDefensor = acharJogadorDefensor(jogadorAtacante, mesa);
+            monstro.atacar(jogadorDefensor, i);
+        }
+    }
+
+    private Jogador acharJogadorDefensor(Jogador jogadorAtacante, Mesa mesa) {
+        Jogador jogadorDefensor;
+        if (jogadorAtacante == mesa.getJogador1()) {
+            jogadorDefensor = mesa.getJogador2();
+        } else {
+            jogadorDefensor = mesa.getJogador1();
+        }
+        return jogadorDefensor;
     }
 
     private void escolherMonstrosDefesa(Jogador jogadorDefensor) {
@@ -96,10 +137,10 @@ public class BoardManager {
             nomeMonstro = scan.nextLine();
             int posicaoMonstro = scan.nextInt();
             if (naoEscreveuSair(nomeMonstro) && ehMonstroValido(jogadorDefensor, nomeMonstro)) {
-                try{
+                try {
                     //monstro adicionado na posição escolhida pelo usuario
-                    listaCartasDefesa.add(posicaoMonstro,nomeMonstro);
-                }catch (Exception IndexOutOfBoundsException){
+                    listaCartasDefesa.add(posicaoMonstro, nomeMonstro);
+                } catch (Exception IndexOutOfBoundsException) {
                     System.out.print("Escolha um numero dentro do intervalo solicitado!");
                 }
             }
@@ -111,25 +152,27 @@ public class BoardManager {
     private ArrayList<String> inicializarArrayList(int numeroCartasAtacando) {
         ArrayList<String> listaCartasDefesa = new ArrayList<>();
         //para cada carta no ataque, coloque um endereço null no array
-        for(int i = 0;i<numeroCartasAtacando;i++){
+        for (int i = 0; i < numeroCartasAtacando; i++) {
             listaCartasDefesa.add(null);
         }
         return listaCartasDefesa;
     }
-    private void mensagemParaUsuario(){
+
+    private void mensagemParaUsuario() {
         System.out.printf("Escolha as cartas que serão usadas para defender" +
                 " e em seguida digite a posição desejada (0 a %d)." +
-                " Digite 'sair' para finalizar\n",numeroCartasAtacando()-1);
+                " Digite 'sair' para finalizar\n", numeroCartasAtacando() - 1);
     }
-    private int numeroCartasAtacando(){
+
+    private int numeroCartasAtacando() {
         return jogadorAtacante.getCartasBatalhando().size();
     }
 
     private void colocarCartasDefesa(Jogador jogadorDefensor, ArrayList<String> listaCartasDefesa) {
         for (String nomeCarta : listaCartasDefesa) {
-
+            //pode retornar null quando a carta nao eh reconhecida
             Carta cartaParaDefesa = converterNomeCarta(jogadorDefensor, nomeCarta);
-            moverMonstro(jogadorDefensor, cartaParaDefesa);
+            moverMonstro(jogadorDefensor, (Monstro) cartaParaDefesa);
         }
     }
 
@@ -182,7 +225,7 @@ public class BoardManager {
 
         for (String nomeCarta : listaCartasAtaque) {
             Carta cartaParaAtaque = converterNomeCarta(jogadorAtacante, nomeCarta);
-            moverMonstro(jogadorAtacante, cartaParaAtaque);
+            moverMonstro(jogadorAtacante, (Monstro) cartaParaAtaque);
         }
 
     }
@@ -191,15 +234,15 @@ public class BoardManager {
         return jogador.converterNomeCarta(carta);
     }
 
-    private void moverMonstro(Jogador jogador, Carta carta) {
-        jogador.adicionarCartaBatalha(carta);
-        jogador.removerMonstroCampo(carta);
+    private void moverMonstro(Jogador jogador, Monstro monstro) {
+        jogador.adicionarCartaBatalha(monstro);
+        jogador.removerMonstroCampo(monstro);
     }
 
     private void realizarCompra(Jogador jogador1, Jogador jogador2) {
         //jogador 1 e 2 compram uma carta
-        boolean j1AindaPodePuxarCarta = verificarNumeroDeCartas(jogador1);
-        boolean j2AindaPodePuxarCarta = verificarNumeroDeCartas(jogador2);
+        boolean j1AindaPodePuxarCarta = verificarNumeroDeCartasMao(jogador1);
+        boolean j2AindaPodePuxarCarta = verificarNumeroDeCartasMao(jogador2);
         if (j1AindaPodePuxarCarta) {
             puxarCarta(jogador1);
         } else {
@@ -212,7 +255,7 @@ public class BoardManager {
         }
     }
 
-    private boolean verificarNumeroDeCartas(Jogador jogador) {
+    private boolean verificarNumeroDeCartasMao(Jogador jogador) {
         return obterNumeroCartasMao(jogador) < 10;
     }
 
@@ -240,13 +283,13 @@ public class BoardManager {
             }
 
             atualizarManaJogador(cartaEscolhida, jogador);
-            if (ehMonstro(cartaEscolhida)){
+            if (ehMonstro(cartaEscolhida)) {
                 colocarMonstroEmCampo(jogador, (Monstro) cartaEscolhida);
             }
 
             ArrayList<Efeito> listaEfeitos = listarEfeitos(cartaEscolhida);
             for (Efeito efeito : listaEfeitos) {
-                if (permitirUsoEfeito(efeito, momentoDoTurno)) {
+                if (podeUsarEfeito(efeito, momentoDoTurno)) {
                     cartaEscolhida.ativarEfeito(efeito, jogador, mesa, cartaEscolhida);
                 }
             }
@@ -255,16 +298,17 @@ public class BoardManager {
 
     }
 
-    private boolean ehMonstro (Carta cartaEscolhida){
+    private boolean ehMonstro(Carta cartaEscolhida) {
         return !cartaEscolhida.ehFeitico();
     }
-    private void colocarMonstroEmCampo(Jogador jogador, Monstro cartaEscolhida) {
-        jogador.adicionaMonstroCampo(cartaEscolhida);
-        jogador.removerCartaMao(cartaEscolhida);
+
+    private void colocarMonstroEmCampo(Jogador jogador, Monstro monstroEscolhido) {
+        jogador.adicionaMonstroCampo(monstroEscolhido);
+        jogador.removerCartaMao(monstroEscolhido);
 
     }
 
-    private boolean permitirUsoEfeito(Efeito efeito, MomentosDoTurno momentoDoTurno) {
+    private boolean podeUsarEfeito(Efeito efeito, MomentosDoTurno momentoDoTurno) {
         return efeito.getMomentoQueSeraLido() == momentoDoTurno;
 
     }
@@ -341,7 +385,6 @@ public class BoardManager {
         }
         jogador.diminuirManaAtual(custoCarta);
     }
-
 
 
     private ArrayList<Efeito> listarEfeitos(Carta cartaEscolhida) {

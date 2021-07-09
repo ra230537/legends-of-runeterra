@@ -13,7 +13,7 @@ public class Runner {
 
 		//Criar expansao;
 		jogo.criarExpansao("Regiao1", Regiao.Bilgewater);
-		jogo.addCartaNaExpansao(new Monstro("The Dreadway", 8, 6, 4, <TRACO>,<EFEITO>);
+		jogo.addCartaNaExpansao(new Monstro("The Dreadway", 8, 6, 4,<TRACO>,<EFEITO>);
 
 		jogo.addCartaNaExpansao(new Feitico());
 

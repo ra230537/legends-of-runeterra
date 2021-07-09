@@ -44,6 +44,12 @@ public class Expansoes {
 		}
 	}
 
+	pub
+
+	public Map<Regiao, Expansao> getExpansoesMap() {
+		return expansoesMap;
+	}
+
 	public Carta getCarta(String nome) {
 		//Dado
 		return carta;

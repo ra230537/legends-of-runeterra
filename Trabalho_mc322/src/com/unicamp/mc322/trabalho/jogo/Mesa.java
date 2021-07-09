@@ -29,7 +29,7 @@ public class Mesa {
 	public Jogador getJogador2() {
 		return jogadores[1];
 	}
-	public jogadores[] getJogadores(){
+	public Jogador[] getJogadores(){
 		return jogadores;
 	}
 	public void imprimirMesa(){

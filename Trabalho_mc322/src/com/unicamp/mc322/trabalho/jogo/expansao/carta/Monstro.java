@@ -1,11 +1,12 @@
 package com.unicamp.mc322.trabalho.jogo.expansao.carta;
 
-public class Monstro extends Carta {
+import com.unicamp.mc322.trabalho.jogador.Jogador;
+import com.unicamp.mc322.trabalho.jogo.Mesa;
 
+public class Monstro extends Carta {
     private int vidaMaxima;
     private int vidaAtual = vidaMaxima;
     private int ataque;
-    private boolean kill = false;
     private Traco traco; //o traço precisa ser criado no runner antes de ser colocado no construtor
     public Monstro(String nomeCarta, int custo, int vidaMaxima, int ataque, Traco traco, Efeito... efeitos){
         super(nomeCarta,custo, false,efeitos);
@@ -34,5 +35,24 @@ public class Monstro extends Carta {
 
     public void CurarFull(){
         vidaAtual = vidaMaxima;
+    }
+    public void alterarVidaAtual(int dano){
+        vidaAtual-=dano;
+    }
+    public void atacar(Jogador jogadorDefensor,int indiceMonstro){
+        Monstro monstroDefensor = jogadorDefensor.getCartasBatalhando().get(indiceMonstro);
+        if(monstroDefensor!=null){
+            int danoDefensor = monstroDefensor.getAtaque();
+            monstroDefensor.alterarVidaAtual(ataque);
+            alterarVidaAtual(danoDefensor);
+        }else{
+            jogadorDefensor.DiminuirVida(ataque);
+        }
+    }
+    public void zerarAtk(){
+        ataque = 0;
+    }
+    public void diminuirVida(int valor){
+        vidaAtual = vidaAtual - valor;
     }
 }

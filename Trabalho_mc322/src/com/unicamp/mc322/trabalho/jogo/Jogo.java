@@ -23,7 +23,13 @@ public class Jogo {
     private Mesa mesa;
 
     public void criarExpansao(String nomeExpansao, Regiao regiao) {
-        expansoes.addExpansao(new Expansao(nomeExpansao, regiao));
+        if(!expansoes.getExpansoesMap().keySet().contains(regiao)) {
+            expansoes.addExpansao(new Expansao(nomeExpansao, regiao));
+        }
+        else {
+            throw new GameException("Região já possui uma expansão.");
+        }
+
     }
 
     public void addCartaNaExpansao(Regiao regiao, Carta novaCarta) {
