@@ -16,7 +16,7 @@ public class LevelUpGaren extends Efeito {
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta){
         if(((Monstro) carta).getQntAtaques() >= 2){
             ((Monstro) carta).buffar(1,1);
-            //conceder traço elusivo elusivo
+            ((Monstro) carta).adicionarTraco(Traco.ELUSIVO);
         }
     }
 }

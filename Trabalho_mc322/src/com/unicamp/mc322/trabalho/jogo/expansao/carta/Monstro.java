@@ -11,9 +11,11 @@ public class Monstro extends Carta {
     private int vidaAtual = vidaMaxima;
     private int ataque;
     private int qntAtaques;
-    private ArrayList<Traco> listatracos = new ArrayList<>(); //o traço precisa ser criado no runner antes de ser colocado no construtor
+    private ArrayList<Traco> listatracos = new ArrayList<>(); //o traï¿½o precisa ser criado no runner antes de ser colocado no construtor
+    private int ataqueFuria;
+    private int vidaFuria;
 
-    public Monstro(String nomeCarta, int custo, int vidaMaxima, int ataque, Traco traco1, Traco traco2, Traco traco3, Efeito... efeitos){
+    public Monstro(String nomeCarta, int custo, int vidaMaxima, int ataque, Traco traco1, Traco traco2, Traco traco3, int ataqueFuria, int vidaFuria, Efeito... efeitos){
         super(nomeCarta,custo, false,efeitos);
         this.vidaMaxima = vidaMaxima;
         this.ataque = ataque;
@@ -26,7 +28,7 @@ public class Monstro extends Carta {
 
     public void imprimirCartaDetalhada() {
         String info = "|<MONSTRO> NOME: " + this.getNome() + " Custo: " + this.getCusto() + " Regiao: " + this.getRegiao() + "\n\r";
-        info += "|Vida atual/vida máxima: " + this.getVidaAtual() + "/" + this.getVidaMaxima() + " Atk: " + this.getAtaque() + " Custo: " + this.getCusto() + "\n\r";
+        info += "|Vida atual/vida mï¿½xima: " + this.getVidaAtual() + "/" + this.getVidaMaxima() + " Atk: " + this.getAtaque() + " Custo: " + this.getCusto() + "\n\r";
         info += "|Efeitos:" + "\n\r";
         info += "|Tracos:" + "\n\r";
         System.out.println(info);
@@ -61,8 +63,36 @@ public class Monstro extends Carta {
 
         if(monstroDefensor!=null){
             int danoDefensor = monstroDefensor.getAtaque();
+
+            //tratar traÃ§o elusivo
+            if(listatracos.contains(ELUSIVO)){
+                if(monstroDefensor.listatracos.contains(ELUSIVO)){
+                    monstroDefensor.alterarVidaAtual(ataque);
+                    return;
+                }else{
+                    jogadorDefensor.DiminuirVida(ataque);
+                    return;
+                }
+            }
+
             monstroDefensor.alterarVidaAtual(ataque);
+
+            //tratar traÃ§o furia
+            if(listatracos.contains(FURIA) && monstroDefensor.getVidaAtual() <= 0){
+                buffar(ataqueFuria,vidaFuria);
+            }
             alterarVidaAtual(danoDefensor);
+
+            //tratar traÃ§o ataqueduplo
+            if(listatracos.contains(ATAQUEDUPLO) && monstroDefensor.getVidaAtual() <= 0 && getVidaAtual() > 0){
+                jogadorDefensor.DiminuirVida(ataque);
+                return;
+            }else if(listatracos.contains(ATAQUEDUPLO) && getVidaAtual() > 0){
+                monstroDefensor.alterarVidaAtual(ataque);
+                alterarVidaAtual(danoDefensor);
+                return;
+            }
+
         }else{
             jogadorDefensor.DiminuirVida(ataque);
         }
@@ -77,5 +107,8 @@ public class Monstro extends Carta {
 
     public int getQntAtaques(){
         return qntAtaques;
+    }
+    public void adicionarTraco(Traco traco){
+        listatracos.add(traco);
     }
 }
