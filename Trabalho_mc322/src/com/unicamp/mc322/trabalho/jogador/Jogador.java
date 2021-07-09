@@ -98,18 +98,18 @@ public class Jogador {
         manaFeitico-=valor;
     }
 
-    public void adicionaMonstroCampo(Monstro carta){
+    public void adicionaMonstroCampo(Monstro monstro){
         //ajeitar o campo colocar um array de 4 espa�os de listas
-        cartasEmCampo.add(carta);
+        cartasEmCampo.add(monstro);
     }
-    public void removerMonstroCampo(Carta carta){
-        cartasEmCampo.remove(carta);
+    public void removerMonstroCampo(Monstro monstro){
+        cartasEmCampo.remove(monstro);
     }
-    public void adicionarCartaBatalha(Monstro carta){
-        cartasBatalhando.add(carta);
+    public void adicionarCartaBatalha(Monstro monstro){
+        cartasBatalhando.add(monstro);
     }
-    public void removerCartaBatalha(Monstro carta){
-        cartasBatalhando.remove(carta);
+    public void removerCartaBatalha(Monstro monstro){
+        cartasBatalhando.remove(monstro);
     }
     public ArrayList<Monstro> getCartasEmCampo() {
         return cartasEmCampo;
