@@ -1,19 +1,19 @@
 package com.unicamp.mc322.trabalho.jogador;
 
-import com.unicamp.mc322.trabalho.jogo.Jogo;
-import com.unicamp.mc322.trabalho.jogo.Mesa;
+import java.util.Random;
 
 public class Bot extends Jogador {
 	//quando for para jogar vs computador criar classe bot, com metodos para jogar automatico;
 	
-	public Bot(String nomeJogador, Jogo jogo) {
-		super(Usuario usuario);
+	public Bot(Usuario usuario) {
+		super(usuario);
+		this.bot = true;
 	}
 
-	@Override
-	public void jogarTurno(Mesa mesa) {
-		
+	public int getNumeroRandom(int max) {
+		//Obtem um numero random no intervalo fornecido;
+		Random numero = new Random();
+		return numero.nextInt(max);
+
 	}
-	
-	
 }

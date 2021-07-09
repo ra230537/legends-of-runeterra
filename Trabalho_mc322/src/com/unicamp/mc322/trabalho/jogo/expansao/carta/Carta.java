@@ -32,6 +32,7 @@ public class Carta {
 
 	public void imprimirCarta() {
 		//imprime carta
+		//System.out.println("{CARTA}");
 	}
 
 	/**

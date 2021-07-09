@@ -107,6 +107,7 @@ public class BoardManager {
             }
             Jogador jogadorDefensor = acharJogadorDefensor(jogadorAtacante, mesa);
             monstro.atacar(jogadorDefensor, i);
+
         }
     }
 

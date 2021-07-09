@@ -2,6 +2,7 @@ package com.unicamp.mc322.trabalho.jogador;
 
 import com.unicamp.mc322.trabalho.jogo.GameException;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
+import com.unicamp.mc322.trabalho.jogo.Regiao;
 
 import java.util.HashMap;
 import java.util.Stack;
@@ -10,7 +11,7 @@ import java.util.Map;
 public class Deck {
 	private String nome;
 	private Estado estado = Estado.Inutilizavel;
-	private Stack <Carta> deckStack = new Stack<Carta>();
+	private Stack <Carta> deckStack = new Stack<Carta>()
 	private Map<String, Carta> deckMap = new HashMap<String, Carta>(); //Permite encontrar carta pelo nome com mais facilidade
 	
 	public Deck(String nome) {
@@ -61,7 +62,12 @@ public class Deck {
 			deckMap.put(novaCarta.getNome(), novaCarta);
 			deckStack.add(novaCarta);
 		}
+	}
 
+	public void setarRegiaoCartas(Regiao regiao) {
+		for(Carta carta : deckStack) {
+			carta.setRegiao(regiao);
+		}
 	}
 
 	public Carta tirarCartaTopo(){

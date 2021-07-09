@@ -7,7 +7,7 @@ import com.unicamp.mc322.trabalho.jogo.expansao.carta.Monstro;
 
 public class Jogador {
     //na m�o � possivel ter no maximo 10 cartas, qualquer outra carta retirada do baralho sera descartada;
-    private Usuario usuario;
+    protected Usuario usuario;
     private Deck deckEscolhido;
     protected boolean bot = false;
     private int vida;
@@ -17,6 +17,7 @@ public class Jogador {
     private ArrayList <Monstro> cartasBatalhando = new ArrayList<>();
     private ArrayList <Monstro> cartasEmCampo = new ArrayList<>();
     private ArrayList <Carta> mao = new ArrayList<>();
+
     public Jogador(Usuario usuario) {
         this.usuario = usuario;
         Map<String, Deck> listaDecks = obterListaDecks(usuario);

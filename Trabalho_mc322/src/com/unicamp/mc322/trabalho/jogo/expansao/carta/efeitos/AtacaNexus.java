@@ -22,8 +22,10 @@ public class AtacaNexus extends Efeito {
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
         if(jogador == mesa.getJogador1()){
             mesa.getJogador2().DiminuirVida(((Monstro) carta).getAtaque());
+            ((Monstro) carta).atacou();
         }else{
             mesa.getJogador1().DiminuirVida(((Monstro) carta).getAtaque());
+            ((Monstro) carta).atacou();
         }
     }
 

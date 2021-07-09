@@ -1,8 +1,6 @@
 package com.unicamp.mc322.trabalho.jogo;
 
-import com.unicamp.mc322.trabalho.jogador.Bot;
-import com.unicamp.mc322.trabalho.jogador.Jogador;
-import com.unicamp.mc322.trabalho.jogador.Usuario;
+import com.unicamp.mc322.trabalho.jogador.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,13 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import com.unicamp.mc322.trabalho.jogador.Deck;
 import com.unicamp.mc322.trabalho.jogo.expansao.Expansao;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 
 public class Jogo {
     private Scanner comandos = new Scanner(System.in);
     private Expansoes expansoes = new Expansoes();
+    private DecksPadroes decksPadroes = new DecksPadroes(); //Decks padrões do jogo.
     private Map<String, Usuario> usuarios = new HashMap<String, Usuario>(); //Dicionario com jogadores e key = id do jogador
     private List<String> nicksUtilizados = new ArrayList<String>(); //Lista de nicks ja usados no jogo, usado para verificar se a tag ja está sendo usada;
     private BoardManager boardManager;
@@ -89,6 +87,9 @@ public class Jogo {
         } while (nicksUtilizados.contains(novoUsuario.getId()));
         nicksUtilizados.add(novoUsuario.getId());
         usuarios.put(novoUsuario.getId(), novoUsuario);
+        for(Deck deck : decksPadroes.getDecksPadroes()) {
+            novoUsuario.addNovoDeck(deck.getNome(), deck); //Adiciona os decks padões no usuário.
+        }
         System.out.printf("Novo jogador cadastrado com o id: %s\n", novoUsuario.getId());
         return novoUsuario;
     }
@@ -99,6 +100,12 @@ public class Jogo {
 
     public void imprimirDecksUsuario(String idUsuario) {
     //Imprime os decks do usuario;
+    }
+
+    public void AddDeckPadrao(Deck deck, Regiao regiao) {
+        //Adiciona um novo deck padrão no jogo, decks padrões são compostos de apenas uma regiao;
+        deck.setarRegiaoCartas(regiao);
+        this.decksPadroes.addDeckPadrao(deck);
     }
 
     public void criarNovoDeck(String idUsuario, String nomeDeck) {

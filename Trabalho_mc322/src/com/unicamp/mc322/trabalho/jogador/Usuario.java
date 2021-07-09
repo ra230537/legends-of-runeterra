@@ -12,8 +12,6 @@ public class Usuario {
 
     public Usuario(String nome) {
         this.nick = nome;
-        /*CRIAR DECKS PADRAO DEMACIA*/
-
     }
 
     private String obterTagRandom() {
@@ -57,6 +55,8 @@ public class Usuario {
         System.out.printf("Novo deck \"%s\" adcionado aos decks de %s", novoDeck.getNome(), this.id);
 
     }
+
+
 
     public Map<String, Deck> getDecks() {
         return decks;

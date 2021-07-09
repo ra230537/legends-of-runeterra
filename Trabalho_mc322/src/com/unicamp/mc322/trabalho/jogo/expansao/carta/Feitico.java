@@ -5,8 +5,9 @@ public class Feitico extends Carta {
 		super(nomeCarta, custo, true,efeitos);
 	}
 
-	@Override
-	public void imprimirCarta() {
-		System.out.printf("|<FEITIÇO> Nome: %s custo: %d efeitos:  |", this.getNome(), this.getCusto());
+	public void imprimirCartaDetalhada() {
+		String info = "|<FEITIÇO> NOME: " + this.getNome() + " Custo: " + this.getCusto() + "\n\r";
+		info += "|Efeitos: " + "\n\r";
+		System.out.println(info);
 	}
 }

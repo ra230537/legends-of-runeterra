@@ -23,8 +23,10 @@ public class SelecionaCombate extends Efeito {
         //escolhe o aliado e o inimigo e usa o comando atacar e defender respectivamente
         if(jogador == mesa.getJogador1()){
             mesa.getJogador1().getCartasEmCampo().get(indiceMonstroAliado).atacar(mesa.getJogador2(), indiceMonstroInimigo);
+            ((Monstro) carta).atacou();
         }else{
             mesa.getJogador2().getCartasEmCampo().get(indiceMonstroAliado).atacar(mesa.getJogador1(), indiceMonstroInimigo);
+            ((Monstro) carta).atacou();
         }
     }
     public int interagirComUsuario1(){
