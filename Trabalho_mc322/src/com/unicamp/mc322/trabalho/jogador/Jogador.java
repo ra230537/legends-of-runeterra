@@ -9,6 +9,7 @@ public class Jogador {
     //na m�o � possivel ter no maximo 10 cartas, qualquer outra carta retirada do baralho sera descartada;
     private Usuario usuario;
     private Deck deckEscolhido;
+    protected boolean bot = false;
     private int vida;
     private int mana;
     private int manaAtual;
@@ -152,5 +153,9 @@ public class Jogador {
     public void DiminuirVida(int valor){
         vida = vida - valor;
         System.out.println("Vida atual: " + vida);
+    }
+
+    public boolean ehBot() {
+        return bot;
     }
 }

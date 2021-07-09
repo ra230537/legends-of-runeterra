@@ -65,9 +65,9 @@ public class Jogo {
             //Ciclo de comandos enquanto a partida está acontecendo;
             Jogador jogador1 = obterJogador1(mesa);
             Jogador jogador2 = obterJogador2(mesa);
-            partidaAcabou = boardManager.executarPassosJogo(jogador1,jogador2);
+            partidaAcabou = boardManager.executarPassosJogo();
             if (!partidaAcabou) {//se a partida ainda nao acabou o jogador 2 agora assume o papel de atacante da rodada
-                partidaAcabou = boardManager.executarPassosJogo(jogador2,jogador1);
+                partidaAcabou = boardManager.executarPassosJogo();
             }
         } while (!partidaAcabou);
 

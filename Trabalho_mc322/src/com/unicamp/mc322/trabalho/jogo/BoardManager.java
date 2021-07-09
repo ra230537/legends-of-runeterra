@@ -1,6 +1,5 @@
-
 package com.unicamp.mc322.trabalho.jogo;
-
+import com.unicamp.mc322.trabalho.jogador.Bot;
 import com.unicamp.mc322.trabalho.jogador.Jogador;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
@@ -11,10 +10,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BoardManager {
-    private final Mesa mesa;
-    private final Jogador jogadorAtacante;
-    private final Jogador jogadorDefensor;
-
+    private Mesa mesa;
+    private Jogador jogadorAtacante;
+    private Jogador jogadorDefensor;
+    private Bot bot;
     public BoardManager(Mesa mesa) {
         this.mesa = mesa;
         //primeiro jogador
@@ -23,11 +22,20 @@ public class BoardManager {
         jogadorDefensor = mesa.getJogadores()[1];
     }
 
+    public BoardManager (Mesa mesa, Bot bot){
+        this.mesa = mesa;
+        //primeiro jogador
+        jogadorAtacante = mesa.getJogadores()[0];
+        //segundo jogador
+        jogadorDefensor = mesa.getJogadores()[1];
+        this.bot = bot;
+    }
+
     public boolean executarPassosJogo() {
         String resposta;
         realizarCompra(jogadorAtacante, jogadorDefensor);
         Scanner scan = new Scanner(System.in);
-        //decidir quando acabara
+
         do {
             permitirJogarCarta(jogadorAtacante, mesa);
             if (jogadorDefensorMorreu(jogadorDefensor)) {
@@ -174,6 +182,32 @@ public class BoardManager {
         //todas as cartas sao validas
         colocarCartasAtaque(jogadorAtacante, listaCartasAtaque);
     }
+    private void escolherMonstrosAtaque(Bot botAtacante) {
+        //perguntar a ele quais cartas ele quer colocar pro ataque (em ordem)
+        int numeroCartasEscolhidas = interagirComBotAtacante(botAtacante);
+        //todas as cartas sao validas
+        colocarCartasAtaqueBot(botAtacante, numeroCartasEscolhidas);
+    }
+
+    private void colocarCartasAtaqueBot(Bot botAtacante, int numeroCartasEscolhidas) {
+        ArrayList <Integer> indicesCartasUsadas = new ArrayList<Integer>();
+        for(int i = 0; i < numeroCartasEscolhidas;i++){
+            int numeroEscolhido;
+            do{
+                numeroEscolhido = botAtacante.getNumeroRandom(numeroCartasEscolhidas);
+            }while(indicesCartasUsadas.contains(numeroEscolhido));
+            indicesCartasUsadas.add(numeroEscolhido);
+            Monstro monstro = botAtacante.getCartasEmCampo().get(numeroEscolhido);
+            botAtacante.adicionarCartaBatalha(monstro);
+        }
+
+    }
+
+    private int interagirComBotAtacante(Bot botAtacante) {
+        int numeroCartasCampo = botAtacante.getCartasEmCampo().size();
+        return bot.getNumeroRandom(numeroCartasCampo+1);
+
+    }
 
     private ArrayList<String> interagirComUsuarioAtacante(Jogador jogadorAtacante) {
         String nomeMonstro;
@@ -196,7 +230,6 @@ public class BoardManager {
             System.out.printf("%s\n", carta.getNome());
         }
     }
-
 
     private boolean naoEscreveuSair(String palavra) {
         return !palavra.equals("sair");
@@ -261,6 +294,7 @@ public class BoardManager {
     private void permitirJogarCarta(Jogador jogador, Mesa mesa) {
 
         Carta cartaEscolhida = null;
+
         if (jogadorQuerJogarCarta() && jogadorPodeJogarCarta(jogador)) {
             //colocar uma exceção do jogador decidir nao jogar a carta
             boolean cartaErradaEscolhida = true;
@@ -288,6 +322,60 @@ public class BoardManager {
         }
 
     }
+    private void permitirJogarCarta(Bot bot, Mesa mesa) {
+
+        Carta cartaEscolhida = null;
+
+        if (botQuerJogarCarta(bot) && jogadorPodeJogarCarta(bot)) {
+            //colocar uma exceção do jogador decidir nao jogar a carta
+            boolean cartaErradaEscolhida = true;
+            while (cartaErradaEscolhida) {
+                try {
+                    cartaEscolhida = perguntarCartaDesejadaBot(bot);
+                    cartaErradaEscolhida = false;
+                } catch (Exception NullPointerException) {
+                    System.out.print("Você digitou um nome de carta invalido, tente novamente!\n");
+                }
+            }
+
+            atualizarManaJogador(cartaEscolhida, bot);
+            if (ehMonstro(cartaEscolhida)) {
+                colocarMonstroEmCampo(bot, (Monstro) cartaEscolhida);
+            }
+
+            ArrayList<Efeito> listaEfeitos = listarEfeitos(cartaEscolhida);
+            for (Efeito efeito : listaEfeitos) {
+                if (podeUsarEfeito(efeito, MomentosDoTurno.APOS_INVOCACAO)) {
+                    cartaEscolhida.ativarEfeito(efeito, bot, mesa, cartaEscolhida);
+                }
+            }
+
+        }
+
+    }
+
+    private Carta perguntarCartaDesejadaBot(Bot bot) {
+        ArrayList <Carta> mao = bot.getMao();
+        int indiceCarta;
+        int manaAtual = bot.getManaAtual();
+        int manaFeitico = bot.getManaFeitico();
+        int custoCarta;
+        Carta carta;
+        int numeroCartasMao = mao.size();
+        do{
+            indiceCarta = bot.getNumeroRandom(numeroCartasMao);
+            carta = mao.get(indiceCarta);
+            custoCarta = carta.getCusto();
+        }while((custoCarta > manaAtual && !carta.ehFeitico()) ||
+                (custoCarta > manaAtual+manaFeitico && carta.ehFeitico()));
+        return carta;
+    }
+
+    private boolean botQuerJogarCarta(Bot bot) {
+
+        int resposta = bot.getNumeroRandom(2);
+        return resposta == 1;
+    }
 
     private boolean ehMonstro(Carta cartaEscolhida) {
         return !cartaEscolhida.ehFeitico();
@@ -314,7 +402,7 @@ public class BoardManager {
         } else if (resposta.equals("n") || resposta.equals("N")) {
             return false;
         } else {
-            System.out.print("Escolha uma carta válida!\n");
+            System.out.print("Escolha uma resposta válida!\n");
             return jogadorQuerJogarCarta();
         }
     }
@@ -342,9 +430,18 @@ public class BoardManager {
 
     private Carta perguntarCartaDesejada(Jogador jogador) {
         System.out.print("Qual carta você deseja usar?\n");
+        int manaAtual = jogador.getManaAtual();
+        int manaFeitico = jogador.getManaFeitico();
         listarCartasMao(jogador);
         String nomeCarta = obterNomeCarta();
-        return acharCartaPeloNome(nomeCarta, jogador);
+        Carta cartaEscolhida = acharCartaPeloNome(nomeCarta, jogador);
+        int custo = cartaEscolhida.getCusto();
+        if ((custo > manaAtual && !cartaEscolhida.ehFeitico())
+            || (custo > manaAtual + manaFeitico && cartaEscolhida.ehFeitico())){
+            System.out.print("Voce nao tem energia para jogar essa carta\n");
+            return perguntarCartaDesejada(jogador);
+        }
+        return cartaEscolhida;
     }
 
     private void listarCartasMao(Jogador jogador) {
