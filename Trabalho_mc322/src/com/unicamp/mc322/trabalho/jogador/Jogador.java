@@ -6,7 +6,7 @@ import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Monstro;
 
 public class Jogador {
-    //na mão é possivel ter no maximo 10 cartas, qualquer outra carta retirada do baralho sera descartada;
+    //na mï¿½o ï¿½ possivel ter no maximo 10 cartas, qualquer outra carta retirada do baralho sera descartada;
     private Usuario usuario;
     private Deck deckEscolhido;
     private int vida;
@@ -22,14 +22,14 @@ public class Jogador {
         vida = 20;
         mana = 1;
         manaAtual = 1;
-        //o deck escolhido precisa ser uma copia da lista de decks para que nao haja alteração no modelo de deck
+        //o deck escolhido precisa ser uma copia da lista de decks para que nao haja alteraï¿½ï¿½o no modelo de deck
         deckEscolhido = perguntarDeckUsuario(listaDecks);
-        //função que coloca as cartas na mao do jogador
-        //função que permite o jogador escolher trocar as 4 cartas iniciais que vem em sua mao
+        //funï¿½ï¿½o que coloca as cartas na mao do jogador
+        //funï¿½ï¿½o que permite o jogador escolher trocar as 4 cartas iniciais que vem em sua mao .
     }
 
     private Deck perguntarDeckUsuario(Map<String, Deck> listaDecks) {
-        System.out.print("Qual deck da lista abaixo você deseja usar?\n");
+        System.out.print("Qual deck da lista abaixo vocï¿½ deseja usar?\n");
         Set<String> nomeDecks = obterSetNomes(listaDecks);
 
         for (String deck : nomeDecks) {
@@ -99,7 +99,7 @@ public class Jogador {
     }
 
     public void adicionaMonstroCampo(Monstro carta){
-        //ajeitar o campo colocar um array de 4 espaços de listas
+        //ajeitar o campo colocar um array de 4 espaï¿½os de listas
         cartasEmCampo.add(carta);
     }
     public void removerMonstroCampo(Carta carta){
