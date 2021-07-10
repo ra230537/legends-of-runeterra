@@ -107,8 +107,11 @@ public class Jogador {
     public void removerMonstroCampo(Monstro monstro){
         cartasEmCampo.remove(monstro);
     }
-    public void adicionarCartaBatalha(Monstro monstro){
+    public void adicionarCartaAtaque(Monstro monstro){
         cartasBatalhando.add(monstro);
+    }
+    public void adicionarCartaDefesa(int posicao,Monstro monstro){
+        cartasBatalhando.add(posicao,monstro);
     }
     public void removerCartaBatalha(Monstro monstro){
         cartasBatalhando.remove(monstro);
@@ -158,5 +161,16 @@ public class Jogador {
 
     public boolean ehBot() {
         return bot;
+    }
+
+    public void addCartaMao(Carta carta){
+        mao.add(carta);
+    }
+
+    public void inicializarListaCartasDefesa(int numeroCartasAtacando){
+        cartasBatalhando.clear();
+        for (int i = 0; i < numeroCartasAtacando; i++) {
+            cartasBatalhando.add(null);
+        }
     }
 }

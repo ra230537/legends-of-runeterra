@@ -30,9 +30,12 @@ public class Carta {
 		return regiao;
 	}
 
-	public void imprimirCarta() {
-		//imprime carta
-		//System.out.println("{CARTA}");
+	public void imprimirCartaDetalhada() {
+		//...
+	}
+
+	public void imprimirNome() {
+		//...
 	}
 
 	/**

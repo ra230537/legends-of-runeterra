@@ -37,7 +37,7 @@ public class Deck {
 	public void imprimirDeck() {
 		System.out.println("Nome do deck: " + nome + "Estado: " + estado);
 		for(int i = 0; i < deckStack.size(); i++) {
-			deckStack.get(i).imprimirCarta();
+			deckStack.get(i).imprimirNome();
 			if((i+1) % 3 == 0) {
 				System.out.println();
 			}
@@ -46,6 +46,9 @@ public class Deck {
 
 	public void removerCarta(String nomeCarta) {
 		if(deckMap.containsKey(nomeCarta)) {
+			if(deckStack.size() == 40) {
+				estado = Estado.Inutilizavel;
+			}
 			deckStack.remove(deckMap.get(nomeCarta));
 			deckMap.remove(nomeCarta);
 		}
@@ -61,6 +64,9 @@ public class Deck {
 		else {
 			deckMap.put(novaCarta.getNome(), novaCarta);
 			deckStack.add(novaCarta);
+			if(deckStack.size() == 40) {
+				estado = Estado.Utilizavel;
+			}
 		}
 	}
 

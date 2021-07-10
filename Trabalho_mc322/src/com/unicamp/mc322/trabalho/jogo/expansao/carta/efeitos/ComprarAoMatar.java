@@ -16,17 +16,17 @@ public class ComprarAoMatar extends Efeito {
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
         /**
          * verifica se a unidade inimiga a frente está com 0 pontos de vida
-         * se sim, compra uma carta
+         * se sim, adiciona uma carta poro a sua mao
          */
         int pos = jogador.getCartasBatalhando().indexOf(carta);
         if(((Monstro) carta).getVidaAtual() >= 0){
             if(jogador == mesa.getJogador1()){
                 if(mesa.getJogador2().getCartasBatalhando().get(pos).getVidaAtual() <= 0){
-                    mesa.getJogador1().puxarCarta();
+                    mesa.getJogador1().addCartaMao(new Monstro("Poro", 1, 1, 2, null,null));
                 }
             }else{
                 if(mesa.getJogador1().getCartasBatalhando().get(pos).getVidaAtual() <= 0) {
-                    mesa.getJogador2().puxarCarta();
+                    mesa.getJogador2().addCartaMao(new Monstro("Poro", 1, 1, 2, null,null));
                 }
             }
         }

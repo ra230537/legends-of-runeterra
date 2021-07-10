@@ -1,7 +1,9 @@
 package com.unicamp.mc322.trabalho.jogo.expansao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.unicamp.mc322.trabalho.jogo.GameException;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
@@ -11,6 +13,7 @@ public class Expansao {
 	private String nome;
 	private Regiao regiao;
 	private List<Carta> cartas = new ArrayList<Carta>();
+	private Map<String, Carta> cartasMap = new HashMap<String, Carta>();
 	//como inserir as cartas na região?
 	//porque um nome?
 
@@ -32,12 +35,16 @@ public class Expansao {
 		if(!cartas.contains(novaCarta)) {
 			novaCarta.setRegiao(regiao);
 			cartas.add(novaCarta);
+			cartasMap.put(novaCarta.getNome(), novaCarta);
 		}
 		else {
 		//Exception, carta ja na expansao;
 			throw new GameException("Esta carta já está na expansão.");
 		}
-		
+	}
+
+	public Carta getCartaPeloNome(String nome) {
+		return cartasMap.get(nome);
 	}
 	
 	public void imprimirCartas() {

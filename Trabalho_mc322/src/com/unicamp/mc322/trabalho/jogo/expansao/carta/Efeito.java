@@ -8,9 +8,9 @@ public abstract class Efeito {
     private boolean expirado = false;
     private MomentosDoTurno momentoQueSeraLido;
 
-    
-    protected Efeito(MomentosDoTurno momentoQueSeraLido){
-        this.momentoQueSeraLido = momentoQueSeraLido;    
+
+    protected Efeito(MomentosDoTurno momentoQueSeraLido) {
+        this.momentoQueSeraLido = momentoQueSeraLido;
     }
 
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
