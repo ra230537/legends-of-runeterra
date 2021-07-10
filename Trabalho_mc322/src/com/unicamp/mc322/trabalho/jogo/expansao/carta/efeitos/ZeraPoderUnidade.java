@@ -7,12 +7,14 @@ import com.unicamp.mc322.trabalho.jogo.expansao.carta.MomentosDoTurno;
 import com.unicamp.mc322.trabalho.jogador.Jogador;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Monstro;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class ZeraPoderUnidade extends Efeito {
 
     public ZeraPoderUnidade(){
         super(MomentosDoTurno.APOS_INVOCACAO);
+        this.tipoEfeito = TipoEfeito.ZeraPoderUnidade;
     }//zera o ataque de uma unidade inimiga por um turno
     @Override
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
@@ -23,17 +25,40 @@ public class ZeraPoderUnidade extends Efeito {
          * se nao,
          * escolhe um inimog de indice "indiceMonstro" e zera permanentemente seu ataque
          */
+        Random pos = new Random();
+
         if(respostaAliadoOuInimigo.equals('a')){
-            if(jogador == mesa.getJogador1()){
-                mesa.getJogador1().getCartasEmCampo().get(indiceMonstro-1).zerarAtk();
-            }else{
-                mesa.getJogador2().getCartasEmCampo().get(indiceMonstro-1).zerarAtk();
+            try{
+                if(jogador == mesa.getJogador1()){
+                    mesa.getJogador1().getCartasEmCampo().get(indiceMonstro-1).zerarAtk();
+                }else{
+                    mesa.getJogador2().getCartasEmCampo().get(indiceMonstro-1).zerarAtk();
+                }
+            }catch(Exception NullPointerException){
+                System.out.print("Posicao Invalida, um monstro aleatorio focara com poder zerado\n");
+            }finally{
+                if(jogador == mesa.getJogador1()){
+                    mesa.getJogador1().getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).zerarAtk();
+                }else{
+                    mesa.getJogador2().getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).zerarAtk();
+                }
             }
+
         }else{
-            if(jogador == mesa.getJogador1()){
-                mesa.getJogador2().getCartasEmCampo().get(indiceMonstro-1).zerarAtk();
-            }else{
-                mesa.getJogador1().getCartasEmCampo().get(indiceMonstro-1).zerarAtk();
+            try{
+                if(jogador == mesa.getJogador1()){
+                    mesa.getJogador2().getCartasEmCampo().get(indiceMonstro-1).zerarAtk();
+                }else{
+                    mesa.getJogador1().getCartasEmCampo().get(indiceMonstro-1).zerarAtk();
+                }
+            }catch(Exception NullPointerException){
+                System.out.print("Posicao Invalida, um monstro aleatorio ficara com poder zerado\n");
+            }finally{
+                if(jogador == mesa.getJogador1()){
+                    mesa.getJogador2().getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).zerarAtk();
+                }else{
+                    mesa.getJogador1().getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).zerarAtk();
+                }
             }
         }
     }

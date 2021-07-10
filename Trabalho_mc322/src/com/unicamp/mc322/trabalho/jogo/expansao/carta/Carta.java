@@ -22,6 +22,13 @@ public class Carta {
         Collections.addAll(listaEfeitos,efeitos);
 	}
 
+	protected Carta(String nome, int custo, boolean feitico, ArrayList<Efeito> efeitos){
+		this.feitico = feitico;
+		this.nome = nome;
+		this.custo = custo;
+		this.listaEfeitos = efeitos;
+	}
+
 	public void setRegiao(Regiao regiao) {
 		this.regiao = regiao;
 	}
@@ -30,13 +37,32 @@ public class Carta {
 		return regiao;
 	}
 
-	public void imprimirCartaDetalhada() {
-		//...
+	public void imprimirCarta() {
+		System.out.print("  |"+ this.getNome() + "(" + this.getCusto() + ")" + "|");
 	}
 
+	public void imprimirCartaDetalhada(){
+
+	}
 	public void imprimirNome() {
 		//...
 	}
+
+	protected String getTextoEfeitos() {
+		//ObterEfeitos pelo nome; *****
+		String info = "";
+		for(int i = 0; i < getListaEfeitos().size(); i++) {
+			info += getListaEfeitos().get(i).getTipoEfeito();
+			if((i+1) % 3 == 0) {
+				info = "\n\r|";
+			}
+			else {
+				info += ", ";
+			}
+		}
+		return info;
+	}
+
 
 	/**
 	 *

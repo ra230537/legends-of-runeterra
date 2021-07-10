@@ -11,7 +11,7 @@ public class Sobrecarga extends Efeito {
 
     public Sobrecarga (){
         super(MomentosDoTurno.ANTES_BATALHA); /*causa o dano em excesso ao nexus adversario*/
-
+        this.tipoEfeito = TipoEfeito.Sobrecarga;
     }
 
     @Override

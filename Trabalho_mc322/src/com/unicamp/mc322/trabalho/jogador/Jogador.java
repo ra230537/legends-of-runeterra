@@ -111,7 +111,7 @@ public class Jogador {
         cartasBatalhando.add(monstro);
     }
     public void adicionarCartaDefesa(int posicao,Monstro monstro){
-        cartasBatalhando.add(posicao,monstro);
+        cartasBatalhando.set(posicao,monstro);
     }
     public void removerCartaBatalha(Monstro monstro){
         cartasBatalhando.remove(monstro);
@@ -151,9 +151,7 @@ public class Jogador {
         }
         return null;
     }
-    public void ImprimirCartasEmCampo(){
 
-    }
     public void DiminuirVida(int valor){
         vida = vida - valor;
         System.out.println("Vida atual: " + vida);
@@ -172,5 +170,20 @@ public class Jogador {
         for (int i = 0; i < numeroCartasAtacando; i++) {
             cartasBatalhando.add(null);
         }
+    }
+    public int getCartaMaiorCustoCampo(){
+        int max = 0;
+        for(Monstro monstro: cartasEmCampo){
+            if (monstro.getCusto() > max){
+                max = monstro.getCusto();
+            }
+        }
+        return max;
+    }
+    public int getNumeroCartasCampo(){
+        return cartasEmCampo.size();
+    }
+    public void substituirMonstroCampo(int indice,Monstro monstro){
+        cartasEmCampo.set(indice,monstro);
     }
 }

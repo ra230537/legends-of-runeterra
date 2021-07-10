@@ -12,8 +12,8 @@ public class Monstro extends Carta {
     private int ataque;
     private int qntAtaques;
     private ArrayList<Traco> listatracos = new ArrayList<>(); //o tra�o precisa ser criado no runner antes de ser colocado no construtor
-    private int ataqueFuria;
-    private int vidaFuria;
+    private int ataqueFuria = 0;
+    private int vidaFuria = 0;
 
     public Monstro(String nomeCarta, int custo, int vidaMaxima, int ataque, Traco traco1, Traco traco2, Traco traco3, int ataqueFuria, int vidaFuria, Efeito... efeitos){
         super(nomeCarta,custo, false,efeitos);
@@ -40,12 +40,35 @@ public class Monstro extends Carta {
         this.vidaFuria = vidaFuria;
     }
 
+    public Monstro(String nomeCarta, int custo, int vidaMaxima, int ataque, ArrayList<Traco> tracos, int ataqueFuria, int vidaFuria, ArrayList<Efeito> efeitos){
+        super(nomeCarta,custo, false,efeitos);
+        this.vidaMaxima = vidaMaxima;
+        this.ataque = ataque;
+        this.listatracos = tracos;
+        this.ataqueFuria = ataqueFuria;
+        this.vidaFuria = vidaFuria;
+    }
+
+    private String getTextoTracos() {
+        String info = "";
+        for(int i = 0; i < listatracos.size(); i++) {
+            info += listatracos.get(i);
+            if((i+1) % 3 == 0) {
+                info = "\n\r|";
+            }
+            else {
+                info += ", ";
+            }
+        }
+        return info;
+    }
+
     @Override
     public void imprimirCartaDetalhada() {
         String info = "|<MONSTRO> NOME: " + this.getNome() + " Custo: " + this.getCusto() + " Regiao: " + this.getRegiao() + "\n\r";
-        info += "|Vida atual/vida m�xima: " + this.getVidaAtual() + "/" + this.getVidaMaxima() + " Atk: " + this.getAtaque() + " Custo: " + this.getCusto() + "\n\r";
-        info += "|Efeitos:" + "\n\r";
-        info += "|Tracos:" + "\n\r";
+        info += "|Vida atual/vida máxima: " + this.getVidaAtual() + "/" + this.getVidaMaxima() + " Atk: " + this.getAtaque() + " Custo: " + this.getCusto() + "\n\r";
+        info += "|Efeitos:" + this.getTextoEfeitos() + "\n\r";
+        info += "|Tracos:" + this.getTextoTracos();
         System.out.println(info);
     }
 
@@ -55,7 +78,7 @@ public class Monstro extends Carta {
     }
 
     public void imprimirCarta(int posicao){
-        System.out.print(posicao + " " + this.getNome() + " [" + this.getAtaque() + "] [" + this.getVidaAtual() + "] " + "(" + this.getCusto() + ")" + "   ");
+        System.out.print("  |" + posicao + " " + this.getNome() + " [" + this.getAtaque() + "] [" + this.getVidaAtual() + "] " + "(" + this.getCusto() + ")" + "|");
     }
 
     public int getAtaque(){
@@ -67,6 +90,18 @@ public class Monstro extends Carta {
     }
     public int getVidaMaxima(){
         return vidaMaxima;
+    }
+
+    public ArrayList<Traco> getTracos() {
+        return listatracos;
+    }
+
+    public int getAtaqueFuria() {
+        return ataqueFuria;
+    }
+
+    public int getVidaFuria() {
+        return vidaFuria;
     }
 
     public void buffar(int ataque, int vida){

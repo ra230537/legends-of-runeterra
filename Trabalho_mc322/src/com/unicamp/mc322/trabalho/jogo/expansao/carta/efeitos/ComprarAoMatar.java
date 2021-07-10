@@ -10,11 +10,12 @@ import com.unicamp.mc322.trabalho.jogo.expansao.carta.Monstro;
 public class ComprarAoMatar extends Efeito {
     public ComprarAoMatar(){
         super(MomentosDoTurno.APOS_BATALHA);//compra uma carta se esse monstro destruir uma unidade inimiga
+        this.tipoEfeito = TipoEfeito.ComprarAoMatar;
     }
 
     @Override
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
-        /**
+        /*
          * verifica se a unidade inimiga a frente está com 0 pontos de vida
          * se sim, adiciona uma carta poro a sua mao
          */

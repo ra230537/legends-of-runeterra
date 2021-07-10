@@ -11,7 +11,13 @@ public class GolpeAoNexus extends Efeito {
     private int danoAoNexus;
     public GolpeAoNexus (int danoAoNexus){
         super(MomentosDoTurno.APOS_INVOCACAO); //causa um dano definido no construtor ao nexus
+        this.tipoEfeito = TipoEfeito.GolpeAoNexus;
+        this.danoAoNexus = danoAoNexus;
+    }
 
+    @Override
+    public String getTipoEfeito() {
+        return tipoEfeito.toString() + "(Dano: " + danoAoNexus + ")";
     }
 
     @Override
@@ -19,10 +25,9 @@ public class GolpeAoNexus extends Efeito {
         //causa o dano que lhe é dado como atributo ao nexus inimigo
         if(jogador == mesa.getJogador1()){
             mesa.getJogador2().DiminuirVida(danoAoNexus);
-            ((Monstro) carta).atacou();
         }else{
             mesa.getJogador1().DiminuirVida(danoAoNexus);
-            ((Monstro) carta).atacou();
         }
+        ((Monstro) carta).atacou();
     }
 }

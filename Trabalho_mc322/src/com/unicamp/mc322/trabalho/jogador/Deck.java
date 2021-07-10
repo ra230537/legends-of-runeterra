@@ -7,11 +7,13 @@ import com.unicamp.mc322.trabalho.jogo.Regiao;
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.Map;
+import java.util.ArrayList;
 
 public class Deck {
 	private String nome;
 	private Estado estado = Estado.Inutilizavel;
-	private Stack <Carta> deckStack = new Stack<Carta>()
+	private ArrayList<Regiao> regioes = new ArrayList<Regiao>(); //Regioes que o deck possui(max2)
+	private Stack <Carta> deckStack = new Stack<Carta>();
 	private Map<String, Carta> deckMap = new HashMap<String, Carta>(); //Permite encontrar carta pelo nome com mais facilidade
 	
 	public Deck(String nome) {
@@ -49,7 +51,12 @@ public class Deck {
 			if(deckStack.size() == 40) {
 				estado = Estado.Inutilizavel;
 			}
-			deckStack.remove(deckMap.get(nomeCarta));
+			Carta carta = deckMap.get(nomeCarta);
+			if (ehUltimaCartaDaRegiao(carta)) {
+				regioes.remove(carta.getRegiao());
+			}
+
+			deckStack.remove(carta);
 			deckMap.remove(nomeCarta);
 		}
 		else {
@@ -67,13 +74,31 @@ public class Deck {
 			if(deckStack.size() == 40) {
 				estado = Estado.Utilizavel;
 			}
+			if(!regioes.contains(novaCarta.getRegiao())) {
+				regioes.add(novaCarta.getRegiao());
+			}
 		}
 	}
 
+	private boolean ehUltimaCartaDaRegiao(Carta ultimaCarta) {
+		//verifica se essa é a ultima carta da regiao no deck;
+		for(Carta carta : deckStack) {
+			if(!carta.equals(ultimaCarta) && carta.getRegiao().equals(ultimaCarta.getRegiao())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public void setarRegiaoCartas(Regiao regiao) {
+		regioes.add(regiao);
 		for(Carta carta : deckStack) {
 			carta.setRegiao(regiao);
 		}
+	}
+
+	public ArrayList<Regiao> getRegioes() {
+		return regioes;
 	}
 
 	public Carta tirarCartaTopo(){

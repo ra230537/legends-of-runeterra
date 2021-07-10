@@ -10,6 +10,7 @@ import com.unicamp.mc322.trabalho.jogo.expansao.carta.Monstro;
 public class CartaRestituida extends Efeito {
     public CartaRestituida(){
         super(MomentosDoTurno.APOS_RODADA_ATAQUE); //sera lida quando a carta for destruida,pode ser no ataque ou defesa
+        this.tipoEfeito = TipoEfeito.CartaRestituida;
     }
 
     @Override

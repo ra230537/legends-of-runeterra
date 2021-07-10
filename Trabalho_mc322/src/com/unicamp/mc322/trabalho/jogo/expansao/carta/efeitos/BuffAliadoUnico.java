@@ -6,6 +6,7 @@ import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.MomentosDoTurno;
 import com.unicamp.mc322.trabalho.jogador.Jogador;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class BuffAliadoUnico extends Efeito {
@@ -13,13 +14,29 @@ public class BuffAliadoUnico extends Efeito {
     int buffDefesa;
     public BuffAliadoUnico(int buffAtaque,int buffDefesa){
         super(MomentosDoTurno.APOS_INVOCACAO);
+        this.tipoEfeito = TipoEfeito.BuffAliadoUnico;
+        this.buffAtaque = buffAtaque;
+        this.buffDefesa = buffDefesa;
     }//da a algum aliado escolhido pelo jogador ataque e defesa extra
+
+    @Override
+    public String getTipoEfeito() {
+        return tipoEfeito.toString() + "(BUFFATK: " + buffAtaque + "/BUFFDEF: " + buffDefesa + ")";
+    }
 
     @Override
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
         int resposta = interagirComUsuario();
         //incrementa a vida e o poder da carta que receber esse buff
-        jogador.getCartasEmCampo().get(resposta-1).buffar(buffAtaque, buffDefesa);
+        Random pos = new Random();
+
+        try{
+            jogador.getCartasEmCampo().get(resposta-1).buffar(buffAtaque, buffDefesa);
+        }catch(Exception NullPointerException) {
+            System.out.print("Posicao Invalida, um monstro aleatorio sera buffado\n");
+        }finally {
+            jogador.getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).buffar(buffAtaque,buffDefesa);
+        }
 
 
     }

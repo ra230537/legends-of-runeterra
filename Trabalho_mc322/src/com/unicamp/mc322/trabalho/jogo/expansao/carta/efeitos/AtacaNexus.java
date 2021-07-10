@@ -7,13 +7,12 @@ import com.unicamp.mc322.trabalho.jogador.Jogador;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Monstro;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 
-import java.util.Scanner;
 
 public class AtacaNexus extends Efeito {
 
 	public AtacaNexus(){
-
         super(MomentosDoTurno.ANTES_BATALHA);
+        this.tipoEfeito = TipoEfeito.AtacarNexus;
     }
 
     /*Uma unidade evocada ataca o Nexus do adversario*/
@@ -22,11 +21,10 @@ public class AtacaNexus extends Efeito {
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
         if(jogador == mesa.getJogador1()){
             mesa.getJogador2().DiminuirVida(((Monstro) carta).getAtaque());
-            ((Monstro) carta).atacou();
         }else{
             mesa.getJogador1().DiminuirVida(((Monstro) carta).getAtaque());
-            ((Monstro) carta).atacou();
         }
+        ((Monstro) carta).atacou();
     }
 
 }

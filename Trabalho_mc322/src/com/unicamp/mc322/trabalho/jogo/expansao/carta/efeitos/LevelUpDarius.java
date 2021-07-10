@@ -8,6 +8,7 @@ public class LevelUpDarius extends Efeito {
 
     public LevelUpDarius(){
         super(MomentosDoTurno.APOS_BATALHA);
+        this.tipoEfeito = TipoEfeito.LevelUpDarius;
     }
 
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta){

@@ -5,34 +5,54 @@ import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.MomentosDoTurno;
-import com.unicamp.mc322.trabalho.jogo.expansao.carta.Monstro;
 
+
+import java.util.Random;
 import java.util.Scanner;
 
 public class GolpearTodos extends Efeito {
     public GolpearTodos(){
         super(MomentosDoTurno.APOS_INVOCACAO);
+        this.tipoEfeito = TipoEfeito.GolpearTodos;
     }//da a oportunidade de algum aliado conseguir realizar esse feito uma unica vez
 
     @Override
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
         int resposta = interagirComUsuario();
         //para cada monstro no campo inimigo, cause o equivalente ao ataque do monstro escolhido de dano
-        int i = 0;
-        int dano = ((Monstro) carta).getAtaque();
-        if(jogador == mesa.getJogador1()) {
-            int n = mesa.getJogador1().getCartasBatalhando().size();
-            while (n >= 0) {
-                mesa.getJogador2().getCartasEmCampo().get(i).diminuirVida(dano);
-                i++;
+
+        Random pos = new Random();
+        try{
+            int dano = jogador.getCartasEmCampo().get(resposta).getAtaque();
+            if(jogador == mesa.getJogador1()) {
+                int n = mesa.getJogador1().getCartasBatalhando().size();
+                for(int i = 0; i <= n; i++) {
+                    mesa.getJogador2().getCartasEmCampo().get(i).diminuirVida(dano);
+                }
+            }else{
+                int n = mesa.getJogador2().getCartasBatalhando().size();
+                for(int i = 0; i <= n; i++) {
+                    mesa.getJogador1().getCartasEmCampo().get(i).diminuirVida(dano);
+                }
             }
-        }else{
-            int n = mesa.getJogador1().getCartasBatalhando().size();
-            while (n >= 0) {
-                mesa.getJogador1().getCartasEmCampo().get(i).diminuirVida(dano);
-                i++;
+        }catch(Exception NullPointerException){
+            System.out.print("Posicao Invalida, um monstro aleatorio atacara todos os inimigos\n");
+        }finally{
+            int dano = jogador.getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).getAtaque();
+            if(jogador == mesa.getJogador1()) {
+                int n = mesa.getJogador1().getCartasBatalhando().size();
+                for(int i = 0; i <= n; i++) {
+                    mesa.getJogador2().getCartasEmCampo().get(i).diminuirVida(dano);
+                }
+            }else{
+                int n = mesa.getJogador2().getCartasBatalhando().size();
+                for(int i = 0; i <= n; i++) {
+                    mesa.getJogador1().getCartasEmCampo().get(i).diminuirVida(dano);
+                }
             }
         }
+
+
 
     }
     private int interagirComUsuario(){

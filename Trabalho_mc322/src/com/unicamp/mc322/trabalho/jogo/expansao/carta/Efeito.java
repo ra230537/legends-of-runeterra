@@ -2,9 +2,11 @@ package com.unicamp.mc322.trabalho.jogo.expansao.carta;
 
 import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogador.Jogador;
+import com.unicamp.mc322.trabalho.jogo.expansao.carta.efeitos.TipoEfeito;
 
 //ESSA CLASSE QUE APLICA OS EFEITOS, O BOARD MANAGER APENAS GERENCIA
 public abstract class Efeito {
+    protected TipoEfeito tipoEfeito;
     private boolean expirado = false;
     private MomentosDoTurno momentoQueSeraLido;
 
@@ -22,5 +24,8 @@ public abstract class Efeito {
         return momentoQueSeraLido;
     }
 
+    public String getTipoEfeito() {
+        return tipoEfeito.toString();
+    }
 
 }

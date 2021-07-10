@@ -12,6 +12,7 @@ import com.unicamp.mc322.trabalho.jogo.expansao.Expansao;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Feitico;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Monstro;
+import com.unicamp.mc322.trabalho.jogo.expansao.carta.Traco;
 
 public class Jogo {
     private Scanner comandos = new Scanner(System.in);
@@ -127,28 +128,45 @@ public class Jogo {
         return resposta;
     }
 
+    private ArrayList<Traco> clonarTracos(ArrayList<Traco> tracos) {
+        ArrayList<Traco> tracosClonado = new ArrayList<Traco>();
+        for(Traco traco : tracos) {
+            tracosClonado.add(traco);
+        }
+        return tracosClonado;
+    }
+
+
     private Carta clonarCarta(Carta carta) {
-        //Como clonar uma carta??
         if(carta.ehFeitico()) {
             return new Feitico(carta.getNome(), carta.getCusto(), carta.getListaEfeitos());
         }
         else {
             Monstro monstro = (Monstro) carta;
-            return new Monstro(monstro.getNome(), monstro.getNome(), monstro.getCusto(), monstro.getVidaMaxima(), monstro.getAtaque(), );
+            ArrayList<Traco> tracos = clonarTracos(monstro.getTracos());
+            return new Monstro(monstro.getNome(), monstro.getCusto(), monstro.getVidaMaxima(), monstro.getAtaque(), tracos, monstro.getAtaqueFuria(), monstro.getVidaFuria(), monstro.getListaEfeitos());
         }
     }
 
-    public void criarNovoDeck(String idUsuario, String nomeDeck) {
-        //Cria um novo deck de cartas e é dado um nome para ele;
-        Usuario usuario = usuarios.get(idUsuario);
-        Deck novoDeck = new Deck(nomeDeck);
-        System.out.println("Escolha as regioes do seu deck, no maximo 2 regiões:\n");
-        expansoes.imprimirCartasExpansoes();
-        System.out.println("\nEscolha suas cartas(digite a regiao e depois o nome da carta):");
-        for(int i = 0; i < 40; i++) {
+    private boolean verificarSeCartaEhAdicionavel(Carta carta, Deck deck) {
+        //Se a carta a ser adicionada for de uma regiao diferente de 2 outras no deck ela nao pode ser adicionada;
+        if(deck.getRegioes().size() == 2 && !deck.getRegioes().contains(carta.getRegiao())) {
+            return false;
+        }
+        return true;
+    }
+
+    private void addCartaEmDeck(Deck deck) {
+        System.out.println("Digite o nome da regiao e depois da carta que deseja adicionar.");
+        boolean cartaPodeSerAdd = false;
+        Carta carta;
+        //Verificar se pode ser adicionada*
+        do {
+            System.out.println("Regiao:");
             String respostaRegiao = comandos.nextLine();
+            System.out.println("Nome da carta:");
             String respostaNomeCarta = comandos.nextLine();
-            Carta carta = expansoes.getCarta(Regiao.valueOf(respostaRegiao), respostaNomeCarta);
+            carta = expansoes.getCarta(Regiao.valueOf(respostaRegiao), respostaNomeCarta);
             System.out.println("\nDeseja visualizar essa carta? y/n");
             switch(this.getRespostaSimOuNao()) {
                 case "y":
@@ -158,19 +176,34 @@ public class Jogo {
                 case "n":
                     break;
             }
-            //Verificar se pode ser adicionada*
+            cartaPodeSerAdd = verificarSeCartaEhAdicionavel(carta, deck);
+        }while(!cartaPodeSerAdd);
 
-            System.out.println("\nDeseja adicionar essa carta no deck? y/n");
-            switch(this.getRespostaSimOuNao()) {
-                case "y":
-                    Carta cartaClone = clonarCarta(carta);
-                    novoDeck.addCarta(cartaClone);
-                    break;
 
-                case "n":
-                    break;
-            }
-            System.out.println("Carta adicionada!");
+
+        System.out.println("\nDeseja adicionar essa carta no deck? y/n");
+        switch(this.getRespostaSimOuNao()) {
+            case "y":
+                Carta cartaClone = clonarCarta(carta); //Cria um clone da carta baseada na carta escolhida;
+                deck.addCarta(cartaClone);
+                break;
+
+            case "n":
+                break;
+        }
+        System.out.println("Carta adicionada!");
+    }
+
+    public void criarNovoDeck(String idUsuario, String nomeDeck) {
+        //Cria um novo deck de cartas e é dado um nome para ele;
+        Usuario usuario = usuarios.get(idUsuario);
+        Deck novoDeck = new Deck(nomeDeck);
+        System.out.println("O deck pode ter cartas de no maximo 2 regioes.\n");
+        expansoes.imprimirCartasExpansoes();
+
+        for(int i = 0; i < 40; i++) {
+            addCartaEmDeck(novoDeck);
+
         }
         usuario.addNovoDeck(nomeDeck, novoDeck);
     }
@@ -188,14 +221,9 @@ public class Jogo {
                 break;
 
             case "Add":
-                //Add carta
-                System.out.println("Digite o nome da carta que deseja adicionar:\n");
-                Carta novaCarta = new Carta(); //Cria um clone da carta baseada na carta escolhida;
-                deckEditado.addCarta(novaCarta);
+                addCartaEmDeck(deckEditado);
                 break;
         }
-
-
 
     }
 

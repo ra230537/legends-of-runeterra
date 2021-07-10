@@ -8,6 +8,7 @@ public class LevelUpGaren extends Efeito {
 
     public LevelUpGaren(){
         super(MomentosDoTurno.APOS_BATALHA);
+        this.tipoEfeito = TipoEfeito.LevelUpGaren;
     }
 
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta){

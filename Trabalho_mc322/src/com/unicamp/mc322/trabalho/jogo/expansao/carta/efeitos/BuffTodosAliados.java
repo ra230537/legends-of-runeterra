@@ -11,18 +11,22 @@ public class BuffTodosAliados extends Efeito {
     int buffDefesa;
     public BuffTodosAliados(int buffAtaque,int buffDefesa){
         super(MomentosDoTurno.APOS_INVOCACAO);//da a todos os aliados da messa ataque e defesa extra
+        this.tipoEfeito = TipoEfeito.BuffTodosAliados;
         this.buffAtaque = buffAtaque;
         this.buffDefesa = buffDefesa;
     }
 
     @Override
+    public String getTipoEfeito() {
+        return tipoEfeito.toString() + "(BUFFATK: " + buffAtaque + "/BUFFDEF: " + buffDefesa + ")";
+    }
+
+    @Override
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
         //da a todos as cartas da mesa um bonus de ataque e defesa
-        int i = 0;
         int n = jogador.getCartasEmCampo().size();
-        while(n >= 0) {
+         for(int i = 0; i <= n; i++){
             jogador.getCartasEmCampo().get(i).buffar(buffAtaque, buffDefesa);
-            i++;
         }
     }
 
