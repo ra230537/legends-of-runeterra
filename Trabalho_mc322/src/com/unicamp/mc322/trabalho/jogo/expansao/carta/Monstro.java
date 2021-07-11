@@ -9,7 +9,7 @@ import java.util.Collections;
 public class Monstro extends Carta {
     protected boolean campeao = false;
     private int vidaMaxima;
-    private int vidaAtual = vidaMaxima;
+    private int vidaAtual;
     private int ataque;
     private int qntAtaques;
     private ArrayList<Traco> listatracos = new ArrayList<>(); //o traco precisa ser criado no runner antes de ser colocado no construtor
@@ -20,6 +20,7 @@ public class Monstro extends Carta {
         super(nomeCarta,custo, false,efeitos);
         this.vidaMaxima = vidaMaxima;
         this.ataque = ataque;
+        this.vidaAtual = vidaMaxima;
         listatracos.add(traco1);
         listatracos.add(traco2);
         listatracos.add(traco3);
@@ -29,18 +30,21 @@ public class Monstro extends Carta {
     public Monstro(String nomeCarta, int custo, int vidaMaxima, int ataque, Traco traco1, Efeito... efeitos){
         super(nomeCarta,custo, false,efeitos);
         this.vidaMaxima = vidaMaxima;
+        this.vidaAtual = vidaMaxima;
         this.ataque = ataque;
         listatracos.add(traco1);
     }
     public Monstro(String nomeCarta, int custo, int vidaMaxima, int ataque, Traco traco1){
         super(nomeCarta,custo, false);
         this.vidaMaxima = vidaMaxima;
+        this.vidaAtual = vidaMaxima;
         this.ataque = ataque;
         listatracos.add(traco1);
     }
     public Monstro(String nomeCarta, int custo, int vidaMaxima, int ataque, Traco traco1, int ataqueFuria, int vidaFuria, Efeito... efeitos){
         super(nomeCarta,custo, false,efeitos);
         this.vidaMaxima = vidaMaxima;
+        this.vidaAtual = vidaMaxima;
         this.ataque = ataque;
         listatracos.add(traco1);
         this.ataqueFuria = ataqueFuria;
@@ -49,6 +53,7 @@ public class Monstro extends Carta {
     public Monstro(String nomeCarta, int custo, int vidaMaxima, int ataque, Traco traco1, int ataqueFuria, int vidaFuria){
         super(nomeCarta,custo, false);
         this.vidaMaxima = vidaMaxima;
+        this.vidaAtual = vidaMaxima;
         this.ataque = ataque;
         listatracos.add(traco1);
         this.ataqueFuria = ataqueFuria;
@@ -58,6 +63,7 @@ public class Monstro extends Carta {
     public Monstro(String nomeCarta, int custo, int vidaMaxima, int ataque, ArrayList<Traco> tracos, int ataqueFuria, int vidaFuria, ArrayList<Efeito> efeitos){
         super(nomeCarta,custo, false,efeitos);
         this.vidaMaxima = vidaMaxima;
+        this.vidaAtual = vidaMaxima;
         this.ataque = ataque;
         this.listatracos = tracos;
         this.ataqueFuria = ataqueFuria;
@@ -66,6 +72,7 @@ public class Monstro extends Carta {
     public Monstro(String nomeCarta, int custo, int vidaMaxima, int ataque, ArrayList<Traco> tracos, int ataqueFuria, int vidaFuria){
         super(nomeCarta,custo, false);
         this.vidaMaxima = vidaMaxima;
+        this.vidaAtual = vidaMaxima;
         this.ataque = ataque;
         this.listatracos = tracos;
         this.ataqueFuria = ataqueFuria;
@@ -101,7 +108,7 @@ public class Monstro extends Carta {
     }
 
     public void imprimirCarta(int posicao){
-        System.out.print("  |" + posicao + " " + this.getNome() + " [" + this.getAtaque() + "] [" + this.getVidaAtual() + "] " + "(" + this.getCusto() + ")" + "|");
+        System.out.print("  |" + posicao + " " + this.getNome() + "[" + this.getAtaque() + "][" + this.getVidaAtual() + "] " + "(" + this.getCusto() + ")" + "|");
     }
 
     public int getAtaque(){

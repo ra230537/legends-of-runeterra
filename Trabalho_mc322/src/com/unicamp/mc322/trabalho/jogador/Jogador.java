@@ -9,6 +9,7 @@ public class Jogador {
     //na mï¿½o ï¿½ possivel ter no maximo 10 cartas, qualquer outra carta retirada do baralho sera descartada;
     protected Usuario usuario;
     private Deck deckEscolhido;
+    private EstadoJogador estadoJogador;
     protected boolean bot = false;
     private int vida;
     private int mana;
@@ -26,12 +27,12 @@ public class Jogador {
         manaAtual = 1;
         //o deck escolhido precisa ser uma copia da lista de decks para que nao haja alteraï¿½ï¿½o no modelo de deck
         deckEscolhido = perguntarDeckUsuario(listaDecks);
-        //funï¿½ï¿½o que coloca as cartas na mao do jogador
-        //funï¿½ï¿½o que permite o jogador escolher trocar as 4 cartas iniciais que vem em sua mao .
+        //funcao que coloca as cartas na mao do jogador
+        //funcao que permite o jogador escolher trocar as 4 cartas iniciais que vem em sua mao .
     }
 
     private Deck perguntarDeckUsuario(Map<String, Deck> listaDecks) {
-        System.out.print("Qual deck da lista abaixo vocï¿½ deseja usar?\n");
+        System.out.print("Qual deck da lista abaixo você deseja usar "+ usuario.getId() +"?\n");
         Set<String> nomeDecks = obterSetNomes(listaDecks);
 
         for (String deck : nomeDecks) {
@@ -40,6 +41,7 @@ public class Jogador {
         String respostaUsuario = obterResposta();
         return obterDeckEscolhido(respostaUsuario, listaDecks);
     }
+
 
     private Map<String, Deck> obterListaDecks(Usuario usuario) {
         return usuario.getDecks();
@@ -60,6 +62,14 @@ public class Jogador {
 
     public Usuario getUsuario() {
         return usuario;
+    }
+
+    public EstadoJogador getEstadoJogador() {
+        return estadoJogador;
+    }
+
+    public void setEstadoJogador(EstadoJogador novoEstado) {
+        estadoJogador = novoEstado;
     }
 
     public int getMana() {
@@ -143,7 +153,7 @@ public class Jogador {
      * @return null quando o nome da carta não é encontrado e o objeto carta quando esse possui
      * o nome informado no parametro
      */
-    public Carta converterNomeCarta (String nome){
+    public Carta converterNomeCartaCampo (String nome){
         for(Carta carta: cartasEmCampo){
             if (carta.getNome().equals(nome)){
                 return carta;
@@ -151,7 +161,22 @@ public class Jogador {
         }
         return null;
     }
-
+    public Carta converterNomeCartaMao (String nome){
+        for(Carta carta: mao){
+            if (carta.getNome().equals(nome)){
+                return carta;
+            }
+        }
+        return null;
+    }
+    public Carta converterNomeCartaBatalha (String nome){
+        for(Carta carta: cartasBatalhando){
+            if (carta.getNome().equals(nome)){
+                return carta;
+            }
+        }
+        return null;
+    }
     public void DiminuirVida(int valor){
         vida = vida - valor;
         System.out.println("Vida atual: " + vida);
@@ -185,5 +210,19 @@ public class Jogador {
     }
     public void substituirMonstroCampo(int indice,Monstro monstro){
         cartasEmCampo.set(indice,monstro);
+    }
+    public void embaralharDeck(){
+        deckEscolhido.embaralharCartas();
+    }
+    public void aumentarUmDeMana(){
+        manaFeitico+=manaAtual;
+        if(manaFeitico>3){
+            manaFeitico=3;
+        }
+
+        if(mana<10){
+            mana++;
+            manaAtual = mana;
+        }
     }
 }

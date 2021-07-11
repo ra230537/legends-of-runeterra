@@ -16,12 +16,10 @@ public class Jogo {
     private Expansoes expansoes = new Expansoes();
     private DecksPadroes decksPadroes = new DecksPadroes(); //Decks padrões do jogo.
     private Map<String, Usuario> usuarios = new HashMap<String, Usuario>(); //Dicionario com jogadores e key = id do jogador
-    private List<String> nicksUtilizados = new ArrayList<String>(); //Lista de nicks ja usados no jogo, usado para verificar se a tag ja está sendo usada;
-    private BoardManager boardManager;
-    private Mesa mesa;
+    private List<String> nicksUtilizados = new ArrayList<String>(); //Lista de nicks ja usados no jogo, usado para verificar se a tag ja está sendo usa
 
     public void criarExpansao(String nomeExpansao, Regiao regiao) {
-        if(!expansoes.getExpansoesMap().keySet().contains(regiao)) {
+        if(!expansoes.getExpansoesMap().containsKey(regiao)) {
             expansoes.addExpansao(new Expansao(nomeExpansao, regiao));
         }
         else {
@@ -43,30 +41,44 @@ public class Jogo {
     public void realizarPartidaVsJogador(String idUsuario1, String idUsuario2) {
         Jogador j1 = new Jogador(usuarios.get(idUsuario1));
         Jogador j2 = new Jogador(usuarios.get(idUsuario2));
-
+        System.out.println("----PARTIDA ENTRE " + idUsuario1 + " E " + idUsuario2 + "----");
         this.realizarPartida(j1, j2);
     }
 
     public void realizarPartidaVsComputador(String idUsuario) {
         Jogador jogador = new Jogador(usuarios.get(idUsuario));
         Bot bot = new Bot(new Usuario("Bot"));
-
+        System.out.println("----PARTIDA ENTRE " + idUsuario + " E BOT----");
         this.realizarPartida(jogador, bot);
     }
 
-    private void realizarPartida(Jogador j1, Jogador j2) {
-        boolean partidaAcabou = false;
-        this.mesa = new Mesa(j1, j2);
-        this.boardManager = new BoardManager(mesa);
-        Jogador jogador1;
-        Jogador jogador2;
+    private void realizarPartida(Jogador jogador1, Jogador jogador2) {
+        boolean partidaAcabou;
+        Mesa mesa = new Mesa(jogador1, jogador2);
+        BoardManager boardManager = new BoardManager(mesa);
+        jogador2.embaralharDeck();
+        jogador1.embaralharDeck();
+        for (int i = 0; i <4;i++){
+            jogador1.puxarCarta();
+            jogador2.puxarCarta();
+        }
+
         do {
+            mesa.imprimirMesa();
             //Ciclo de comandos enquanto a partida está acontecendo;
             jogador1 = obterJogador1(mesa);
             jogador2 = obterJogador2(mesa);
+            System.out.println(jogador1.getUsuario().getId() + " está atacando e " + jogador2.getUsuario().getId() + " está defendendo.");
+            jogador1.setEstadoJogador(EstadoJogador.Atacante);
+            jogador2.setEstadoJogador(EstadoJogador.Defensor);
             partidaAcabou = boardManager.executarPassosJogo(jogador1,jogador2);
+
             if (!partidaAcabou) {//se a partida ainda nao acabou o jogador 2 agora assume o papel de atacante da rodada
+                System.out.println(jogador2.getUsuario().getId() + " está atacando e " + jogador1.getUsuario().getId() + " está defendendo.");
+                jogador2.setEstadoJogador(EstadoJogador.Atacante);
+                jogador1.setEstadoJogador(EstadoJogador.Defensor);
                 partidaAcabou = boardManager.executarPassosJogo(jogador2,jogador1);
+
             }
         } while (!partidaAcabou);
 
@@ -89,7 +101,7 @@ public class Jogo {
         nicksUtilizados.add(novoUsuario.getId());
         usuarios.put(novoUsuario.getId(), novoUsuario);
         for(Deck deck : decksPadroes.getDecksPadroes()) {
-            novoUsuario.addNovoDeck(deck.getNome(), deck); //Adiciona os decks padões no usuário.
+            novoUsuario.addNovoDeck(deck.getNome(), clonarDeck(deck)); //Adiciona os decks padões no usuário.
         }
         System.out.printf("Novo jogador cadastrado com o id: %s\n\n", novoUsuario.getId());
         return novoUsuario;
@@ -97,10 +109,6 @@ public class Jogo {
 
     public void imprimirListaExpansoes() {
         expansoes.imprimirNomeExpansoes();
-    }
-
-    public void imprimirDecksUsuario(String idUsuario) {
-    //Imprime os decks do usuario;
     }
 
     public void AddDeckPadrao(Deck deck, Regiao regiao) {
@@ -133,32 +141,42 @@ public class Jogo {
         return tracosClonado;
     }
 
+    private Deck clonarDeck(Deck deck) {
+        Deck deckClone = new Deck(deck.getNome());
+        for(Carta carta : deck.getDeckStack()) {
+            deckClone.addCarta(this.clonarCarta(carta));
+        }
+        return deckClone;
+    }
 
     private Carta clonarCarta(Carta carta) {
         if(carta.ehFeitico()) {
-            return new Feitico(carta.getNome(), carta.getCusto(), carta.getListaEfeitos());
+            Feitico feiticoClonado = new Feitico(carta.getNome(), carta.getCusto(), carta.getListaEfeitos());
+            feiticoClonado.setRegiao(carta.getRegiao());
+            return feiticoClonado;
         }
         else {
             Monstro monstro = (Monstro) carta;
             ArrayList<Traco> tracos = clonarTracos(monstro.getTracos());
             if(monstro.ehCampeao()) {
-                return new Campeao(monstro.getNome(), monstro.getCusto(), monstro.getVidaMaxima(), monstro.getAtaque(), tracos, monstro.getAtaqueFuria(), monstro.getVidaFuria(), monstro.getListaEfeitos());
+                Campeao campeaoClonado = new Campeao(monstro.getNome(), monstro.getCusto(), monstro.getVidaMaxima(), monstro.getAtaque(), tracos, monstro.getAtaqueFuria(), monstro.getVidaFuria(), monstro.getListaEfeitos());
+                campeaoClonado.setRegiao(carta.getRegiao());
+                return campeaoClonado;
             }
-            return new Monstro(monstro.getNome(), monstro.getCusto(), monstro.getVidaMaxima(), monstro.getAtaque(), tracos, monstro.getAtaqueFuria(), monstro.getVidaFuria(), monstro.getListaEfeitos());
+            Monstro monstroClonado = new Monstro(monstro.getNome(), monstro.getCusto(), monstro.getVidaMaxima(), monstro.getAtaque(), tracos, monstro.getAtaqueFuria(), monstro.getVidaFuria(), monstro.getListaEfeitos());
+            monstroClonado.setRegiao(carta.getRegiao());
+            return monstroClonado;
         }
     }
 
     private boolean verificarSeCartaEhAdicionavel(Carta carta, Deck deck) {
         //Se a carta a ser adicionada for de uma regiao diferente de 2 outras no deck ela nao pode ser adicionada;
-        if(deck.getRegioes().size() == 2 && !deck.getRegioes().contains(carta.getRegiao())) {
-            return false;
-        }
-        return true;
+        return deck.getRegioes().size() != 2 || deck.getRegioes().contains(carta.getRegiao());
     }
 
     private void addCartaEmDeck(Deck deck) {
         System.out.println("Digite o nome da regiao e depois da carta que deseja adicionar.");
-        boolean cartaPodeSerAdd = false;
+        boolean cartaPodeSerAdd;
         Carta carta;
         //Verificar se pode ser adicionada*
         do {

@@ -3,11 +3,8 @@ package com.unicamp.mc322.trabalho;
 import com.unicamp.mc322.trabalho.jogador.Deck;
 import com.unicamp.mc322.trabalho.jogo.Jogo;
 import com.unicamp.mc322.trabalho.jogo.Regiao;
-import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
-import com.unicamp.mc322.trabalho.jogo.expansao.carta.Feitico;
-import com.unicamp.mc322.trabalho.jogo.expansao.carta.Monstro;
+import com.unicamp.mc322.trabalho.jogo.expansao.carta.*;
 import com.unicamp.mc322.trabalho.jogador.Usuario;
-import com.unicamp.mc322.trabalho.jogo.expansao.carta.Traco;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.efeitos.*;
 
 public class Runner {
@@ -24,7 +21,7 @@ public class Runner {
 		jogo.criarExpansao("Demacia`s Expansion", Regiao.Demacia);
 
 		//Campeao:
-		jogo.addCartaNaExpansao(Regiao.Demacia, new Monstro("Garen", 5, 5, 5, null, new LevelUpGaren()));
+		jogo.addCartaNaExpansao(Regiao.Demacia, new Campeao("Garen", 5, 5, 5, null, new LevelUpGaren()));
 		//Monstros:
 		jogo.addCartaNaExpansao(Regiao.Demacia, new Monstro("Tiana", 8, 7, 7, null, new AtacaNexus()));
 		jogo.addCartaNaExpansao(Regiao.Demacia, new Monstro("Vanguarda", 4, 3, 3, null, new BuffTodosAliados(1,1)));
@@ -47,7 +44,7 @@ public class Runner {
 		jogo.criarExpansao("Noxus` Expansion", Regiao.Noxus);
 
 		//Campeao:
-		jogo.addCartaNaExpansao(Regiao.Noxus, new Monstro("Darius", 6, 6, 5, null, new Sobrecarga(), new LevelUpDarius()));
+		jogo.addCartaNaExpansao(Regiao.Noxus, new Campeao("Darius", 6, 6, 5, null, new Sobrecarga(), new LevelUpDarius()));
 		//Monstros:
 		jogo.addCartaNaExpansao(Regiao.Noxus, new Monstro("Cavaleiro Presa Blindada", 6, 5, 6, null, new Sobrecarga()));
 		jogo.addCartaNaExpansao(Regiao.Noxus, new Monstro("Cavaleiro Basilisco", 4, 3, 4, null, new Sobrecarga(), new BuffAliadoUnico(1,1)));
@@ -84,10 +81,10 @@ public class Runner {
 
 		/*Adicionando campeao*/
 
-		deckPadrao1.addCarta(new Monstro("Garen", 5, 5, 5, null, garen1));
-		deckPadrao1.addCarta(new Monstro("Garen", 5, 5, 5, null, garen2));
-		deckPadrao1.addCarta(new Monstro("Garen", 5, 5, 5, null, garen3));
-		deckPadrao1.addCarta(new Monstro("Garen", 5, 5, 5, null, garen4));
+		deckPadrao1.addCarta(new Campeao("Garen", 5, 5, 5, null, garen1));
+		deckPadrao1.addCarta(new Campeao("Garen", 5, 5, 5, null, garen2));
+		deckPadrao1.addCarta(new Campeao("Garen", 5, 5, 5, null, garen3));
+		deckPadrao1.addCarta(new Campeao("Garen", 5, 5, 5, null, garen4));
 
 		//Adicionando monstros no deck
 		deckPadrao1.addCarta(new Monstro("Tiana", 8, 7, 7, null, Tiana1));
@@ -166,10 +163,10 @@ public class Runner {
 		BuffAliadoUnico LutadorDaArena1 = new BuffAliadoUnico(1,0);
 		GolpeAoNexus SabotadorDaLegiao1 = new GolpeAoNexus(1);
 		/*Adicionando campeao*/
-		deckPadrao2.addCarta(new Monstro("Darius", 6, 6, 5, null, Darius1, Darius2));
-		deckPadrao2.addCarta(new Monstro("Darius", 6, 6, 5, null, Darius3, Darius4));
-		deckPadrao2.addCarta(new Monstro("Darius", 6, 6, 5, null, Darius5, Darius6));
-		deckPadrao2.addCarta(new Monstro("Darius", 6, 6, 5, null, Darius7, Darius8));
+		deckPadrao2.addCarta(new Campeao("Darius", 6, 6, 5, null, Darius1, Darius2));
+		deckPadrao2.addCarta(new Campeao("Darius", 6, 6, 5, null, Darius3, Darius4));
+		deckPadrao2.addCarta(new Campeao("Darius", 6, 6, 5, null, Darius5, Darius6));
+		deckPadrao2.addCarta(new Campeao("Darius", 6, 6, 5, null, Darius7, Darius8));
 
 		//Adicionando monstros no deck 2
 		deckPadrao2.addCarta(new Monstro("Cavaleiro Presa Blindada", 6, 5, 6, null, Cavaleiro1));
@@ -228,6 +225,9 @@ public class Runner {
 		Usuario user1 = jogo.criarUsuario("Roberto");
 		Usuario user2 = jogo.criarUsuario("Cris");
 
+		//imprimir lista de expansoes no jogo(nome);
+		//jogo.imprimirListaExpansoes();
+
 		//Criar deck:
 		//jogo.criarNovoDeck(user1.getId(), "Novo Deck");
 
@@ -247,7 +247,7 @@ public class Runner {
 		jogo.realizarPartidaVsJogador(user1.getId(), user2.getId());
 
 		//Realizar partida jogador vs bot!
-		jogo.realizarPartidaVsComputador(user2.getId());
+		//jogo.realizarPartidaVsComputador(user2.getId());
 
 
 

@@ -4,14 +4,11 @@ import com.unicamp.mc322.trabalho.jogo.GameException;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 import com.unicamp.mc322.trabalho.jogo.Regiao;
 
-import java.util.HashMap;
-import java.util.Stack;
-import java.util.Map;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Deck {
 	private String nome;
-	private Estado estado = Estado.Inutilizavel;
+	private EstadoDeck estadoDeck = EstadoDeck.Inutilizavel;
 	private ArrayList<Regiao> regioes = new ArrayList<Regiao>(); //Regioes que o deck possui(max2)
 	private Stack <Carta> deckStack = new Stack<Carta>();
 	private Map<String, Carta> deckMap = new HashMap<String, Carta>(); //Permite encontrar carta pelo nome com mais facilidade
@@ -28,8 +25,12 @@ public class Deck {
 		return nome;
 	}
 
-	public Estado getEstado() {
-		return estado;
+	public EstadoDeck getEstado() {
+		return estadoDeck;
+	}
+
+	public Stack<Carta> getDeckStack() {
+		return deckStack;
 	}
 
 	public void imprimirQuantidade() {
@@ -37,7 +38,7 @@ public class Deck {
 	}
 
 	public void imprimirDeck() {
-		System.out.println("Nome do deck: " + nome + "Estado: " + estado);
+		System.out.println("Nome do deck: " + nome + "Estado: " + estadoDeck);
 		for(int i = 0; i < deckStack.size(); i++) {
 			deckStack.get(i).imprimirNome();
 			System.out.print("  ");
@@ -50,7 +51,7 @@ public class Deck {
 	public void removerCarta(String nomeCarta) {
 		if(deckMap.containsKey(nomeCarta)) {
 			if(deckStack.size() == 40) {
-				estado = Estado.Inutilizavel;
+				estadoDeck = EstadoDeck.Inutilizavel;
 			}
 			Carta carta = deckMap.get(nomeCarta);
 			if (ehUltimaCartaDaRegiao(carta)) {
@@ -73,7 +74,7 @@ public class Deck {
 			deckMap.put(novaCarta.getNome(), novaCarta);
 			deckStack.add(novaCarta);
 			if(deckStack.size() == 40) {
-				estado = Estado.Utilizavel;
+				estadoDeck = EstadoDeck.Utilizavel;
 			}
 			if(!regioes.contains(novaCarta.getRegiao())) {
 				regioes.add(novaCarta.getRegiao());
@@ -104,5 +105,9 @@ public class Deck {
 
 	public Carta tirarCartaTopo(){
 		return deckStack.pop();
+	}
+
+	public void embaralharCartas(){
+		Collections.shuffle(deckStack);
 	}
 }

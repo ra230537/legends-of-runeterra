@@ -12,16 +12,20 @@ import java.util.Scanner;
 
 public class BoardManager {
     private final Mesa mesa;
+    private Scanner scan;
     public BoardManager(Mesa mesa) {
         this.mesa = mesa;
+        this.scan = new Scanner(System.in);
         //primeiro jogador
     }
 
 
     public boolean executarPassosJogo(Jogador jogadorAtacante, Jogador jogadorDefensor) {
         int resposta;
-        Scanner scan = criarScanner();
+        //Scanner scan = criarScanner();
+
         realizarCompra(jogadorAtacante, jogadorDefensor);
+
         if (!jogadorAtacante.ehBot()){
             vizualizarCartaDetalhadamente(jogadorAtacante);
         }
@@ -31,27 +35,32 @@ public class BoardManager {
         do {
             turnoDoAtacante(jogadorAtacante);
             if (jogadorDefensorMorreu(jogadorDefensor)) {
-                return false;
+                return true;
             }
+            mesa.imprimirMesa();
             turnoDoDefensor(jogadorDefensor);
             if (jogadorAtacanteMorreu(jogadorAtacante)) {
-                return false;
+                return true;
             }
-
+            mesa.imprimirMesa();
             resposta = respostaFimTurno(jogadorAtacante,scan);
 
             //o jogador escolhe se quer continuar jogando cartas ou se quer atacar
         } while (jogadorNaoQuerEncerrarTurno(resposta));
 
         if (jogadorPediuParaAtacar(resposta)) {
+
             turnoDeBatalha(jogadorAtacante, jogadorDefensor);
             if (jogadorDefensorMorreu(jogadorDefensor)) {
-                return false;
+                return true;
             }
             verificarMonstrosPosBatalha(jogadorAtacante, jogadorDefensor);
+            mesa.imprimirMesa();
         }
-        fecharScanner(scan);
-        return true;
+        //fecharScanner(scan);
+        jogadorAtacante.aumentarUmDeMana();
+        jogadorDefensor.aumentarUmDeMana();
+        return false;
     }
 
     private int respostaFimTurno(Jogador jogadorAtacante, Scanner scan) {
@@ -67,6 +76,7 @@ public class BoardManager {
 
 
     private int lerProximoNumero(Scanner scan) {
+        scan.reset();
         return scan.nextInt();
     }
 
@@ -79,6 +89,7 @@ public class BoardManager {
     }
 
     private String lerProximaLinha(Scanner scan) {
+        scan.reset();
         return scan.nextLine();
     }
 
@@ -111,11 +122,11 @@ public class BoardManager {
     }
 
     private void vizualizarCartaDetalhadamente(Jogador jogador) {
-        Scanner scan = criarScanner();
+        //Scanner scan = criarScanner();
         String resposta = perguntarSeQuerVizualizar(scan);
         if(resposta.equals("y")){
             String nomeCarta = PerguntarQualCartaQuerVizualizar(scan,jogador);
-            Carta carta = converterNomeCarta(jogador,nomeCarta);
+            Carta carta = converterNomeCartaMao(jogador,nomeCarta);
             carta.imprimirCartaDetalhada();
         }
     }
@@ -124,8 +135,8 @@ public class BoardManager {
         return scan.nextLine();
     }
     private String PerguntarQualCartaQuerVizualizar(Scanner scan,Jogador jogador) {
-        listarCartasMao(jogador);
         System.out.print("Qual carta gostaria de vizualizar\n");
+        listarCartasMao(jogador);
         return scan.nextLine();
     }
 
@@ -184,10 +195,9 @@ public class BoardManager {
 
     private boolean jogadorQuerJogarCarta() {
         System.out.print("Deseja jogar uma carta? (y/n) \n");
-        Scanner scan = criarScanner();
+        //Scanner scan = criarScanner();
         String resposta = lerProximaLinha(scan);
-        fecharScanner(scan);
-
+        //fecharScanner(scan);
         if (resposta.equals("y") || resposta.equals("Y")) {
             return true;
         } else if (resposta.equals("n") || resposta.equals("N")) {
@@ -224,9 +234,9 @@ public class BoardManager {
 
     private Carta perguntarCartaDesejada(Jogador jogador) {
         int custo;
-        System.out.print("Qual carta você deseja usar?\n");
         int manaAtual = jogador.getManaAtual();
         int manaFeitico = jogador.getManaFeitico();
+        System.out.printf("Qual carta você deseja usar? Você possui %d de mana\n",manaAtual);
         listarCartasMao(jogador);
         String nomeCarta = obterNomeCarta();
         Carta cartaEscolhida = acharCartaPeloNome(nomeCarta, jogador);
@@ -254,13 +264,15 @@ public class BoardManager {
 
     private void listarCartasMao(Jogador jogador) {
         for (Carta carta : jogador.getMao()) {
-            System.out.printf("%s\n", carta.getNome());
+            System.out.printf("|%s (%d)|\n", carta.getNome(),carta.getCusto());
         }
     }
 
     private String obterNomeCarta() {
-        Scanner scan = criarScanner();
-        return lerProximaLinha(scan);
+        //Scanner scan = criarScanner();
+        String resposta = lerProximaLinha(scan);
+        //scan.close();
+        return resposta;
     }
 
     private Carta acharCartaPeloNome(String nomeCarta, Jogador jogador) {
@@ -300,7 +312,7 @@ public class BoardManager {
     }
 
     private int perguntarJogadorQualIndiceSubstituir(Jogador jogador){
-        Scanner scan = criarScanner();
+        //Scanner scan = criarScanner();
         System.out.printf("digite um numero de 1 a %d para indicar qual carta sera substituida",jogador.getNumeroCartasCampo());
         int respostaJogador = lerProximoNumero(scan);
         if (respostaJogador > jogador.getNumeroCartasCampo() || respostaJogador < 1){
@@ -415,11 +427,14 @@ public class BoardManager {
     }
 
     private void turnoDeBatalha(Jogador jogadorAtacante, Jogador jogadorDefensor) {
+        mesa.imprimirMesa();
         if (jogadorAtacante.ehBot()) {
+
             escolherMonstrosAtaqueBot((Bot) jogadorAtacante);
         } else {
             escolherMonstrosAtaque(jogadorAtacante);
         }
+        mesa.imprimirMesa();
         if (jogadorDefensor.ehBot()) {
             escolherMonstrosDefesaBot((Bot) jogadorDefensor, jogadorAtacante);
         } else {
@@ -440,14 +455,14 @@ public class BoardManager {
         ArrayList<String> listaCartasAtaque = new ArrayList<>();
         System.out.print("Escolha em ordem as cartas que você colocará em ataque. Digite 'sair' para finalizar\n");
         listarCartasCampo(jogadorAtacante);
-        Scanner scan = criarScanner();
+        //Scanner scan = criarScanner();
         do {
             nomeMonstro = lerProximaLinha(scan);
             if (naoEscreveuSair(nomeMonstro) && ehMonstroValido(jogadorAtacante, nomeMonstro)) {
                 listaCartasAtaque.add(nomeMonstro);
             }
         } while (naoEscreveuSair(nomeMonstro));
-        fecharScanner(scan);
+        //fecharScanner(scan);
         return listaCartasAtaque;
     }
 
@@ -474,16 +489,18 @@ public class BoardManager {
     private void colocarCartasAtaque(Jogador jogadorAtacante, ArrayList<String> listaCartasAtaque) {
 
         for (String nomeCarta : listaCartasAtaque) {
-            Carta cartaParaAtaque = converterNomeCarta(jogadorAtacante, nomeCarta);
+            Carta cartaParaAtaque = converterNomeCartaCampo(jogadorAtacante, nomeCarta);
             moverMonstro(jogadorAtacante, (Monstro) cartaParaAtaque);
         }
 
     }
 
-    private Carta converterNomeCarta(Jogador jogador, String carta) {
-        return jogador.converterNomeCarta(carta);
+    private Carta converterNomeCartaCampo(Jogador jogador, String carta) {
+        return jogador.converterNomeCartaCampo(carta);
     }
-
+    private Carta converterNomeCartaMao(Jogador jogador, String carta) {
+        return jogador.converterNomeCartaMao(carta);
+    }
     private void moverMonstro(Jogador jogador, Monstro monstro) {
         jogador.adicionarCartaAtaque(monstro);
         jogador.removerMonstroCampo(monstro);
@@ -528,10 +545,10 @@ public class BoardManager {
         ArrayList<String> listaCartasDefesa = inicializarArrayList(numeroCartasAtacando(jogadorAtacante));
         mensagemParaUsuario(jogadorAtacante);
         listarCartasCampo(jogadorDefensor);
-        Scanner scan = criarScanner();
+        //Scanner scan = criarScanner();
         do {
             nomeMonstro = lerProximaLinha(scan);
-            int posicaoMonstro = scan.nextInt();
+            int posicaoMonstro = lerProximoNumero(scan);
             if (naoEscreveuSair(nomeMonstro) && ehMonstroValido(jogadorDefensor, nomeMonstro)) {
                 try {
                     //monstro adicionado na posição escolhida pelo usuario
@@ -541,7 +558,7 @@ public class BoardManager {
                 }
             }
         } while (naoEscreveuSair(nomeMonstro));
-        fecharScanner(scan);
+        //fecharScanner(scan);
         return listaCartasDefesa;
     }
 
@@ -555,15 +572,15 @@ public class BoardManager {
     }
 
     private void mensagemParaUsuario(Jogador jogadorAtacante) {
-        System.out.printf("Escolha as cartas que serão usadas para defender" +
-                " e em seguida digite a posição desejada (0 a %d)." +
+        System.out.printf("Escolha as cartas que serão usadas para defender, tecle enter" +
+                " e em seguida digite a posição desejada (0 a %d) e tecle enter." +
                 " Digite 'sair' para finalizar\n", numeroCartasAtacando(jogadorAtacante) - 1);
     }
 
     private void colocarCartasDefesa(Jogador jogadorDefensor, ArrayList<String> listaCartasDefesa) {
         for (String nomeCarta : listaCartasDefesa) {
             //pode retornar null quando a carta nao eh reconhecida
-            Carta cartaParaDefesa = converterNomeCarta(jogadorDefensor, nomeCarta);
+            Carta cartaParaDefesa = converterNomeCartaCampo(jogadorDefensor, nomeCarta);
             moverMonstro(jogadorDefensor, (Monstro) cartaParaDefesa);
         }
     }

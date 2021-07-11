@@ -50,6 +50,7 @@ public class Carta {
 	public void imprimirCartaDetalhada(){
 
 	}
+
 	public void imprimirNome() {
 		//...
 	}
