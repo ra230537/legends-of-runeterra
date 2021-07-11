@@ -64,13 +64,13 @@ public class Jogo {
         }
 
         do {
-            mesa.imprimirMesa();
             //Ciclo de comandos enquanto a partida está acontecendo;
             jogador1 = obterJogador1(mesa);
             jogador2 = obterJogador2(mesa);
             System.out.println(jogador1.getUsuario().getId() + " está atacando e " + jogador2.getUsuario().getId() + " está defendendo.");
             jogador1.setEstadoJogador(EstadoJogador.Atacante);
             jogador2.setEstadoJogador(EstadoJogador.Defensor);
+            mesa.imprimirMesa();
             partidaAcabou = boardManager.executarPassosJogo(jogador1,jogador2);
 
             if (!partidaAcabou) {//se a partida ainda nao acabou o jogador 2 agora assume o papel de atacante da rodada

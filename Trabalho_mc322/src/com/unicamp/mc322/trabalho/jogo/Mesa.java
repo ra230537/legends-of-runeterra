@@ -31,11 +31,11 @@ public class Mesa {
 		int mao1 = getJogador1().getMao().size();
 		int mao2 = getJogador2().getMao().size();
 
-		System.out.println("******" + getJogador1().getUsuario().getId() + "(" + getJogador1().getEstadoJogador() + ")******" + "Vida do Nexus: " + getJogador1().getVida() + "******");
+		System.out.println("******" + getJogador1().getUsuario().getId() + "(" + getJogador1().getEstadoJogador().toString() + ")******" + "Vida do Nexus: " + getJogador1().getVida() + "******");
  		if(getJogador1().getMao().isEmpty()){
  			System.out.println("Mao de " + getJogador1().getUsuario().getId() + " esta vazia");
 		}else{
-			System.out.print("Mao do "+ getJogador1().getUsuario().getId() + ":" + "Mana Atual: " + getJogador1().getManaAtual() + "Mana Feitico: " + getJogador1().getManaFeitico());
+			System.out.print("Mao do "+ getJogador1().getUsuario().getId() + ":" + "Mana Atual: " + getJogador1().getManaAtual() + " Mana Feitico: " + getJogador1().getManaFeitico());
  			for(int p = 0; p < mao1; p++){
 				getJogador1().getMao().get(p).imprimirCarta();
 				if(getJogador1().getMao().get(p).getCusto() <= (getJogador1().getMana() + getJogador1().getManaFeitico() ) && getJogador1().getMao().get(p).ehFeitico()){
@@ -90,7 +90,7 @@ public class Mesa {
 		if(getJogador2().getMao().isEmpty()){
 			System.out.println("Mao de " + getJogador2().getUsuario().getId() + " esta vazia");
 		}else{
-			System.out.print("Mao do "+ getJogador2().getUsuario().getId() + ":" + "Mana Atual: " + getJogador2().getManaAtual() + "Mana Feitico: " + getJogador2().getManaFeitico());
+			System.out.print("Mao do "+ getJogador2().getUsuario().getId() + ":" + "Mana Atual: " + getJogador2().getManaAtual() + " Mana Feitico: " + getJogador2().getManaFeitico());
 			for(int y = 0; y < mao2; y++){
 				getJogador2().getMao().get(y).imprimirCarta();
 				if(getJogador2().getMao().get(y).getCusto() <= (getJogador2().getMana() + getJogador2().getManaFeitico() ) && getJogador2().getMao().get(y).ehFeitico()){
@@ -100,6 +100,6 @@ public class Mesa {
 				}
 			}
 		}
-		System.out.println("\n******" + getJogador2().getUsuario().getId() + "(" + getJogador2().getEstadoJogador() + ")******" + "Vida do Nexus: " + getJogador1().getVida() + "******");
+		System.out.println("\n******" + getJogador2().getUsuario().getId() + "(" + getJogador2().getEstadoJogador().toString() + ")******" + "Vida do Nexus: " + getJogador1().getVida() + "******");
 	}
 }
