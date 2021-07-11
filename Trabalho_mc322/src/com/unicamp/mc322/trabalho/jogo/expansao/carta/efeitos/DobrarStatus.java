@@ -37,8 +37,13 @@ public class DobrarStatus extends Efeito {
         }
     }
     private int interagirComUsuario(){
-        Scanner respostaUsuario = new Scanner(System.in);
-        System.out.println("Digite a posição do aliado que receberá o buff: ");
-        return respostaUsuario.nextInt();
+        try{
+            Scanner respostaUsuario = new Scanner(System.in);
+            System.out.println("Digite a posição(1,2,3,4,5,6) do aliado que receberá o buff: ");
+            return respostaUsuario.nextInt();
+        }catch(Exception InputMisMatchException){
+            System.out.println("Tente Novamente");
+            return interagirComUsuario();
+        }
     }
 }

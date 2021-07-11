@@ -558,7 +558,7 @@ public class BoardManager {
             if (naoEscreveuSair(nomeMonstro) && ehMonstroValido(jogadorDefensor, nomeMonstro)) {
                 try {
                     //monstro adicionado na posição escolhida pelo usuario
-                    listaCartasDefesa.set(posicaoMonstro, nomeMonstro);
+                    listaCartasDefesa.set(posicaoMonstro-1, nomeMonstro);
                 } catch (Exception IndexOutOfBoundsException) {
                     System.out.print("Escolha um numero dentro do intervalo solicitado!");
                 }
@@ -579,8 +579,8 @@ public class BoardManager {
 
     private void mensagemParaUsuario(Jogador jogadorAtacante) {
         System.out.printf("Escolha as cartas que serão usadas para defender, tecle enter" +
-                " e em seguida digite a posição desejada (0 a %d) e tecle enter." +
-                " Digite 'sair' para finalizar\n", numeroCartasAtacando(jogadorAtacante) - 1);
+                " e em seguida digite a posição desejada (1 a %d) e tecle enter." +
+                " Digite 'sair' para finalizar\n", numeroCartasAtacando(jogadorAtacante));
     }
 
     private void colocarCartasDefesa(Jogador jogadorDefensor, ArrayList<String> listaCartasDefesa) {

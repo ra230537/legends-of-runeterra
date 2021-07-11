@@ -1,5 +1,6 @@
 package com.unicamp.mc322.trabalho;
 
+import com.unicamp.mc322.trabalho.jogador.Bot;
 import com.unicamp.mc322.trabalho.jogador.Deck;
 import com.unicamp.mc322.trabalho.jogo.Jogo;
 import com.unicamp.mc322.trabalho.jogo.Regiao;
@@ -226,7 +227,7 @@ public class Runner {
 		Usuario user2 = jogo.criarUsuario("Cris");
 
 		//imprimir lista de expansoes no jogo(nome);
-		//jogo.imprimirListaExpansoes();
+		jogo.imprimirListaExpansoes();
 
 		//Criar deck:
 		//jogo.criarNovoDeck(user1.getId(), "Novo Deck");
@@ -244,10 +245,10 @@ public class Runner {
 		user1.setMainDeck("Demacia");
 
 		//Realizar partida jogador vs jogador!
-		jogo.realizarPartidaVsJogador(user1.getId(), user2.getId());
+		//jogo.realizarPartidaVsJogador(user1.getId(), user2.getId());
 
 		//Realizar partida jogador vs bot!
-		//jogo.realizarPartidaVsComputador(user2.getId());
+		jogo.realizarPartidaVsComputador(user2.getId());
 
 
 

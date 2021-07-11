@@ -63,14 +63,24 @@ public class ZeraPoderUnidade extends Efeito {
         }
     }
     public String primeiraPergunta(){
-        Scanner respostaUsuario = new Scanner(System.in);
-        System.out.println("deseja escolher um aliado ou inimigo? (a/i) ");
-        return respostaUsuario.nextLine();
+        try{
+            Scanner respostaUsuario = new Scanner(System.in);
+            System.out.println("deseja escolher um aliado ou inimigo? (a/i) ");
+            return respostaUsuario.nextLine();
+        }catch(Exception InputMisMatchException){
+            System.out.println("Argumento Invalido, tente Novamente");
+            return primeiraPergunta();
+        }
     }
     public int segundaPergunta(){
-        Scanner respostaUsuario = new Scanner(System.in);
-        System.out.println("Digite a posição que o monstro se encontra: ");
-        return respostaUsuario.nextInt();
+        try{
+            Scanner respostaUsuario = new Scanner(System.in);
+            System.out.println("Digite a posição(1,2,3,4,5,6) que o monstro se encontra: ");
+            return respostaUsuario.nextInt();
+        }catch(Exception InputMisMatchException){
+            System.out.println("Argumento invalido, tente Novamente");
+            return segundaPergunta();
+        }
     }
 
 }

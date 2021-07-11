@@ -24,7 +24,7 @@ public class GolpearTodos extends Efeito {
         Random pos = new Random();
         if(!jogador.getCartasEmCampo().isEmpty()) {
             try {
-                int dano = jogador.getCartasEmCampo().get(resposta).getAtaque();
+                int dano = jogador.getCartasEmCampo().get(resposta-1).getAtaque();
                 if (jogador == mesa.getJogador1()) {
                     int n = mesa.getJogador1().getCartasBatalhando().size();
                     for (int i = 0; i < n; i++) {
@@ -60,8 +60,13 @@ public class GolpearTodos extends Efeito {
 
     }
     private int interagirComUsuario(){
-        Scanner respostausuario = new Scanner(System.in);
-        System.out.print("Digite a posição do monstro aliado que realizará o ataque: ");
-        return respostausuario.nextInt();
+        try{
+            Scanner respostaUsuario = new Scanner(System.in);
+            System.out.println("Digite a posição(1,2,3,4,5,6) do monstro aliado que realizara o ataque: ");
+            return respostaUsuario.nextInt();
+        }catch(Exception InputMisMatchException){
+            System.out.println("Tente Novamente");
+            return interagirComUsuario();
+        }
     }
 }

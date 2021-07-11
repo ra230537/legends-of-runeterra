@@ -40,35 +40,58 @@ public class Jogo {
         Jogador j1 = new Jogador(usuarios.get(idUsuario1));
         Jogador j2 = new Jogador(usuarios.get(idUsuario2));
         System.out.println("----PARTIDA ENTRE " + idUsuario1 + " E " + idUsuario2 + "----");
+        //Embaralha deck dos jogadores;
+        j1.embaralharDeck();
+        j2.embaralharDeck();
+        
+        //puxa as cartas;
+        this.puxarCartas(j1, j2);
+
+        //Imprime mao dos jogadores;
+        j1.imprimirMao();
+        j2.imprimirMao();
+        System.out.println("\n");
+        
         this.realizarPartida(j1, j2);
     }
 
     public void realizarPartidaVsComputador(String idUsuario) {
         Jogador jogador = new Jogador(usuarios.get(idUsuario));
-        Bot bot = new Bot(new Usuario("Bot"));
+        Bot bot = new Bot(this.criarUsuario("Bot"));
         System.out.println("----PARTIDA ENTRE " + idUsuario + " E BOT----");
+        //Embaralha deck do jogador;
+        jogador.embaralharDeck();
+        
+        //puxa as cartas;
+        this.puxarCartas(jogador);
+
+        //Imprime mao dos jogadores;
+        jogador.imprimirMao();
+        System.out.println("\n");
+        
         this.realizarPartida(jogador, bot);
+    }
+    
+    private void puxarCartas(Jogador jogador1, Jogador jogador2) {
+        //Puxa as primeiras cartas
+        for (int i = 0; i < 4; i++) {
+            jogador1.puxarCarta();
+            jogador2.puxarCarta();
+        }  
+    }
+    
+    private void puxarCartas(Jogador jogador) {
+        //Puxa as primeiras cartas
+        for (int i = 0; i < 4; i++) {
+            jogador.puxarCarta();
+        }
     }
 
     private void realizarPartida(Jogador jogador1, Jogador jogador2) {
         boolean partidaAcabou;
         Mesa mesa = new Mesa(jogador1, jogador2);
         BoardManager boardManager = new BoardManager(mesa);
-        jogador2.embaralharDeck();
-        jogador1.embaralharDeck();
-        for (int i = 0; i < 4; i++) {
-            jogador1.puxarCarta();
-            jogador2.puxarCarta();
-        }
-        //Imprime mao dos jogadores;
-        jogador1.imprimirMao();
-        jogador2.imprimirMao();
-        System.out.println("\n");
-
-        //Opcao para trocar ate 4 cartas da mao;
-        this.trocarMao(jogador1);
-        this.trocarMao(jogador2);
-
+        
         do {
             //Ciclo de comandos enquanto a partida está acontecendo;
             jogador1 = obterJogador1(mesa);
@@ -178,15 +201,16 @@ public class Jogo {
         String resposta;
         do {
             resposta = comandos.nextLine();
+            if(!resposta.equals("Remover") && !resposta.equals("Add")) {
+                System.out.println("Resposta invalida, por favor, responda com (Remover/Add).");
+            }
         } while(!resposta.equals("Remover") && !resposta.equals("Add"));
         return resposta;
     }
 
     private ArrayList<Traco> clonarTracos(ArrayList<Traco> tracos) {
         ArrayList<Traco> tracosClonado = new ArrayList<Traco>();
-        for(Traco traco : tracos) {
-            tracosClonado.add(traco);
-        }
+        tracosClonado.addAll(tracos);
         return tracosClonado;
     }
 
@@ -279,8 +303,7 @@ public class Jogo {
         Deck deckEditado = usuarios.get(idUsuario).getDeck(nomeDeck);
 
         System.out.println("Voce deseja adicionar ou remover cartas?(Remover/Add)");
-        String resposta = this.getRespostaEditarDeck();
-        switch (resposta) {
+        switch (this.getRespostaEditarDeck()) {
             case "Remover":
                 //Remover carta
                 System.out.println("Digite o nome da carta que deseja remover:\n");

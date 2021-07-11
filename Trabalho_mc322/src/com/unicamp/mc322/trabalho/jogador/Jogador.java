@@ -32,7 +32,7 @@ public class Jogador {
         //funcao que permite o jogador escolher trocar as 4 cartas iniciais que vem em sua mao .
     }
 
-    private Deck perguntarDeckUsuario(Map<String, Deck> listaDecks) {
+    protected Deck perguntarDeckUsuario(Map<String, Deck> listaDecks) {
         System.out.print("Qual deck da lista abaixo você deseja usar "+ usuario.getId() +"?\n");
         Set<String> nomeDecks = obterSetNomes(listaDecks);
 

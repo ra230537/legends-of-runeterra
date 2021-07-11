@@ -20,8 +20,8 @@ public class SelecionaCombate extends Efeito {
 
     @Override
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
-        int indiceMonstroAliado = interagirComUsuario1();
-        int indiceMonstroInimigo = interagirComUsuario2();
+        int indiceMonstroAliado = interagirComUsuario1() - 1;
+        int indiceMonstroInimigo = interagirComUsuario2() - 1;
         Random pos = new Random();
         //escolhe o aliado e o inimigo e usa o comando atacar e defender respectivamente
         if(!jogador.getCartasEmCampo().isEmpty()) {
@@ -46,6 +46,7 @@ public class SelecionaCombate extends Efeito {
             } finally {
                 if (jogador == mesa.getJogador1()) {
                     if(!mesa.getJogador2().getCartasEmCampo().isEmpty()) {
+                        int numeroCartasCampo = jogador.getNumeroCartasCampo();
                         mesa.getJogador1().getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).atacar(mesa.getJogador2(), pos.nextInt(jogador.getCartasEmCampo().size()));
                     }else {
                         System.out.println("Não existe carta em campo para atacar");
@@ -63,17 +64,25 @@ public class SelecionaCombate extends Efeito {
             System.out.println("Não existe carta em campo para atacar");
         }
     }
+
     public int interagirComUsuario1(){
-
-
-        Scanner respostaUsuario = new Scanner(System.in);
-        System.out.println("Digite a posição que o monstro aliado se encontra: ");
-        return respostaUsuario.nextInt();
+        try{
+            Scanner respostaUsuario = new Scanner(System.in);
+            System.out.println("Digite a posição do campo(1,2,3,4,5,6) que o monstro aliado se encontra: ");
+            return respostaUsuario.nextInt();
+        }catch(Exception InputMisMatchException){
+            System.out.println("Argumento invalido, tente Novamente");
+            return interagirComUsuario1();
+        }
     }
     public int interagirComUsuario2(){
-
-        Scanner respostaUsuario = new Scanner(System.in);
-        System.out.println("Digite a posição que o monstro inimigo se encontra: ");
-        return respostaUsuario.nextInt();
+        try{
+            Scanner respostaUsuario = new Scanner(System.in);
+            System.out.println("Digite a posição do campo(1,2,3,4,5,6) que o monstro inimigo se encontra: ");
+            return respostaUsuario.nextInt();
+        }catch(Exception InputMisMatchException){
+            System.out.println("Argumento invalido, tente Novamente");
+            return interagirComUsuario2();
+        }
     }
 }
