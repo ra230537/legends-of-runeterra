@@ -188,6 +188,48 @@ public class Monstro extends Carta {
             jogadorDefensor.DiminuirVida(ataque);
         }
     }
+
+    public void atacarCampo(Jogador jogadorDefensor,int indiceMonstro){
+        atacou();
+        Monstro monstroDefensor = jogadorDefensor.getCartasEmCampo().get(indiceMonstro);
+
+        if(monstroDefensor!=null){
+            int danoDefensor = monstroDefensor.getAtaque();
+
+            //tratar traço elusivo
+            if(listatracos.contains(Traco.ELUSIVO)){
+                if(monstroDefensor.listatracos.contains(Traco.ELUSIVO)){
+                    monstroDefensor.alterarVidaAtual(ataque);
+                    return;
+                }else{
+                    jogadorDefensor.DiminuirVida(ataque);
+                    return;
+                }
+            }
+
+            monstroDefensor.alterarVidaAtual(ataque);
+
+            //tratar traço furia
+            if(listatracos.contains(Traco.FURIA) && monstroDefensor.getVidaAtual() <= 0){
+                buffar(ataqueFuria,vidaFuria);
+            }
+            alterarVidaAtual(danoDefensor);
+
+            //tratar traço ataqueduplo
+            if(listatracos.contains(Traco.ATAQUEDUPLO) && monstroDefensor.getVidaAtual() <= 0 && getVidaAtual() > 0){
+                jogadorDefensor.DiminuirVida(ataque);
+                return;
+            }else if(listatracos.contains(Traco.ATAQUEDUPLO) && getVidaAtual() > 0){
+                monstroDefensor.alterarVidaAtual(ataque);
+                alterarVidaAtual(danoDefensor);
+                return;
+            }
+
+        }else{
+            jogadorDefensor.DiminuirVida(ataque);
+        }
+    }
+
     public void zerarAtk(){
         ataque = 0;
     }

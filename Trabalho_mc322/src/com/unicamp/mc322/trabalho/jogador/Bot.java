@@ -23,7 +23,11 @@ public class Bot extends Jogador {
 	public int getNumeroRandom(int max) {
 		//Obtem um numero random no intervalo fornecido;
 		Random numero = new Random();
-		return numero.nextInt(max);
+		if (max == 0){
+			return 0;
+		}else{
+			return numero.nextInt(max);
+		}
 
 	}
 }

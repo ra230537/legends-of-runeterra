@@ -22,12 +22,16 @@ public class ComprarAoMatar extends Efeito {
         int pos = jogador.getCartasBatalhando().indexOf(carta);
         if(((Monstro) carta).getVidaAtual() >= 0){
             if(jogador == mesa.getJogador1()){
-                if(mesa.getJogador2().getCartasBatalhando().get(pos).getVidaAtual() <= 0){
-                    mesa.getJogador1().addCartaMao(new Monstro("Poro", 1, 1, 2, null,null));
+                if(mesa.getJogador2().getCartasBatalhando().get(pos) != null) {
+                    if (mesa.getJogador2().getCartasBatalhando().get(pos).getVidaAtual() <= 0) {
+                        mesa.getJogador1().addCartaMao(new Monstro("Poro", 1, 1, 2, null));
+                    }
                 }
             }else{
-                if(mesa.getJogador1().getCartasBatalhando().get(pos).getVidaAtual() <= 0) {
-                    mesa.getJogador2().addCartaMao(new Monstro("Poro", 1, 1, 2, null,null));
+                if(mesa.getJogador1().getCartasBatalhando().get(pos) != null) {
+                    if (mesa.getJogador1().getCartasBatalhando().get(pos).getVidaAtual() <= 0) {
+                        mesa.getJogador2().addCartaMao(new Monstro("Poro", 1, 1, 2, null));
+                    }
                 }
             }
         }

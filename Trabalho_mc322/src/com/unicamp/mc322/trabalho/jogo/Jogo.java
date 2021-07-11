@@ -36,7 +36,7 @@ public class Jogo {
 
     }
 
-    public void realizarPartidaVsJogador(String idUsuario1, String idUsuario2) {
+    public void realizarPartidaJogadorVsJogador(String idUsuario1, String idUsuario2) {
         Jogador j1 = new Jogador(usuarios.get(idUsuario1));
         Jogador j2 = new Jogador(usuarios.get(idUsuario2));
         System.out.println("----PARTIDA ENTRE " + idUsuario1 + " E " + idUsuario2 + "----");
@@ -51,25 +51,56 @@ public class Jogo {
         j1.imprimirMao();
         j2.imprimirMao();
         System.out.println("\n");
-        
+
+        //Opcao para trocar ate 4 cartas da mao;
+        this.trocarMao(j1);
+        this.trocarMao(j2);
+
+        //Comeca o ciclo de turnos;
         this.realizarPartida(j1, j2);
     }
 
-    public void realizarPartidaVsComputador(String idUsuario) {
+    public void realizarPartidaJogadorVsComputador(String idUsuario) {
         Jogador jogador = new Jogador(usuarios.get(idUsuario));
         Bot bot = new Bot(this.criarUsuario("Bot"));
         System.out.println("----PARTIDA ENTRE " + idUsuario + " E BOT----");
-        //Embaralha deck do jogador;
+        //Embaralha deck do jogador e do bot;
         jogador.embaralharDeck();
+        bot.embaralharDeck();
         
         //puxa as cartas;
-        this.puxarCartas(jogador);
+        this.puxarCartas(jogador, bot);
 
         //Imprime mao dos jogadores;
         jogador.imprimirMao();
+        bot.imprimirMao();
         System.out.println("\n");
-        
+
+        //Opcao para trocar ate 4 cartas da mao;
+        this.trocarMao(jogador);
+
+        //Comeca o ciclo de turnos;
         this.realizarPartida(jogador, bot);
+    }
+
+    public void realizarPartidaComputadorVsComputador() {
+        Bot bot1 = new Bot(this.criarUsuario("Bot1"));
+        Bot bot2 = new Bot(this.criarUsuario("Bot2"));
+        System.out.println("----PARTIDA ENTRE BOTS----");
+        //Embaralha deck dos bots;
+        bot1.embaralharDeck();
+        bot2.embaralharDeck();
+
+        //puxa as cartas;
+        this.puxarCartas(bot1, bot2);
+
+        //Imprime mao dos jogadores;
+        bot1.imprimirMao();
+        bot2.imprimirMao();
+        System.out.println("\n");
+
+        //Comeca o ciclo de turnos;
+        this.realizarPartida(bot1, bot2);
     }
     
     private void puxarCartas(Jogador jogador1, Jogador jogador2) {
@@ -78,13 +109,6 @@ public class Jogo {
             jogador1.puxarCarta();
             jogador2.puxarCarta();
         }  
-    }
-    
-    private void puxarCartas(Jogador jogador) {
-        //Puxa as primeiras cartas
-        for (int i = 0; i < 4; i++) {
-            jogador.puxarCarta();
-        }
     }
 
     private void realizarPartida(Jogador jogador1, Jogador jogador2) {

@@ -1,5 +1,6 @@
 package com.unicamp.mc322.trabalho.jogo.expansao.carta.efeitos;
 
+import com.unicamp.mc322.trabalho.jogador.Bot;
 import com.unicamp.mc322.trabalho.jogador.Jogador;
 import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
@@ -17,7 +18,14 @@ public class DobrarStatus extends Efeito {
     }//dobra o status de alguma unidade aliada
 
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
-        int resposta = interagirComUsuario();
+
+        int resposta;
+        if(jogador.ehBot()){
+            resposta = ((Bot) jogador).getNumeroRandom(6);
+        }else {
+            resposta = interagirComUsuario();
+        }
+
         //dobra a vida e o poder do monstro escolhido
         Random pos = new Random();
         if(!jogador.getCartasEmCampo().isEmpty()) {

@@ -7,8 +7,7 @@ import java.util.Random;
 public class Usuario {
     private String nick;
     private String id;
-    private Map<String, Deck> decks = new HashMap<String, Deck>(); //dicionario com os decks salvos pelo usuario e o nome dado para o deck como key;
-    private Deck mainDeck; //Deck principal apontado pelo jogador;
+    private Map<String, Deck> decks = new HashMap<String, Deck>(); //dicionario com os decks salvos pelo usuario e o nome dado para o deck como key
 
     public Usuario(String nome) {
         this.nick = nome;
@@ -29,7 +28,7 @@ public class Usuario {
     }
 
     public void imprimirId() {
-        //METODO DE TESTE (***APAGAR DEPOIS)
+        //Imprimir id do jogador;
         System.out.printf("%s", this.getId());
     }
 
@@ -87,10 +86,6 @@ public class Usuario {
 
     }
 
-    public void setMainDeck(String nome) {
-        //Seta um deck como default para o jogador;
-        this.mainDeck = decks.get(nome);
-    }
 
 
 }

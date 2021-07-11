@@ -1,5 +1,6 @@
 package com.unicamp.mc322.trabalho.jogo.expansao.carta.efeitos;
 
+import com.unicamp.mc322.trabalho.jogador.Bot;
 import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
@@ -20,45 +21,58 @@ public class SelecionaCombate extends Efeito {
 
     @Override
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
-        int indiceMonstroAliado = interagirComUsuario1() - 1;
-        int indiceMonstroInimigo = interagirComUsuario2() - 1;
+        int indiceMonstroInimigo;
+        int indiceMonstroAliado;
+        if(jogador.ehBot()){
+            indiceMonstroAliado = ((Bot) jogador).getNumeroRandom(6) - 1;
+            indiceMonstroInimigo = ((Bot) jogador).getNumeroRandom(6) - 1;
+        }else{
+            indiceMonstroAliado = interagirComUsuario1() - 1;
+            indiceMonstroInimigo = interagirComUsuario2() - 1;
+        }
         Random pos = new Random();
         //escolhe o aliado e o inimigo e usa o comando atacar e defender respectivamente
         if(!jogador.getCartasEmCampo().isEmpty()) {
             try {
                 if (jogador == mesa.getJogador1()) {
                     if(!mesa.getJogador2().getCartasEmCampo().isEmpty()) {
-                        mesa.getJogador1().getCartasEmCampo().get(indiceMonstroAliado).atacar(mesa.getJogador2(), indiceMonstroInimigo);
+                        mesa.getJogador1().getCartasEmCampo().get(indiceMonstroAliado).atacarCampo(mesa.getJogador2(), indiceMonstroInimigo);
                     }else{
                         System.out.println("Não existe carta em campo para atacar");
                     }
                 } else {
                     if(!mesa.getJogador1().getCartasEmCampo().isEmpty()) {
-                        mesa.getJogador2().getCartasEmCampo().get(indiceMonstroAliado).atacar(mesa.getJogador1(), indiceMonstroInimigo);
+                        mesa.getJogador2().getCartasEmCampo().get(indiceMonstroAliado).atacarCampo(mesa.getJogador1(), indiceMonstroInimigo);
                     }else{
                         System.out.println("Não existe carta em campo para atacar");
                     }
 
                 }
-                ((Monstro) carta).atacou();
+                if(!carta.ehFeitico()){
+                    ((Monstro) carta).atacou();
+                }
+
             } catch (Exception NullPointerException) {
                 System.out.print("Posicao Invalida, um monstro aleatorio atacara outro aleatorio\n");
             } finally {
                 if (jogador == mesa.getJogador1()) {
                     if(!mesa.getJogador2().getCartasEmCampo().isEmpty()) {
                         int numeroCartasCampo = jogador.getNumeroCartasCampo();
-                        mesa.getJogador1().getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).atacar(mesa.getJogador2(), pos.nextInt(jogador.getCartasEmCampo().size()));
+                        mesa.getJogador1().getCartasEmCampo().get(pos.nextInt(numeroCartasCampo)).atacarCampo(mesa.getJogador2(), pos.nextInt(numeroCartasCampo));
                     }else {
                         System.out.println("Não existe carta em campo para atacar");
                     }
                 }else{
                     if(!mesa.getJogador1().getCartasEmCampo().isEmpty()) {
-                        mesa.getJogador2().getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).atacar(mesa.getJogador1(), pos.nextInt(jogador.getCartasEmCampo().size()));
+                        int numeroCartasCampo = mesa.getJogador2().getCartasEmCampo().size();
+                        mesa.getJogador2().getCartasEmCampo().get(pos.nextInt(numeroCartasCampo)).atacarCampo(mesa.getJogador1(), pos.nextInt(numeroCartasCampo));
                     }else{
                         System.out.println("Não existe carta em campo para atacar");
                     }
                 }
-                ((Monstro) carta).atacou();
+                if(!carta.ehFeitico()){
+                    ((Monstro) carta).atacou();
+                }
             }
         }else{
             System.out.println("Não existe carta em campo para atacar");

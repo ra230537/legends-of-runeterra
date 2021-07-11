@@ -1,5 +1,6 @@
 package com.unicamp.mc322.trabalho.jogo.expansao.carta.efeitos;
 
+import com.unicamp.mc322.trabalho.jogador.Bot;
 import com.unicamp.mc322.trabalho.jogador.Jogador;
 import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
@@ -18,7 +19,13 @@ public class GolpearTodos extends Efeito {
 
     @Override
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
-        int resposta = interagirComUsuario();
+        int resposta;
+        if(jogador.ehBot()){
+            resposta = ((Bot) jogador).getNumeroRandom(6);
+        }else {
+            resposta = interagirComUsuario();
+        }
+
         //para cada monstro no campo inimigo, cause o equivalente ao ataque do monstro escolhido de dano
 
         Random pos = new Random();

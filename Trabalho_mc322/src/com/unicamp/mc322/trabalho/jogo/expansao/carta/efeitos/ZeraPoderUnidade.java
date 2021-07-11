@@ -1,5 +1,6 @@
 package com.unicamp.mc322.trabalho.jogo.expansao.carta.efeitos;
 
+import com.unicamp.mc322.trabalho.jogador.Bot;
 import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
@@ -18,8 +19,17 @@ public class ZeraPoderUnidade extends Efeito {
     }//zera o ataque de uma unidade inimiga por um turno
     @Override
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
-        String respostaAliadoOuInimigo = primeiraPergunta();
-        int indiceMonstro = segundaPergunta();
+        int indiceMonstro;
+        String respostaAliadoOuInimigo;
+        if(jogador.ehBot()){
+             respostaAliadoOuInimigo = "i";
+            indiceMonstro = ((Bot) jogador).getNumeroRandom(6);
+        }else {
+            respostaAliadoOuInimigo = primeiraPergunta();
+            indiceMonstro = segundaPergunta();
+        }
+
+
         /**se a primeira resposta for a
          * escolhe um aliado de indice "indiceMonstro" e zera permanentemente seu ataque
          * se nao,
@@ -27,7 +37,7 @@ public class ZeraPoderUnidade extends Efeito {
          */
         Random pos = new Random();
 
-        if(respostaAliadoOuInimigo.equals('a')){
+        if(respostaAliadoOuInimigo.equals("a")){
             try{
                 if(jogador == mesa.getJogador1()){
                     mesa.getJogador1().getCartasEmCampo().get(indiceMonstro-1).zerarAtk();

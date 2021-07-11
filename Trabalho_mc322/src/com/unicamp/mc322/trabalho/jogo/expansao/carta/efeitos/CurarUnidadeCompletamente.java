@@ -1,5 +1,6 @@
 package com.unicamp.mc322.trabalho.jogo.expansao.carta.efeitos;
 
+import com.unicamp.mc322.trabalho.jogador.Bot;
 import com.unicamp.mc322.trabalho.jogador.Jogador;
 import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
@@ -16,7 +17,12 @@ public class CurarUnidadeCompletamente extends Efeito {
         this.tipoEfeito = TipoEfeito.CurarUnidadeCompletamente;
     }//restaura todos os pontos de defesa de uma unidade uma unica vez
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
-        int resposta = interagirComUsuario();
+        int resposta;
+        if(jogador.ehBot()){
+            resposta = ((Bot) jogador).getNumeroRandom(6);
+        }else {
+            resposta = interagirComUsuario();
+        }
         //faz vida_atual do monstro ser igual a vida_maxima
         Random pos = new Random();
         if(!jogador.getCartasEmCampo().isEmpty()) {

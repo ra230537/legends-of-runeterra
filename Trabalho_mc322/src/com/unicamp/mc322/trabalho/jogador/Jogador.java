@@ -240,7 +240,7 @@ public class Jogador {
         }
 
         if(mana<10){
-            mana = mana + 9;
+            mana++;
             manaAtual = mana;
         }
     }

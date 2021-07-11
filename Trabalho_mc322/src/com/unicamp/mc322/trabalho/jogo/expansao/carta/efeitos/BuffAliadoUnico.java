@@ -1,5 +1,6 @@
 package com.unicamp.mc322.trabalho.jogo.expansao.carta.efeitos;
 
+import com.unicamp.mc322.trabalho.jogador.Bot;
 import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
@@ -26,7 +27,13 @@ public class BuffAliadoUnico extends Efeito {
 
     @Override
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
-        int resposta = interagirComUsuario();
+        int resposta;
+        if(jogador.ehBot()){
+            resposta = ((Bot) jogador).getNumeroRandom(6);
+        }else {
+            resposta = interagirComUsuario();
+        }
+
         //incrementa a vida e o poder da carta que receber esse buff
         Random pos = new Random();
         if(!jogador.getCartasEmCampo().isEmpty()) {
@@ -43,6 +50,7 @@ public class BuffAliadoUnico extends Efeito {
 
     }
     private int interagirComUsuario(){
+
         try{
             Scanner respostaUsuario = new Scanner(System.in);
             System.out.println("Digite a posição(1,2,3,4,5,6) do aliado que receberá o buff: ");

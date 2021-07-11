@@ -241,16 +241,14 @@ public class Runner {
 		//Imprime o nome dos decks:
 		user1.imprimirDecksNomes();
 
-		//Setando o main deck do jogador, como 1 dos decks padroes do jogo;
-		user1.setMainDeck("Demacia");
-
 		//Realizar partida jogador vs jogador!
-		//jogo.realizarPartidaVsJogador(user1.getId(), user2.getId());
+		//jogo.realizarPartidaJogadorVsJogador(user1.getId(), user2.getId());
 
 		//Realizar partida jogador vs bot!
-		jogo.realizarPartidaVsComputador(user2.getId());
+		//jogo.realizarPartidaJogadorVsComputador(user2.getId());
 
-
+		//Realiza partida bot vs bot!
+		jogo.realizarPartidaComputadorVsComputador();
 
 	}
 }

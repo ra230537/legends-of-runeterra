@@ -1,6 +1,8 @@
 package com.unicamp.mc322.trabalho.jogo.expansao.carta.efeitos;
 
 import java.util.Random;
+
+import com.unicamp.mc322.trabalho.jogador.Bot;
 import com.unicamp.mc322.trabalho.jogo.Mesa;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Efeito;
@@ -22,10 +24,13 @@ public class Barreira extends Efeito {
     @Override
     //passar o mapa como parametro pras cartas. porque ai elas vao ter conhecimento do jogo inteiro
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
+        int resposta;
         /*torna o atributo temBarreira na carta escolhida como true por uma rodada*/
-
-        int resposta = interagirComUsuario();
-
+        if(jogador.ehBot()){
+            resposta = ((Bot) jogador).getNumeroRandom(6);
+        }else {
+            resposta = interagirComUsuario();
+        }
         Random pos = new Random();
 
         try{

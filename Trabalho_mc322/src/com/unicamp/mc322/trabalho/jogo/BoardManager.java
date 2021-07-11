@@ -23,7 +23,6 @@ public class BoardManager {
 
     public boolean executarPassosJogo(Jogador jogadorAtacante, Jogador jogadorDefensor) {
         int resposta;
-        //Scanner scan = criarScanner();
 
         realizarCompra(jogadorAtacante, jogadorDefensor);
 
@@ -162,7 +161,6 @@ public class BoardManager {
             //seja substituindo uma carta por uma dentro da mao ou jogando uma carta normalmente
             cartaEscolhida = perguntarCartaDesejada(jogador);
             if (numeroCartasCampoExcedido(jogador)){
-                //*****************************************************************scan.nextLine();
                 indiceSubstituicao = perguntarJogadorQualIndiceSubstituir(jogador);
                 atualizarManaJogadorCampoCheio(cartaEscolhida,jogador,indiceSubstituicao);
             }else{
@@ -609,25 +607,31 @@ public class BoardManager {
         return jogadorAtacante.getCartasBatalhando().size();
     }
 
-    private void colocarCartasDefesaBot(Bot botDefensor, Jogador jogadorAtacante, int numeroCartasDefendendo) {
+    private void colocarCartasDefesaBot(Bot botDefensor, Jogador jogadorAtacante, int numeroCartasUsadasParaDefesa) {
         int numeroCartasAtacando = numeroCartasAtacando(jogadorAtacante);
         int numeroCartasCampo = numeroCartasCampo(botDefensor);
         ArrayList<Integer> listaIndicesUsadosDefesa = new ArrayList<>();
         ArrayList<Integer> listaIndicesUsadosCampo = new ArrayList<>();
         botDefensor.inicializarListaCartasDefesa(numeroCartasAtacando);
 
-        while (numeroCartasDefendendo > 0) {
+        while (numeroCartasUsadasParaDefesa > 0) {
             //me da o inidice aleatorio que a carta sera inserida
             int posicaoDefesa = botDefensor.getNumeroRandom(numeroCartasAtacando);
+            //indice aleatorio do monstro em campo que será usado para defesa
             int posicaoCampo = botDefensor.getNumeroRandom(numeroCartasCampo);
             if (!listaIndicesUsadosDefesa.contains(posicaoDefesa)) {
                 if (!listaIndicesUsadosCampo.contains(posicaoCampo)) {
+
                     Monstro monstro = botDefensor.getCartasEmCampo().get(posicaoCampo);
+
                     listaIndicesUsadosDefesa.add(posicaoDefesa);
                     listaIndicesUsadosCampo.add(posicaoCampo);
+
                     botDefensor.adicionarCartaDefesa(posicaoDefesa, monstro);
                     botDefensor.removerMonstroCampo(monstro);
-                    numeroCartasDefendendo--;
+
+                    numeroCartasUsadasParaDefesa--;
+                    numeroCartasCampo--;
                 }
 
             }
@@ -668,6 +672,12 @@ public class BoardManager {
 
     private void verificarMonstrosFimDeTurno(Jogador jogador) {
         ArrayList<Monstro> cartasEmCampo = jogador.getCartasEmCampo();
+        for (Monstro monstro : cartasEmCampo){
+            if (monstro.getVidaAtual() <= 0){
+                jogador.removerMonstroCampo(monstro);
+            }
+        }
+        cartasEmCampo = jogador.getCartasEmCampo();
         for (Monstro monstro : cartasEmCampo) {
             //colocar condiçao de que se a vida do monstro for menor ou igual a 0 nao pode usar o efeito
             if(monstro!=null){
@@ -678,7 +688,6 @@ public class BoardManager {
                 }
             }
         }
-        retornarMonstrosCampo(jogador);
 
     }
 

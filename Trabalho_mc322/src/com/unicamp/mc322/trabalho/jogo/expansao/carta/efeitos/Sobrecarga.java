@@ -16,16 +16,20 @@ public class Sobrecarga extends Efeito {
 
     @Override
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta){
-        int pos = mesa.getJogador1().getCartasBatalhando().indexOf(carta);
+        int pos = jogador.getCartasBatalhando().indexOf(carta);
         if(jogador == mesa.getJogador1()){
-            if(((Monstro) carta).getAtaque() > mesa.getJogador2().getCartasBatalhando().get(pos).getVidaAtual()){
-                int sobredano = mesa.getJogador2().getCartasBatalhando().get(pos).getVidaAtual() - ((Monstro) carta).getAtaque();
-                mesa.getJogador2().DiminuirVida(sobredano);
+            if(mesa.getJogador2().getCartasBatalhando().get(pos) != null) {
+                if (((Monstro) carta).getAtaque() > mesa.getJogador2().getCartasBatalhando().get(pos).getVidaAtual()) {
+                    int sobredano = mesa.getJogador2().getCartasBatalhando().get(pos).getVidaAtual() - ((Monstro) carta).getAtaque();
+                    mesa.getJogador2().DiminuirVida(sobredano);
+                }
             }
         }else{
-            if(((Monstro) carta).getAtaque() > mesa.getJogador1().getCartasBatalhando().get(pos).getVidaAtual()){
-                int sobredano = mesa.getJogador1().getCartasBatalhando().get(pos).getVidaAtual() - ((Monstro) carta).getAtaque();
-                mesa.getJogador1().DiminuirVida(sobredano);
+            if(mesa.getJogador1().getCartasBatalhando().get(pos) != null) {
+                if (((Monstro) carta).getAtaque() > mesa.getJogador1().getCartasBatalhando().get(pos).getVidaAtual()) {
+                    int sobredano = mesa.getJogador1().getCartasBatalhando().get(pos).getVidaAtual() - ((Monstro) carta).getAtaque();
+                    mesa.getJogador1().DiminuirVida(sobredano);
+                }
             }
         }
     }
