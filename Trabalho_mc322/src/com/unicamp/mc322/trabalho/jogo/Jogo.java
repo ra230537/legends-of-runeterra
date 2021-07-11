@@ -136,10 +136,10 @@ public class Jogo {
 
             }
         } while (!partidaAcabou);
-        if(jogador1.getVida() <= 0){
+        if(jogador1.getVida() <= 0 || jogador1.getDeckEscolhido().size() == 0){
             System.out.println(jogador2.getUsuario().getId() + "voce ganhou!!! Parabens!!!");
         }
-        if(jogador2.getVida() <= 0){
+        if(jogador2.getVida() <= 0 || jogador2.getDeckEscolhido().size() == 0){
             System.out.println(jogador1.getUsuario().getId() + "voce ganhou!!! Parabens!!!");
         }
     }

@@ -110,4 +110,8 @@ public class Deck {
 	public void embaralharCartas(){
 		Collections.shuffle(deckStack);
 	}
+
+	public int size() {
+		return deckStack.size();
+	}
 }

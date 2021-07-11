@@ -253,4 +253,8 @@ public class Jogador {
     public void limparCampoBatalha(){
         cartasBatalhando.clear();
     }
+    public void substituirCampo(ArrayList<Monstro> campoAux){
+        cartasEmCampo.clear();
+        cartasEmCampo.addAll(campoAux);
+    }
 }

@@ -613,7 +613,9 @@ public class BoardManager {
         ArrayList<Integer> listaIndicesUsadosDefesa = new ArrayList<>();
         ArrayList<Integer> listaIndicesUsadosCampo = new ArrayList<>();
         botDefensor.inicializarListaCartasDefesa(numeroCartasAtacando);
-
+        if(numeroCartasCampo == 0){
+            return;
+        }
         while (numeroCartasUsadasParaDefesa > 0) {
             //me da o inidice aleatorio que a carta sera inserida
             int posicaoDefesa = botDefensor.getNumeroRandom(numeroCartasAtacando);
@@ -672,11 +674,13 @@ public class BoardManager {
 
     private void verificarMonstrosFimDeTurno(Jogador jogador) {
         ArrayList<Monstro> cartasEmCampo = jogador.getCartasEmCampo();
+        ArrayList <Monstro> campoAux = new ArrayList<>();
         for (Monstro monstro : cartasEmCampo){
-            if (monstro.getVidaAtual() <= 0){
-                jogador.removerMonstroCampo(monstro);
+            if (monstro.getVidaAtual() > 0){
+                campoAux.add(monstro);
             }
         }
+        jogador.substituirCampo(campoAux);
         cartasEmCampo = jogador.getCartasEmCampo();
         for (Monstro monstro : cartasEmCampo) {
             //colocar condiçao de que se a vida do monstro for menor ou igual a 0 nao pode usar o efeito
