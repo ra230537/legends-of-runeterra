@@ -225,4 +225,10 @@ public class Jogador {
             manaAtual = mana;
         }
     }
+    public boolean campoVazio(){
+        return cartasEmCampo.size() == 0;
+    }
+    public boolean campoBatalhaVazio(){
+        return cartasBatalhando.size() == 0;
+    }
 }

@@ -43,8 +43,8 @@ public class BoardManager {
                 return true;
             }
             mesa.imprimirMesa();
-            resposta = respostaFimTurno(jogadorAtacante,scan);
-
+            resposta = respostaFimTurno(jogadorAtacante);
+            scan.nextLine();
             //o jogador escolhe se quer continuar jogando cartas ou se quer atacar
         } while (jogadorNaoQuerEncerrarTurno(resposta));
 
@@ -60,37 +60,36 @@ public class BoardManager {
         //fecharScanner(scan);
         jogadorAtacante.aumentarUmDeMana();
         jogadorDefensor.aumentarUmDeMana();
+
         return false;
     }
 
-    private int respostaFimTurno(Jogador jogadorAtacante, Scanner scan) {
+    private int respostaFimTurno(Jogador jogadorAtacante) {
         int resposta;
         if(jogadorAtacante.ehBot()){
             resposta = lerRespostaBot((Bot) jogadorAtacante);
         }else{
             perguntarAtacarPularJogarCarta();
-            resposta = lerProximoNumero(scan);
+            resposta = lerProximoNumero();
         }
         return resposta;
     }
 
 
-    private int lerProximoNumero(Scanner scan) {
-        scan.reset();
-        return scan.nextInt();
+    private int lerProximoNumero() {
+        //Scanner scan = new Scanner(System.in);
+        int resposta = scan.nextInt();
+        //scan.close();
+        return resposta;
     }
 
-    private Scanner criarScanner() {
-        return new Scanner(System.in);
-    }
 
-    private void fecharScanner(Scanner scan) {
-        scan.close();
-    }
-
-    private String lerProximaLinha(Scanner scan) {
-        scan.reset();
-        return scan.nextLine();
+    private String lerProximaLinha() {
+        //Scanner scan = new Scanner(System.in);
+        //scan.reset();
+        String resposta = scan.nextLine();
+        //scan.close();
+        return resposta;
     }
 
     private void realizarCompra(Jogador jogador1, Jogador jogador2) {
@@ -123,21 +122,21 @@ public class BoardManager {
 
     private void vizualizarCartaDetalhadamente(Jogador jogador) {
         //Scanner scan = criarScanner();
-        String resposta = perguntarSeQuerVizualizar(scan);
+        String resposta = perguntarSeQuerVizualizar();
         if(resposta.equals("y")){
-            String nomeCarta = PerguntarQualCartaQuerVizualizar(scan,jogador);
+            String nomeCarta = PerguntarQualCartaQuerVizualizar(jogador);
             Carta carta = converterNomeCartaMao(jogador,nomeCarta);
             carta.imprimirCartaDetalhada();
         }
     }
-    private String perguntarSeQuerVizualizar(Scanner scan){
+    private String perguntarSeQuerVizualizar(){
         System.out.print("Deseja ver alguma carta detalhadamente?(y/n)\n");
-        return scan.nextLine();
+        return lerProximaLinha();
     }
-    private String PerguntarQualCartaQuerVizualizar(Scanner scan,Jogador jogador) {
+    private String PerguntarQualCartaQuerVizualizar(Jogador jogador) {
         System.out.print("Qual carta gostaria de vizualizar\n");
         listarCartasMao(jogador);
-        return scan.nextLine();
+        return lerProximaLinha();
     }
 
     private void turnoDoAtacante(Jogador jogadorAtacante) {
@@ -165,6 +164,7 @@ public class BoardManager {
             //seja substituindo uma carta por uma dentro da mao ou jogando uma carta normalmente
             cartaEscolhida = perguntarCartaDesejada(jogador);
             if (numeroCartasCampoExcedido(jogador)){
+                scan.nextLine();
                 indiceSubstituicao = perguntarJogadorQualIndiceSubstituir(jogador);
                 atualizarManaJogadorCampoCheio(cartaEscolhida,jogador,indiceSubstituicao);
             }else{
@@ -196,7 +196,8 @@ public class BoardManager {
     private boolean jogadorQuerJogarCarta() {
         System.out.print("Deseja jogar uma carta? (y/n) \n");
         //Scanner scan = criarScanner();
-        String resposta = lerProximaLinha(scan);
+        String resposta = lerProximaLinha();
+        System.out.printf("**************** A RESPOSTA DADA FOI %s ***************\n",resposta);
         //fecharScanner(scan);
         if (resposta.equals("y") || resposta.equals("Y")) {
             return true;
@@ -270,8 +271,7 @@ public class BoardManager {
 
     private String obterNomeCarta() {
         //Scanner scan = criarScanner();
-        String resposta = lerProximaLinha(scan);
-        //scan.close();
+        String resposta = lerProximaLinha();
         return resposta;
     }
 
@@ -314,7 +314,7 @@ public class BoardManager {
     private int perguntarJogadorQualIndiceSubstituir(Jogador jogador){
         //Scanner scan = criarScanner();
         System.out.printf("digite um numero de 1 a %d para indicar qual carta sera substituida",jogador.getNumeroCartasCampo());
-        int respostaJogador = lerProximoNumero(scan);
+        int respostaJogador = lerProximoNumero();
         if (respostaJogador > jogador.getNumeroCartasCampo() || respostaJogador < 1){
             System.out.print("Você digitou um número inválido!\n");
             return perguntarJogadorQualIndiceSubstituir(jogador);
@@ -357,6 +357,7 @@ public class BoardManager {
         if (botQuerJogarCarta(bot) && jogadorPodeJogarCarta(bot)) {
             //colocar uma exceção do jogador decidir nao jogar a carta
             cartaEscolhida = perguntarCartaDesejadaBot(bot);
+            scan.nextLine(); //esvaziar buffer
             int indiceMonstroSubstituido = perguntarBotQualIndiceSubstituir(bot);
             if (numeroCartasCampoExcedido(bot)){
                 atualizarManaJogadorCampoCheio(cartaEscolhida,bot,indiceMonstroSubstituido);
@@ -413,7 +414,7 @@ public class BoardManager {
     }
 
     private void perguntarAtacarPularJogarCarta() {
-        System.out.print("Atacante,se deseja acabar a rodada sem atacar digite '1'\nSe deseja atacar digite '2'\nSe deseja continuar a colocar cartas em campo digite outro numero.");
+        System.out.print("Atacante,se deseja acabar a rodada sem atacar digite '1'\nSe deseja atacar digite '2'\nSe deseja continuar a colocar cartas em campo digite outro numero.\n");
 
 
     }
@@ -457,7 +458,7 @@ public class BoardManager {
         listarCartasCampo(jogadorAtacante);
         //Scanner scan = criarScanner();
         do {
-            nomeMonstro = lerProximaLinha(scan);
+            nomeMonstro = lerProximaLinha();
             if (naoEscreveuSair(nomeMonstro) && ehMonstroValido(jogadorAtacante, nomeMonstro)) {
                 listaCartasAtaque.add(nomeMonstro);
             }
@@ -543,12 +544,17 @@ public class BoardManager {
     private ArrayList<String> interagirComUsuarioDefensor(Jogador jogadorDefensor, Jogador jogadorAtacante) {
         String nomeMonstro;
         ArrayList<String> listaCartasDefesa = inicializarArrayList(numeroCartasAtacando(jogadorAtacante));
+        //ou nao tem monstros pra defender ou monstros inimigos pra atacar
+        if(jogadorDefensor.campoVazio() || jogadorAtacante.campoBatalhaVazio()){
+            return listaCartasDefesa;
+        }
         mensagemParaUsuario(jogadorAtacante);
         listarCartasCampo(jogadorDefensor);
         //Scanner scan = criarScanner();
         do {
-            nomeMonstro = lerProximaLinha(scan);
-            int posicaoMonstro = lerProximoNumero(scan);
+            nomeMonstro = lerProximaLinha();
+            scan.nextLine();
+            int posicaoMonstro = lerProximoNumero();
             if (naoEscreveuSair(nomeMonstro) && ehMonstroValido(jogadorDefensor, nomeMonstro)) {
                 try {
                     //monstro adicionado na posição escolhida pelo usuario

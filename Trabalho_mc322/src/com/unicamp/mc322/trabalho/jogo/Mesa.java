@@ -61,18 +61,33 @@ public class Mesa {
 			System.out.println("Nao existem monstros no campo de batalha de " + getJogador1().getUsuario().getId());
 		}else{
 			System.out.print("Campo de Batalha Jogador1:");
+			if(batalha2 > batalha1){
+				batalha1 = batalha2;
+			}
 			for(int j = 0; j < batalha1; j++){
-				getJogador1().getCartasBatalhando().get(j).imprimirCarta(j+1);
+				if(getJogador1().getCartasBatalhando().get(j) == null){
+					System.out.print("|"+ j+1 + "[Posiçao Vazia]" + "|");
+				}else{
+					getJogador1().getCartasBatalhando().get(j).imprimirCarta(j+1);
+				}
+
 			}
 			System.out.println();
 		}
 
 		if(getJogador2().getCartasBatalhando().isEmpty()){
-			System.out.println("Nao existem monstros no campo de Batalha" + getJogador2().getUsuario().getId());
+			System.out.println("Nao existem monstros no campo de Batalha de " + getJogador2().getUsuario().getId());
 		}else{
 			System.out.print("Campo de batalha Jogador2:");
+			if(batalha1 > batalha2){
+				batalha2 = batalha1;
+			}
 			for(int l = 0; l < batalha2; l++){
-				getJogador2().getCartasBatalhando().get(l).imprimirCarta(l+1);
+				if(getJogador2().getCartasBatalhando().get(l) == null){
+					System.out.print("|"+ l+1 + "[Posiçao Vazia]" + "|");
+				}else {
+					getJogador2().getCartasBatalhando().get(l).imprimirCarta(l + 1);
+				}
 			}
 			System.out.println();
 		}

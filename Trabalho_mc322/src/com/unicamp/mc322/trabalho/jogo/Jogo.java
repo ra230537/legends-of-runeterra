@@ -74,7 +74,7 @@ public class Jogo {
             partidaAcabou = boardManager.executarPassosJogo(jogador1,jogador2);
 
             if (!partidaAcabou) {//se a partida ainda nao acabou o jogador 2 agora assume o papel de atacante da rodada
-                System.out.println(jogador2.getUsuario().getId() + " está atacando e " + jogador1.getUsuario().getId() + " está defendendo.");
+                System.out.println("\n"+jogador2.getUsuario().getId() + " está atacando e " + jogador1.getUsuario().getId() + " está defendendo.\n");
                 jogador2.setEstadoJogador(EstadoJogador.Atacante);
                 jogador1.setEstadoJogador(EstadoJogador.Defensor);
                 partidaAcabou = boardManager.executarPassosJogo(jogador2,jogador1);
