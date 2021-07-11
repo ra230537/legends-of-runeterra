@@ -57,17 +57,19 @@ public class Carta {
 
 	protected String getTextoEfeitos() {
 		//ObterEfeitos pelo nome; *****
-		String info = "";
-		for(int i = 0; i < getListaEfeitos().size(); i++) {
+		String info = "Efeitos: ";
+
+		for (int i = 0; i < getListaEfeitos().size(); i++) {
 			info += getListaEfeitos().get(i).getTipoEfeito();
-			if((i+1) % 3 == 0) {
+			if ((i + 1) % 3 == 0) {
 				info = "\n\r|";
-			}
-			else {
+			} else if (i != getListaEfeitos().size() - 1) {
 				info += ", ";
 			}
 		}
+
 		return info;
+
 	}
 
 

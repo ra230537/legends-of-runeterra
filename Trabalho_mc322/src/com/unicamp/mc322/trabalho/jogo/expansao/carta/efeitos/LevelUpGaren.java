@@ -7,15 +7,17 @@ import com.unicamp.mc322.trabalho.jogo.expansao.carta.*;
 public class LevelUpGaren extends Efeito {
 
     public LevelUpGaren(){
-        super(MomentosDoTurno.APOS_BATALHA);
+        super(MomentosDoTurno.FIM_TURNO);
         this.tipoEfeito = TipoEfeito.LevelUpGaren;
     }
 
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta){
-        ((Monstro) carta).CurarFull();
-        if(((Monstro) carta).getQntAtaques() >= 2){
+        if(((Monstro) carta).getQntAtaques() == 2 && !estaExpirado()){
             ((Monstro) carta).buffar(1,1);
             ((Monstro) carta).adicionarTraco(Traco.ELUSIVO);
+            expirou();
         }
+        ((Monstro) carta).CurarFull();
     }
 }
+

@@ -46,6 +46,7 @@ public class Mesa {
 			}
  			System.out.println();
 		}
+		System.out.println("---------------------------------------------------------------------------------");
 		System.out.println();
 		if(getJogador1().getCartasEmCampo().isEmpty()){
 			System.out.println("Nao existem monstros no campo de " + getJogador1().getUsuario().getId());
@@ -66,7 +67,7 @@ public class Mesa {
 			}
 			for(int j = 0; j < batalha1; j++){
 				if(getJogador1().getCartasBatalhando().get(j) == null){
-					System.out.print("|"+ j+1 + "[Posiçao Vazia]" + "|");
+					System.out.print("  |"+ (j+1) + "[Posiçao Vazia]" + "|");
 				}else{
 					getJogador1().getCartasBatalhando().get(j).imprimirCarta(j+1);
 				}
@@ -74,7 +75,7 @@ public class Mesa {
 			}
 			System.out.println();
 		}
-
+		System.out.println("------------------------------------------------------------------------");
 		if(getJogador2().getCartasBatalhando().isEmpty()){
 			System.out.println("Nao existem monstros no campo de Batalha de " + getJogador2().getUsuario().getId());
 		}else{
@@ -84,7 +85,7 @@ public class Mesa {
 			}
 			for(int l = 0; l < batalha2; l++){
 				if(getJogador2().getCartasBatalhando().get(l) == null){
-					System.out.print("|"+ l+1 + "[Posiçao Vazia]" + "|");
+					System.out.print("  |"+ (l+1) + "[Posiçao Vazia]" + "|");
 				}else {
 					getJogador2().getCartasBatalhando().get(l).imprimirCarta(l + 1);
 				}
@@ -102,6 +103,7 @@ public class Mesa {
 			System.out.println();
 		}
 		System.out.println();
+		System.out.println("---------------------------------------------------------------------------------");
 		if(getJogador2().getMao().isEmpty()){
 			System.out.println("Mao de " + getJogador2().getUsuario().getId() + " esta vazia");
 		}else{
@@ -115,6 +117,9 @@ public class Mesa {
 				}
 			}
 		}
-		System.out.println("\n******" + getJogador2().getUsuario().getId() + "(" + getJogador2().getEstadoJogador().toString() + ")******" + "Vida do Nexus: " + getJogador1().getVida() + "******");
+		System.out.println("\n******" + getJogador2().getUsuario().getId() + "(" + getJogador2().getEstadoJogador().toString() + ")******" + "Vida do Nexus: " + getJogador2().getVida() + "******");
+		System.out.println();
+		System.out.println();
 	}
+
 }

@@ -25,9 +25,9 @@ public class Campeao extends Monstro {
     @Override
     public void imprimirCartaDetalhada() {
         String info = "|<CAMPEAO> NOME: " + this.getNome() + " Custo: " + this.getCusto() + " Regiao: " + this.getRegiao() + "\n\r";
-        info += "|Vida atual/vida máxima: " + this.getVidaAtual() + "/" + this.getVidaMaxima() + " Atk: " + this.getAtaque() + " Custo: " + this.getCusto() + "\n\r";
-        info += "|Efeitos:" + this.getTextoEfeitos() + "\n\r";
-        info += "|Tracos:" + this.getTextoTracos();
+        info += "|Vida atual/vida maxima: " + this.getVidaAtual() + "/" + this.getVidaMaxima() + " Atk: " + this.getAtaque() + " Custo: " + this.getCusto() + "\n\r";
+        info += "|" + this.getTextoEfeitos() + "\n\r";
+        info += "|" + this.getTextoTracos();
         System.out.println(info);
     }
 

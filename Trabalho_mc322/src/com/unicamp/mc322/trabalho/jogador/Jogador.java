@@ -2,6 +2,7 @@ package com.unicamp.mc322.trabalho.jogador;
 
 import java.util.*;
 
+import com.unicamp.mc322.trabalho.jogo.GameException;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Monstro;
 
@@ -88,10 +89,28 @@ public class Jogador {
         return mao;
     }
 
+    public void imprimirMao() {
+        System.out.print("Mão de " + usuario.getId() + ":");
+        for(Carta carta : mao){
+            carta.imprimirCarta();
+        }
+        System.out.println();
+    }
+
     public void puxarCarta(){
         //pega a carta de cima do deck padrao utilizado
         Carta cartaPuxada = deckEscolhido.tirarCartaTopo();
         mao.add(cartaPuxada);
+    }
+
+    public void trocarCarta(Carta cartaASerTrocada) {
+        if(mao.contains(cartaASerTrocada)) {
+            mao.set(mao.indexOf(cartaASerTrocada), deckEscolhido.tirarCartaTopo());
+        }
+        else {
+            throw new GameException("Essa carta não está na mão.");
+        }
+
     }
 
     public int getManaAtual() {
@@ -179,7 +198,7 @@ public class Jogador {
     }
     public void DiminuirVida(int valor){
         vida = vida - valor;
-        System.out.println("Vida atual: " + vida);
+
     }
 
     public boolean ehBot() {
@@ -221,7 +240,7 @@ public class Jogador {
         }
 
         if(mana<10){
-            mana++;
+            mana = mana + 9;
             manaAtual = mana;
         }
     }
@@ -230,5 +249,8 @@ public class Jogador {
     }
     public boolean campoBatalhaVazio(){
         return cartasBatalhando.size() == 0;
+    }
+    public void limparCampoBatalha(){
+        cartasBatalhando.clear();
     }
 }

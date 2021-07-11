@@ -14,7 +14,7 @@ public class Feitico extends Carta {
 	@Override
 	public void imprimirCartaDetalhada() {
 		String info = "|<FEITIÇO> NOME: " + this.getNome() + " Custo: " + this.getCusto() + "\n\r";
-		info += "|Efeitos: " + this.getTextoEfeitos();
+		info += "|" + this.getTextoEfeitos();
 		System.out.println(info);
 	}
 

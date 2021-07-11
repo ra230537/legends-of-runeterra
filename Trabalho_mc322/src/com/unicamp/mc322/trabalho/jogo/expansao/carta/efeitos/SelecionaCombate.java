@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class SelecionaCombate extends Efeito {
     public SelecionaCombate(){
-        super(MomentosDoTurno.ANTES_BATALHA);
+        super(MomentosDoTurno.APOS_INVOCACAO);
         this.tipoEfeito = TipoEfeito.SelecionarCombate;
     }
     //uma unica vez apos o uso dessa carta, duas unidades serão escolhidas e entrarão em conflito direto
@@ -24,33 +24,54 @@ public class SelecionaCombate extends Efeito {
         int indiceMonstroInimigo = interagirComUsuario2();
         Random pos = new Random();
         //escolhe o aliado e o inimigo e usa o comando atacar e defender respectivamente
-        try{
-            if(jogador == mesa.getJogador1()){
-                mesa.getJogador1().getCartasEmCampo().get(indiceMonstroAliado).atacar(mesa.getJogador2(), indiceMonstroInimigo);
-            }else{
-                mesa.getJogador2().getCartasEmCampo().get(indiceMonstroAliado).atacar(mesa.getJogador1(), indiceMonstroInimigo);
-            }
-            ((Monstro) carta).atacou();
-        }catch(Exception NullPointerException){
-            System.out.print("Posicao Invalida, um monstro aleatorio atacara outro aleatorio\n");
-        }finally{
-            if(jogador == mesa.getJogador1()){
-                mesa.getJogador1().getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).atacar(mesa.getJogador2(), pos.nextInt(jogador.getCartasEmCampo().size()));
-            }else{
-                mesa.getJogador2().getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).atacar(mesa.getJogador1(), pos.nextInt(jogador.getCartasEmCampo().size()));
-            }
-            ((Monstro) carta).atacou();
-        }
+        if(!jogador.getCartasEmCampo().isEmpty()) {
+            try {
+                if (jogador == mesa.getJogador1()) {
+                    if(!mesa.getJogador2().getCartasEmCampo().isEmpty()) {
+                        mesa.getJogador1().getCartasEmCampo().get(indiceMonstroAliado).atacar(mesa.getJogador2(), indiceMonstroInimigo);
+                    }else{
+                        System.out.println("Não existe carta em campo para atacar");
+                    }
+                } else {
+                    if(!mesa.getJogador1().getCartasEmCampo().isEmpty()) {
+                        mesa.getJogador2().getCartasEmCampo().get(indiceMonstroAliado).atacar(mesa.getJogador1(), indiceMonstroInimigo);
+                    }else{
+                        System.out.println("Não existe carta em campo para atacar");
+                    }
 
+                }
+                ((Monstro) carta).atacou();
+            } catch (Exception NullPointerException) {
+                System.out.print("Posicao Invalida, um monstro aleatorio atacara outro aleatorio\n");
+            } finally {
+                if (jogador == mesa.getJogador1()) {
+                    if(!mesa.getJogador2().getCartasEmCampo().isEmpty()) {
+                        mesa.getJogador1().getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).atacar(mesa.getJogador2(), pos.nextInt(jogador.getCartasEmCampo().size()));
+                    }else {
+                        System.out.println("Não existe carta em campo para atacar");
+                    }
+                }else{
+                    if(!mesa.getJogador1().getCartasEmCampo().isEmpty()) {
+                        mesa.getJogador2().getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).atacar(mesa.getJogador1(), pos.nextInt(jogador.getCartasEmCampo().size()));
+                    }else{
+                        System.out.println("Não existe carta em campo para atacar");
+                    }
+                }
+                ((Monstro) carta).atacou();
+            }
+        }else{
+            System.out.println("Não existe carta em campo para atacar");
+        }
     }
     public int interagirComUsuario1(){
-        // imprimir a mesa
+
+
         Scanner respostaUsuario = new Scanner(System.in);
         System.out.println("Digite a posição que o monstro aliado se encontra: ");
         return respostaUsuario.nextInt();
     }
     public int interagirComUsuario2(){
-        // imprimir a mesa
+
         Scanner respostaUsuario = new Scanner(System.in);
         System.out.println("Digite a posição que o monstro inimigo se encontra: ");
         return respostaUsuario.nextInt();

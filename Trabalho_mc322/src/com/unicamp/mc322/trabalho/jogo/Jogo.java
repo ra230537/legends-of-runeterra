@@ -16,23 +16,21 @@ public class Jogo {
     private Expansoes expansoes = new Expansoes();
     private DecksPadroes decksPadroes = new DecksPadroes(); //Decks padrões do jogo.
     private Map<String, Usuario> usuarios = new HashMap<String, Usuario>(); //Dicionario com jogadores e key = id do jogador
-    private List<String> nicksUtilizados = new ArrayList<String>(); //Lista de nicks ja usados no jogo, usado para verificar se a tag ja está sendo usa
+    private List<String> idsUtilizados = new ArrayList<String>(); //Lista de nicks ja usados no jogo, usado para verificar se a tag ja está sendo usa
 
     public void criarExpansao(String nomeExpansao, Regiao regiao) {
-        if(!expansoes.getExpansoesMap().containsKey(regiao)) {
+        if (!expansoes.getExpansoesMap().containsKey(regiao)) {
             expansoes.addExpansao(new Expansao(nomeExpansao, regiao));
-        }
-        else {
+        } else {
             throw new GameException("Região já possui uma expansão.");
         }
 
     }
 
     public void addCartaNaExpansao(Regiao regiao, Carta novaCarta) {
-        if(novaCarta.getRegiao() != null) {
+        if (novaCarta.getRegiao() != null) {
             throw new GameException("Carta já existe em outra expansão.");
-        }
-        else {
+        } else {
             expansoes.addCarta(regiao, novaCarta);
         }
 
@@ -58,31 +56,79 @@ public class Jogo {
         BoardManager boardManager = new BoardManager(mesa);
         jogador2.embaralharDeck();
         jogador1.embaralharDeck();
-        for (int i = 0; i <4;i++){
+        for (int i = 0; i < 4; i++) {
             jogador1.puxarCarta();
             jogador2.puxarCarta();
         }
+        //Imprime mao dos jogadores;
+        jogador1.imprimirMao();
+        jogador2.imprimirMao();
+        System.out.println("\n");
+
+        //Opcao para trocar ate 4 cartas da mao;
+        this.trocarMao(jogador1);
+        this.trocarMao(jogador2);
 
         do {
             //Ciclo de comandos enquanto a partida está acontecendo;
             jogador1 = obterJogador1(mesa);
             jogador2 = obterJogador2(mesa);
-            System.out.println(jogador1.getUsuario().getId() + " está atacando e " + jogador2.getUsuario().getId() + " está defendendo.");
+            System.out.println("\n>>>" + jogador1.getUsuario().getId() + " está atacando e " + jogador2.getUsuario().getId() + " está defendendo.\n");
             jogador1.setEstadoJogador(EstadoJogador.Atacante);
             jogador2.setEstadoJogador(EstadoJogador.Defensor);
             mesa.imprimirMesa();
-            partidaAcabou = boardManager.executarPassosJogo(jogador1,jogador2);
+            partidaAcabou = boardManager.executarPassosJogo(jogador1, jogador2);
 
             if (!partidaAcabou) {//se a partida ainda nao acabou o jogador 2 agora assume o papel de atacante da rodada
-                System.out.println("\n"+jogador2.getUsuario().getId() + " está atacando e " + jogador1.getUsuario().getId() + " está defendendo.\n");
+                System.out.println("\n>>>" + jogador2.getUsuario().getId() + " está atacando e " + jogador1.getUsuario().getId() + " está defendendo.<<<\n");
+                System.out.println();
                 jogador2.setEstadoJogador(EstadoJogador.Atacante);
                 jogador1.setEstadoJogador(EstadoJogador.Defensor);
-                partidaAcabou = boardManager.executarPassosJogo(jogador2,jogador1);
+                mesa.imprimirMesa();
+                partidaAcabou = boardManager.executarPassosJogo(jogador2, jogador1);
 
             }
         } while (!partidaAcabou);
+        if(jogador1.getVida() <= 0){
+            System.out.println(jogador2.getUsuario().getId() + "voce ganhou!!! Parabens!!!");
+        }
+        if(jogador2.getVida() <= 0){
+            System.out.println(jogador1.getUsuario().getId() + "voce ganhou!!! Parabens!!!");
+        }
+    }
+
+    private void trocarMao(Jogador jogador) {
+        //Funcao que permite o jogador trocar de 0 a 4 cartas da sua mão no começo do jogo;
+        System.out.println(jogador.getUsuario().getId() + ", voce deseja trocar alguma carta?(y/n)");
+        switch (this.getRespostaSimOuNao()) {
+            case "y":
+
+                for(Carta carta : jogador.getMao()) {
+                    System.out.println("> Carta:");
+                    carta.imprimirCartaDetalhada();
+                    System.out.println("\n"+ jogador.getUsuario().getId() + ", voce deseja trocar essa carta?(y/n)");
+
+                    switch (this.getRespostaSimOuNao()) {
+                        case "y":
+                            jogador.trocarCarta(carta);
+                            System.out.println("Nova mão:");
+                            jogador.imprimirMao();
+                            System.out.println();
+                            break;
+
+                        case "n":
+                            break;
+                    }
+
+                }
+                break;
+
+            case "n":
+                break;
+        }
 
     }
+
 
     private Jogador obterJogador1(Mesa mesa) {
         return mesa.getJogadores()[0];
@@ -97,8 +143,8 @@ public class Jogo {
         do {
             // Faz com que não exista 2 ids iguais cadastrados;
             novoUsuario.criarId();
-        } while (nicksUtilizados.contains(novoUsuario.getId()));
-        nicksUtilizados.add(novoUsuario.getId());
+        } while (idsUtilizados.contains(novoUsuario.getId()));
+        idsUtilizados.add(novoUsuario.getId());
         usuarios.put(novoUsuario.getId(), novoUsuario);
         for(Deck deck : decksPadroes.getDecksPadroes()) {
             novoUsuario.addNovoDeck(deck.getNome(), clonarDeck(deck)); //Adiciona os decks padões no usuário.
@@ -121,6 +167,9 @@ public class Jogo {
         String resposta;
         do {
             resposta = comandos.nextLine();
+            if(!resposta.equals("y") && !resposta.equals("n")) {
+                System.out.println("Resposta invalida, por favor, responda com (y/n).");
+            }
         } while(!resposta.equals("y") && !resposta.equals("n"));
         return resposta;
     }
@@ -247,10 +296,6 @@ public class Jogo {
 
     public void deletarDeck(String idUsuario, String nomeDeck) {
         usuarios.get(idUsuario).deletarDeck(nomeDeck);
-    }
-
-    public Expansoes getExpansoes() {
-        return expansoes;
     }
 
     public void fecharJogo() {

@@ -25,8 +25,12 @@ public class BuffTodosAliados extends Efeito {
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
         //da a todos as cartas da mesa um bonus de ataque e defesa
         int n = jogador.getCartasEmCampo().size();
-         for(int i = 0; i <= n; i++){
-            jogador.getCartasEmCampo().get(i).buffar(buffAtaque, buffDefesa);
+        if(!jogador.getCartasEmCampo().isEmpty()){
+            for (int i = 0; i < n; i++) {
+                jogador.getCartasEmCampo().get(i).buffar(buffAtaque, buffDefesa);
+            }
+        }else{
+            System.out.println("Não existe cartas em campo para serem buffadas");
         }
     }
 

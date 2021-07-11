@@ -11,7 +11,7 @@ import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
 public class AtacaNexus extends Efeito {
 
 	public AtacaNexus(){
-        super(MomentosDoTurno.ANTES_BATALHA);
+        super(MomentosDoTurno.APOS_INVOCACAO);
         this.tipoEfeito = TipoEfeito.AtacarNexus;
     }
 

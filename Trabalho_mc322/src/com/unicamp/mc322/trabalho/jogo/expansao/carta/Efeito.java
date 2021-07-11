@@ -27,5 +27,10 @@ public abstract class Efeito {
     public String getTipoEfeito() {
         return tipoEfeito.toString();
     }
-
+    public boolean estaExpirado(){
+        return expirado;
+    }
+    public void expirou(){
+        expirado = true;
+    }
 }

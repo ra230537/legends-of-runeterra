@@ -20,16 +20,20 @@ public class DobrarStatus extends Efeito {
         int resposta = interagirComUsuario();
         //dobra a vida e o poder do monstro escolhido
         Random pos = new Random();
-        try{
-            int atk = jogador.getCartasEmCampo().get(resposta-1).getAtaque();
-            int hp = jogador.getCartasEmCampo().get(resposta-1).getVidaAtual();
-            jogador.getCartasEmCampo().get(resposta-1).buffar(atk, hp);
-        }catch(Exception NullPointerException) {
-            System.out.print("Posicao Invalida, um monstro aleatorio sera buffado\n");
-        }finally {
-            int atk = jogador.getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).getAtaque();
-            int hp =jogador.getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).getVidaAtual();
-            jogador.getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).buffar(atk, hp);
+        if(!jogador.getCartasEmCampo().isEmpty()) {
+            try {
+                int atk = jogador.getCartasEmCampo().get(resposta - 1).getAtaque();
+                int hp = jogador.getCartasEmCampo().get(resposta - 1).getVidaAtual();
+                jogador.getCartasEmCampo().get(resposta - 1).buffar(atk, hp);
+            } catch (Exception NullPointerException) {
+                System.out.print("Posicao Invalida, um monstro aleatorio sera buffado\n");
+            } finally {
+                int atk = jogador.getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).getAtaque();
+                int hp = jogador.getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).getVidaAtual();
+                jogador.getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).buffar(atk, hp);
+            }
+        }else{
+            System.out.println("Não existe carta em campo para ser buffada");
         }
     }
     private int interagirComUsuario(){

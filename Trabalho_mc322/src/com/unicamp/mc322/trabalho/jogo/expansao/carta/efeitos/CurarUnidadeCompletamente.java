@@ -19,15 +19,17 @@ public class CurarUnidadeCompletamente extends Efeito {
         int resposta = interagirComUsuario();
         //faz vida_atual do monstro ser igual a vida_maxima
         Random pos = new Random();
-        try{
-            jogador.getCartasEmCampo().get(resposta-1).CurarFull();
-        }catch(Exception NullPointerException) {
-            System.out.print("Posicao Invalida, um monstro aleatorio sera curado\n");
-        }finally {
-            jogador.getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).CurarFull();
+        if(!jogador.getCartasEmCampo().isEmpty()) {
+            try {
+                jogador.getCartasEmCampo().get(resposta - 1).CurarFull();
+            } catch (Exception NullPointerException) {
+                System.out.print("Posicao Invalida, um monstro aleatorio sera curado\n");
+            } finally {
+                jogador.getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).CurarFull();
+            }
+        }else{
+            System.out.println("Não existe carta em campo para ser curada");
         }
-
-
 
     }
     private int interagirComUsuario(){

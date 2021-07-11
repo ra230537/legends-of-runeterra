@@ -13,12 +13,14 @@ public class LevelUpDarius extends Efeito {
 
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta){
         if(jogador == mesa.getJogador1()){
-            if(mesa.getJogador2().getVida() < 10){
+            if(mesa.getJogador2().getVida() < 10 && !estaExpirado()){
                 ((Monstro) carta).buffar(4,1);
+                expirou();
             }
         }else{
-            if(mesa.getJogador1().getVida() < 10) {
+            if(mesa.getJogador1().getVida() < 10 && !estaExpirado()) {
                 ((Monstro) carta).buffar(4, 1);
+                expirou();
             }
         }
     }

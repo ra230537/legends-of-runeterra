@@ -12,11 +12,12 @@ import java.util.Scanner;
 
 public class BoardManager {
     private final Mesa mesa;
-    private Scanner scan;
+    private final Scanner scanString;
+    private final Scanner scanNumero;
     public BoardManager(Mesa mesa) {
         this.mesa = mesa;
-        this.scan = new Scanner(System.in);
-        //primeiro jogador
+        this.scanString = new Scanner(System.in);
+        this.scanNumero = new Scanner(System.in);
     }
 
 
@@ -44,7 +45,6 @@ public class BoardManager {
             }
             mesa.imprimirMesa();
             resposta = respostaFimTurno(jogadorAtacante);
-            scan.nextLine();
             //o jogador escolhe se quer continuar jogando cartas ou se quer atacar
         } while (jogadorNaoQuerEncerrarTurno(resposta));
 
@@ -54,15 +54,20 @@ public class BoardManager {
             if (jogadorDefensorMorreu(jogadorDefensor)) {
                 return true;
             }
-            verificarMonstrosPosBatalha(jogadorAtacante, jogadorDefensor);
+            //verificarMonstrosPosBatalha(jogadorAtacante, jogadorDefensor);
+            verificarMonstrosPosBatalha(jogadorAtacante);
+            verificarMonstrosPosBatalha(jogadorDefensor);
             mesa.imprimirMesa();
         }
         //fecharScanner(scan);
         jogadorAtacante.aumentarUmDeMana();
         jogadorDefensor.aumentarUmDeMana();
-
+        verificarMonstrosFimDeTurno(jogadorAtacante);
+        verificarMonstrosFimDeTurno(jogadorDefensor);
         return false;
     }
+
+
 
     private int respostaFimTurno(Jogador jogadorAtacante) {
         int resposta;
@@ -77,19 +82,12 @@ public class BoardManager {
 
 
     private int lerProximoNumero() {
-        //Scanner scan = new Scanner(System.in);
-        int resposta = scan.nextInt();
-        //scan.close();
-        return resposta;
+        return scanNumero.nextInt();
     }
 
 
     private String lerProximaLinha() {
-        //Scanner scan = new Scanner(System.in);
-        //scan.reset();
-        String resposta = scan.nextLine();
-        //scan.close();
-        return resposta;
+        return scanString.nextLine();
     }
 
     private void realizarCompra(Jogador jogador1, Jogador jogador2) {
@@ -99,12 +97,12 @@ public class BoardManager {
         if (j1AindaPodePuxarCarta) {
             puxarCarta(jogador1);
         } else {
-            System.out.print("Jogador 1 com numero maximo de cartas em mão!\n");
+            System.out.println(jogador1.getUsuario().getId() + " esta com o numero maximo de cartas na mão!");
         }
         if (j2AindaPodePuxarCarta) {
             puxarCarta(jogador2);
         } else {
-            System.out.print("Jogador 2 com numero maximo de cartas em mão!\n");
+            System.out.println(jogador2.getUsuario().getId() + " esta com o numero maximo de cartas na mão!");
         }
     }
 
@@ -122,15 +120,15 @@ public class BoardManager {
 
     private void vizualizarCartaDetalhadamente(Jogador jogador) {
         //Scanner scan = criarScanner();
-        String resposta = perguntarSeQuerVizualizar();
+        String resposta = perguntarSeQuerVizualizar(jogador);
         if(resposta.equals("y")){
             String nomeCarta = PerguntarQualCartaQuerVizualizar(jogador);
             Carta carta = converterNomeCartaMao(jogador,nomeCarta);
             carta.imprimirCartaDetalhada();
         }
     }
-    private String perguntarSeQuerVizualizar(){
-        System.out.print("Deseja ver alguma carta detalhadamente?(y/n)\n");
+    private String perguntarSeQuerVizualizar(Jogador jogador){
+        System.out.printf("voce é o %s.Deseja ver alguma carta detalhadamente, %s?(y/n) \n",jogador.getEstadoJogador().toString(),jogador.getUsuario().getId());
         return lerProximaLinha();
     }
     private String PerguntarQualCartaQuerVizualizar(Jogador jogador) {
@@ -159,12 +157,12 @@ public class BoardManager {
 
         Carta cartaEscolhida;
         int indiceSubstituicao = 0;
-        if (jogadorQuerJogarCarta() && jogadorPodeJogarCarta(jogador)) {
+        if (jogadorQuerJogarCarta(jogador) && jogadorPodeJogarCarta(jogador)) {
             //eu tenho certeza que pelo menos uma carta pode ser usada em campo
             //seja substituindo uma carta por uma dentro da mao ou jogando uma carta normalmente
             cartaEscolhida = perguntarCartaDesejada(jogador);
             if (numeroCartasCampoExcedido(jogador)){
-                scan.nextLine();
+                //*****************************************************************scan.nextLine();
                 indiceSubstituicao = perguntarJogadorQualIndiceSubstituir(jogador);
                 atualizarManaJogadorCampoCheio(cartaEscolhida,jogador,indiceSubstituicao);
             }else{
@@ -193,8 +191,8 @@ public class BoardManager {
         jogador.removerCartaMao(monstroEscolhido);
     }
 
-    private boolean jogadorQuerJogarCarta() {
-        System.out.print("Deseja jogar uma carta? (y/n) \n");
+    private boolean jogadorQuerJogarCarta(Jogador jogador) {
+        System.out.printf("Voce e o %s. Deseja jogar uma carta, %s? (y/n) \n",jogador.getEstadoJogador().toString(),jogador.getUsuario().getId());
         //Scanner scan = criarScanner();
         String resposta = lerProximaLinha();
         System.out.printf("**************** A RESPOSTA DADA FOI %s ***************\n",resposta);
@@ -205,7 +203,7 @@ public class BoardManager {
             return false;
         } else {
             System.out.print("Escolha uma resposta válida!\n");
-            return jogadorQuerJogarCarta();
+            return jogadorQuerJogarCarta(jogador);
         }
     }
 
@@ -270,9 +268,7 @@ public class BoardManager {
     }
 
     private String obterNomeCarta() {
-        //Scanner scan = criarScanner();
-        String resposta = lerProximaLinha();
-        return resposta;
+        return lerProximaLinha();
     }
 
     private Carta acharCartaPeloNome(String nomeCarta, Jogador jogador) {
@@ -312,7 +308,6 @@ public class BoardManager {
     }
 
     private int perguntarJogadorQualIndiceSubstituir(Jogador jogador){
-        //Scanner scan = criarScanner();
         System.out.printf("digite um numero de 1 a %d para indicar qual carta sera substituida",jogador.getNumeroCartasCampo());
         int respostaJogador = lerProximoNumero();
         if (respostaJogador > jogador.getNumeroCartasCampo() || respostaJogador < 1){
@@ -357,7 +352,6 @@ public class BoardManager {
         if (botQuerJogarCarta(bot) && jogadorPodeJogarCarta(bot)) {
             //colocar uma exceção do jogador decidir nao jogar a carta
             cartaEscolhida = perguntarCartaDesejadaBot(bot);
-            scan.nextLine(); //esvaziar buffer
             int indiceMonstroSubstituido = perguntarBotQualIndiceSubstituir(bot);
             if (numeroCartasCampoExcedido(bot)){
                 atualizarManaJogadorCampoCheio(cartaEscolhida,bot,indiceMonstroSubstituido);
@@ -441,7 +435,9 @@ public class BoardManager {
         } else {
             escolherMonstrosDefesa(jogadorDefensor, jogadorAtacante);
         }
+        mesa.imprimirMesa();
         permitirBatalha(jogadorAtacante);
+
     }
 
     private void escolherMonstrosAtaque(Jogador jogadorAtacante) {
@@ -456,14 +452,12 @@ public class BoardManager {
         ArrayList<String> listaCartasAtaque = new ArrayList<>();
         System.out.print("Escolha em ordem as cartas que você colocará em ataque. Digite 'sair' para finalizar\n");
         listarCartasCampo(jogadorAtacante);
-        //Scanner scan = criarScanner();
         do {
             nomeMonstro = lerProximaLinha();
             if (naoEscreveuSair(nomeMonstro) && ehMonstroValido(jogadorAtacante, nomeMonstro)) {
                 listaCartasAtaque.add(nomeMonstro);
             }
         } while (naoEscreveuSair(nomeMonstro));
-        //fecharScanner(scan);
         return listaCartasAtaque;
     }
 
@@ -487,6 +481,9 @@ public class BoardManager {
         return !palavra.equals("sair");
     }
 
+    private boolean escreveuSair(String palavra){
+        return palavra.equals("sair");
+    }
     private void colocarCartasAtaque(Jogador jogadorAtacante, ArrayList<String> listaCartasAtaque) {
 
         for (String nomeCarta : listaCartasAtaque) {
@@ -550,10 +547,13 @@ public class BoardManager {
         }
         mensagemParaUsuario(jogadorAtacante);
         listarCartasCampo(jogadorDefensor);
-        //Scanner scan = criarScanner();
+
         do {
             nomeMonstro = lerProximaLinha();
-            scan.nextLine();
+            //para o fluxo de execução caso o jogador escreva sair ao inves do nome de algum monstro
+            if (escreveuSair(nomeMonstro)){
+                break;
+            }
             int posicaoMonstro = lerProximoNumero();
             if (naoEscreveuSair(nomeMonstro) && ehMonstroValido(jogadorDefensor, nomeMonstro)) {
                 try {
@@ -564,7 +564,7 @@ public class BoardManager {
                 }
             }
         } while (naoEscreveuSair(nomeMonstro));
-        //fecharScanner(scan);
+
         return listaCartasDefesa;
     }
 
@@ -665,17 +665,33 @@ public class BoardManager {
         return jogadorDefensor;
     }
 
-    private void verificarMonstrosPosBatalha(Jogador jogadorDefensor, Jogador jogadorAtacante) {
-        verificarMonstros(jogadorAtacante);
-        verificarMonstros(jogadorDefensor);
+
+    private void verificarMonstrosFimDeTurno(Jogador jogador) {
+        ArrayList<Monstro> cartasEmCampo = jogador.getCartasEmCampo();
+        for (Monstro monstro : cartasEmCampo) {
+            //colocar condiçao de que se a vida do monstro for menor ou igual a 0 nao pode usar o efeito
+            if(monstro!=null){
+                for (Efeito efeito : monstro.getListaEfeitos()) {
+                    if(podeUsarEfeito(efeito, MomentosDoTurno.FIM_TURNO) ){
+                        monstro.ativarEfeito(efeito,jogador,mesa,monstro);
+                    }
+                }
+            }
+        }
+        retornarMonstrosCampo(jogador);
+
     }
 
-    private void verificarMonstros(Jogador jogador) {
+    private void verificarMonstrosPosBatalha(Jogador jogador) {
         ArrayList<Monstro> cartasBatalhando = jogador.getCartasBatalhando();
         for (Monstro monstro : cartasBatalhando) {
             //colocar condiçao de que se a vida do monstro for menor ou igual a 0 nao pode usar o efeito
-            for (Efeito efeito : monstro.getListaEfeitos()) {
-                podeUsarEfeito(efeito, MomentosDoTurno.APOS_BATALHA);
+            if(monstro!=null){
+                for (Efeito efeito : monstro.getListaEfeitos()) {
+                    if(podeUsarEfeito(efeito, MomentosDoTurno.APOS_BATALHA) ){
+                        monstro.ativarEfeito(efeito,jogador,mesa,monstro);
+                    }
+                }
             }
         }
         retornarMonstrosCampo(jogador);
@@ -684,11 +700,13 @@ public class BoardManager {
     private void retornarMonstrosCampo(Jogador jogador) {
         ArrayList<Monstro> cartasBatalhando = jogador.getCartasBatalhando();
         for (Monstro monstro : cartasBatalhando) {
-            if (monstro.getVidaAtual() > 0) {
-                //se a vida do monstro que sobrou for maior que 0, ele ainda está vivo e pode retornar ao campo
-                jogador.adicionaMonstroCampo(monstro);
+            if(monstro!=null){
+                if (monstro.getVidaAtual() > 0) {
+                    //se a vida do monstro que sobrou for maior que 0, ele ainda está vivo e pode retornar ao campo
+                    jogador.adicionaMonstroCampo(monstro);
+                }
             }
-            jogador.removerCartaBatalha(monstro);
         }
+        jogador.limparCampoBatalha();
     }
 }

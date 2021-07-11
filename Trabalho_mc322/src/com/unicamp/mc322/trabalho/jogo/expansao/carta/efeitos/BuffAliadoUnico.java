@@ -29,15 +29,17 @@ public class BuffAliadoUnico extends Efeito {
         int resposta = interagirComUsuario();
         //incrementa a vida e o poder da carta que receber esse buff
         Random pos = new Random();
-
-        try{
-            jogador.getCartasEmCampo().get(resposta-1).buffar(buffAtaque, buffDefesa);
-        }catch(Exception NullPointerException) {
-            System.out.print("Posicao Invalida, um monstro aleatorio sera buffado\n");
-        }finally {
-            jogador.getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).buffar(buffAtaque,buffDefesa);
+        if(!jogador.getCartasEmCampo().isEmpty()) {
+            try {
+                jogador.getCartasEmCampo().get(resposta - 1).buffar(buffAtaque, buffDefesa);
+            } catch (Exception NullPointerException) {
+                System.out.print("Posicao Invalida, um monstro aleatorio sera buffado\n");
+            } finally {
+                jogador.getCartasEmCampo().get(pos.nextInt(jogador.getCartasEmCampo().size())).buffar(buffAtaque, buffDefesa);
+            }
+        }else{
+            System.out.println("Não existe carta em campo para ser buffada");
         }
-
 
     }
     private int interagirComUsuario(){
