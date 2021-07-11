@@ -7,11 +7,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Monstro extends Carta {
+    protected boolean campeao = false;
     private int vidaMaxima;
     private int vidaAtual = vidaMaxima;
     private int ataque;
     private int qntAtaques;
-    private ArrayList<Traco> listatracos = new ArrayList<>(); //o tra�o precisa ser criado no runner antes de ser colocado no construtor
+    private ArrayList<Traco> listatracos = new ArrayList<>(); //o traco precisa ser criado no runner antes de ser colocado no construtor
     private int ataqueFuria = 0;
     private int vidaFuria = 0;
 
@@ -31,8 +32,22 @@ public class Monstro extends Carta {
         this.ataque = ataque;
         listatracos.add(traco1);
     }
+    public Monstro(String nomeCarta, int custo, int vidaMaxima, int ataque, Traco traco1){
+        super(nomeCarta,custo, false);
+        this.vidaMaxima = vidaMaxima;
+        this.ataque = ataque;
+        listatracos.add(traco1);
+    }
     public Monstro(String nomeCarta, int custo, int vidaMaxima, int ataque, Traco traco1, int ataqueFuria, int vidaFuria, Efeito... efeitos){
         super(nomeCarta,custo, false,efeitos);
+        this.vidaMaxima = vidaMaxima;
+        this.ataque = ataque;
+        listatracos.add(traco1);
+        this.ataqueFuria = ataqueFuria;
+        this.vidaFuria = vidaFuria;
+    }
+    public Monstro(String nomeCarta, int custo, int vidaMaxima, int ataque, Traco traco1, int ataqueFuria, int vidaFuria){
+        super(nomeCarta,custo, false);
         this.vidaMaxima = vidaMaxima;
         this.ataque = ataque;
         listatracos.add(traco1);
@@ -48,8 +63,16 @@ public class Monstro extends Carta {
         this.ataqueFuria = ataqueFuria;
         this.vidaFuria = vidaFuria;
     }
+    public Monstro(String nomeCarta, int custo, int vidaMaxima, int ataque, ArrayList<Traco> tracos, int ataqueFuria, int vidaFuria){
+        super(nomeCarta,custo, false);
+        this.vidaMaxima = vidaMaxima;
+        this.ataque = ataque;
+        this.listatracos = tracos;
+        this.ataqueFuria = ataqueFuria;
+        this.vidaFuria = vidaFuria;
+    }
 
-    private String getTextoTracos() {
+    protected String getTextoTracos() {
         String info = "";
         for(int i = 0; i < listatracos.size(); i++) {
             info += listatracos.get(i);
@@ -164,7 +187,9 @@ public class Monstro extends Carta {
         vidaAtual = vidaAtual - valor;
     }
     public void atacou(){ qntAtaques++; }
-
+    public boolean ehCampeao() {
+        return campeao;
+    }
     public int getQntAtaques(){
         return qntAtaques;
     }

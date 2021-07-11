@@ -52,7 +52,7 @@ public class Usuario {
         //add um novo deck;
         this.atribuirNomeUnico(nome, novoDeck);
         decks.put(nome, novoDeck);
-        System.out.printf("Novo deck \"%s\" adcionado aos decks de %s", novoDeck.getNome(), this.id);
+        System.out.printf("Novo deck \"%s\" adcionado aos decks de %s\n", novoDeck.getNome(), this.id);
 
     }
 
@@ -76,6 +76,15 @@ public class Usuario {
             deck.imprimirDeck();
             System.out.println();
         }
+    }
+
+    public void imprimirDecksNomes() {
+        //Imprime os nomes dos decks;
+        System.out.println("Decks de " + this.id + ":");
+        for(String nomeDeck : decks.keySet()) {
+            System.out.println(nomeDeck);
+        }
+
     }
 
     public void setMainDeck(String nome) {

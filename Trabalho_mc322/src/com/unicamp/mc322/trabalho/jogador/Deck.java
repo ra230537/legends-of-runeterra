@@ -40,6 +40,7 @@ public class Deck {
 		System.out.println("Nome do deck: " + nome + "Estado: " + estado);
 		for(int i = 0; i < deckStack.size(); i++) {
 			deckStack.get(i).imprimirNome();
+			System.out.print("  ");
 			if((i+1) % 3 == 0) {
 				System.out.println();
 			}

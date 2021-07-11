@@ -110,15 +110,22 @@ public class BoardManager {
         jogador.puxarCarta();
     }
 
-    private void vizualizarCartaDetalhadamente(Jogador jogadorAtacante) {
+    private void vizualizarCartaDetalhadamente(Jogador jogador) {
         Scanner scan = criarScanner();
-        String resposta = PerguntarQualCartaQuerVizualizar(scan);
-        Carta carta = converterNomeCarta(jogadorAtacante,resposta);
-        carta.imprimirCartaDetalhada();
+        String resposta = perguntarSeQuerVizualizar(scan);
+        if(resposta.equals("y")){
+            String nomeCarta = PerguntarQualCartaQuerVizualizar(scan,jogador);
+            Carta carta = converterNomeCarta(jogador,nomeCarta);
+            carta.imprimirCartaDetalhada();
+        }
     }
-
-    private String PerguntarQualCartaQuerVizualizar(Scanner scan) {
+    private String perguntarSeQuerVizualizar(Scanner scan){
         System.out.print("Deseja ver alguma carta detalhadamente?(y/n)\n");
+        return scan.nextLine();
+    }
+    private String PerguntarQualCartaQuerVizualizar(Scanner scan,Jogador jogador) {
+        listarCartasMao(jogador);
+        System.out.print("Qual carta gostaria de vizualizar\n");
         return scan.nextLine();
     }
 
@@ -333,14 +340,24 @@ public class BoardManager {
 
     private void permitirJogarCartaBot(Bot bot) {
 
-        Carta cartaEscolhida = null;
+        Carta cartaEscolhida ;
 
         if (botQuerJogarCarta(bot) && jogadorPodeJogarCarta(bot)) {
             //colocar uma exceção do jogador decidir nao jogar a carta
             cartaEscolhida = perguntarCartaDesejadaBot(bot);
-            atualizarManaJogador(cartaEscolhida, bot);
+            int indiceMonstroSubstituido = perguntarBotQualIndiceSubstituir(bot);
+            if (numeroCartasCampoExcedido(bot)){
+                atualizarManaJogadorCampoCheio(cartaEscolhida,bot,indiceMonstroSubstituido);
+            }else{
+                atualizarManaJogador(cartaEscolhida, bot);
+            }
+
             if (ehMonstro(cartaEscolhida)) {
-                colocarMonstroEmCampo(bot, (Monstro) cartaEscolhida);
+                if(numeroCartasCampoExcedido(bot)){
+                    substituirMonstroEmCampo(bot,(Monstro) cartaEscolhida,indiceMonstroSubstituido);
+                }else{
+                    colocarMonstroEmCampo(bot, (Monstro) cartaEscolhida);
+                }
             }
 
             ArrayList<Efeito> listaEfeitos = listarEfeitos(cartaEscolhida);
@@ -353,7 +370,9 @@ public class BoardManager {
         }
 
     }
-
+    private int perguntarBotQualIndiceSubstituir(Bot bot){
+        return bot.getNumeroRandom(6);
+    }
     private boolean botQuerJogarCarta(Bot bot) {
 
         int resposta = bot.getNumeroRandom(2) ;
@@ -382,11 +401,9 @@ public class BoardManager {
     }
 
     private void perguntarAtacarPularJogarCarta() {
-        System.out.print("""
-                Atacante,se deseja acabar a rodada sem atacar digite '1',
-                Se deseja atacar digite '2',
-                Se deseja continuar a colocar cartas em campo digite outro numero.
-                """);
+        System.out.print("Atacante,se deseja acabar a rodada sem atacar digite '1'\nSe deseja atacar digite '2'\nSe deseja continuar a colocar cartas em campo digite outro numero.");
+
+
     }
 
     private boolean jogadorNaoQuerEncerrarTurno(int resposta) {

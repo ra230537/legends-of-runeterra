@@ -22,6 +22,12 @@ public class Carta {
         Collections.addAll(listaEfeitos,efeitos);
 	}
 
+	protected Carta(String nome, int custo, boolean feitico){
+		this.feitico = feitico;
+		this.nome = nome;
+		this.custo = custo;
+	}
+
 	protected Carta(String nome, int custo, boolean feitico, ArrayList<Efeito> efeitos){
 		this.feitico = feitico;
 		this.nome = nome;

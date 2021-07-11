@@ -9,10 +9,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import com.unicamp.mc322.trabalho.jogo.expansao.Expansao;
-import com.unicamp.mc322.trabalho.jogo.expansao.carta.Carta;
-import com.unicamp.mc322.trabalho.jogo.expansao.carta.Feitico;
-import com.unicamp.mc322.trabalho.jogo.expansao.carta.Monstro;
-import com.unicamp.mc322.trabalho.jogo.expansao.carta.Traco;
+import com.unicamp.mc322.trabalho.jogo.expansao.carta.*;
 
 public class Jogo {
     private Scanner comandos = new Scanner(System.in);
@@ -94,7 +91,7 @@ public class Jogo {
         for(Deck deck : decksPadroes.getDecksPadroes()) {
             novoUsuario.addNovoDeck(deck.getNome(), deck); //Adiciona os decks padões no usuário.
         }
-        System.out.printf("Novo jogador cadastrado com o id: %s\n", novoUsuario.getId());
+        System.out.printf("Novo jogador cadastrado com o id: %s\n\n", novoUsuario.getId());
         return novoUsuario;
     }
 
@@ -144,6 +141,9 @@ public class Jogo {
         else {
             Monstro monstro = (Monstro) carta;
             ArrayList<Traco> tracos = clonarTracos(monstro.getTracos());
+            if(monstro.ehCampeao()) {
+                return new Campeao(monstro.getNome(), monstro.getCusto(), monstro.getVidaMaxima(), monstro.getAtaque(), tracos, monstro.getAtaqueFuria(), monstro.getVidaFuria(), monstro.getListaEfeitos());
+            }
             return new Monstro(monstro.getNome(), monstro.getCusto(), monstro.getVidaMaxima(), monstro.getAtaque(), tracos, monstro.getAtaqueFuria(), monstro.getVidaFuria(), monstro.getListaEfeitos());
         }
     }
