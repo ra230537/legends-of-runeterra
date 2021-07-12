@@ -277,11 +277,19 @@ public class Jogo {
         Carta carta;
         //Verificar se pode ser adicionada*
         do {
-            System.out.println("Regiao:");
-            String respostaRegiao = comandos.nextLine();
-            System.out.println("Nome da carta:");
-            String respostaNomeCarta = comandos.nextLine();
-            carta = expansoes.getCarta(Regiao.valueOf(respostaRegiao), respostaNomeCarta);
+
+            do {
+                System.out.println("Regiao:");
+                String respostaRegiao = comandos.nextLine();
+                System.out.println("Nome da carta:");
+                String respostaNomeCarta = comandos.nextLine();
+                carta = expansoes.getCarta(Regiao.valueOf(respostaRegiao), respostaNomeCarta);
+                if(carta == null) {
+                    System.out.println("Nao existe carta com esse nome nessa regiao. Tente adicionar outra carta.");
+                }
+            } while(carta != null);
+
+
             System.out.println("\nDeseja visualizar essa carta? y/n");
             switch(this.getRespostaSimOuNao()) {
                 case "y":

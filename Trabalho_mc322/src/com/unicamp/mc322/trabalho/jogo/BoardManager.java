@@ -181,6 +181,7 @@ public class BoardManager {
                 }
 
             }
+            //ler efeito das cartas em campo que possuem efeito após a invocação
             ArrayList<Efeito> listaEfeitos = listarEfeitos(cartaEscolhida);
             for (Efeito efeito : listaEfeitos) {
                 if (podeUsarEfeito(efeito, MomentosDoTurno.APOS_INVOCACAO)) {

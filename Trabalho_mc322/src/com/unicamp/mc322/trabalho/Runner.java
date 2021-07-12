@@ -10,7 +10,7 @@ import com.unicamp.mc322.trabalho.jogo.expansao.carta.efeitos.*;
 public class Runner {
 	
 	public static void main(String[] args) {
-
+		//para realizar a execução do runner basta retirar o comentário das funções na linhas 244,247 ou 250
 
 		Jogo jogo = new Jogo();
 
@@ -229,7 +229,7 @@ public class Runner {
 		jogo.imprimirListaExpansoes();
 
 		//Criar deck:
-		//jogo.criarNovoDeck(user1.getId(), "Novo Deck");
+		jogo.criarNovoDeck(user1.getId(), "Novo Deck");
 
 		//Editar deck:
 		//jogo.editarDeck(user1.getId(), "Novo Deck");
