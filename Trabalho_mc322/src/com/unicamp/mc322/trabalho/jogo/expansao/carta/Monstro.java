@@ -190,11 +190,12 @@ public class Monstro extends Carta {
     }
 
     public void atacarCampo(Jogador jogadorDefensor,int indiceMonstro){
-        atacou();
+
         Monstro monstroDefensor = jogadorDefensor.getCartasEmCampo().get(indiceMonstro);
 
         if(monstroDefensor!=null){
             int danoDefensor = monstroDefensor.getAtaque();
+            atacou();
 
             //tratar traço elusivo
             if(listatracos.contains(Traco.ELUSIVO)){

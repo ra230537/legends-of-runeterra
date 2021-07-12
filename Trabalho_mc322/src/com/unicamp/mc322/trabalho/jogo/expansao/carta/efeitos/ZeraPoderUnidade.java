@@ -22,7 +22,7 @@ public class ZeraPoderUnidade extends Efeito {
         int indiceMonstro;
         String respostaAliadoOuInimigo;
         if(jogador.ehBot()){
-             respostaAliadoOuInimigo = "i";
+            respostaAliadoOuInimigo = "i";
             indiceMonstro = ((Bot) jogador).getNumeroRandom(6);
         }else {
             respostaAliadoOuInimigo = primeiraPergunta();
@@ -30,7 +30,7 @@ public class ZeraPoderUnidade extends Efeito {
         }
 
 
-        /**se a primeira resposta for a
+        /*se a primeira resposta for a
          * escolhe um aliado de indice "indiceMonstro" e zera permanentemente seu ataque
          * se nao,
          * escolhe um inimog de indice "indiceMonstro" e zera permanentemente seu ataque

@@ -137,10 +137,10 @@ public class Jogo {
             }
         } while (!partidaAcabou);
         if(jogador1.getVida() <= 0 || jogador1.getDeckEscolhido().size() == 0){
-            System.out.println(jogador2.getUsuario().getId() + "voce ganhou!!! Parabens!!!");
+            System.out.println(">>>>>" + jogador2.getUsuario().getId() + " voce ganhou, Parabens!!!");
         }
         if(jogador2.getVida() <= 0 || jogador2.getDeckEscolhido().size() == 0){
-            System.out.println(jogador1.getUsuario().getId() + "voce ganhou!!! Parabens!!!");
+            System.out.println(">>>>>" + jogador1.getUsuario().getId() + " voce ganhou, Parabens!!!");
         }
     }
 
@@ -233,7 +233,7 @@ public class Jogo {
     }
 
     private ArrayList<Traco> clonarTracos(ArrayList<Traco> tracos) {
-        ArrayList<Traco> tracosClonado = new ArrayList<Traco>();
+        ArrayList<Traco> tracosClonado = new ArrayList<>();
         tracosClonado.addAll(tracos);
         return tracosClonado;
     }

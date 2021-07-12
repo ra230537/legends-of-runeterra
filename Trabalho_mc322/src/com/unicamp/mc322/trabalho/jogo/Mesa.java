@@ -120,6 +120,9 @@ public class Mesa {
 		System.out.println("\n******" + getJogador2().getUsuario().getId() + "(" + getJogador2().getEstadoJogador().toString() + ")******" + "Vida do Nexus: " + getJogador2().getVida() + "******");
 		System.out.println();
 		System.out.println();
+		System.out.println("////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////");
+		System.out.println();
+		System.out.println();
 	}
 
 }

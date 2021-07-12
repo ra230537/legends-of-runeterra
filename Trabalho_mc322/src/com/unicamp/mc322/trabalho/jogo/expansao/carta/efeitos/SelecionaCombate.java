@@ -30,7 +30,6 @@ public class SelecionaCombate extends Efeito {
             indiceMonstroAliado = interagirComUsuario1() - 1;
             indiceMonstroInimigo = interagirComUsuario2() - 1;
         }
-        Random pos = new Random();
         //escolhe o aliado e o inimigo e usa o comando atacar e defender respectivamente
         if(!jogador.getCartasEmCampo().isEmpty()) {
             try {
@@ -57,15 +56,21 @@ public class SelecionaCombate extends Efeito {
             } finally {
                 if (jogador == mesa.getJogador1()) {
                     if(!mesa.getJogador2().getCartasEmCampo().isEmpty()) {
-                        int numeroCartasCampo = jogador.getNumeroCartasCampo();
-                        mesa.getJogador1().getCartasEmCampo().get(pos.nextInt(numeroCartasCampo)).atacarCampo(mesa.getJogador2(), pos.nextInt(numeroCartasCampo));
+                        int numeroCartasCampo1 = jogador.getNumeroCartasCampo();
+                        int posicaoAleatoria1 = ((Bot) jogador).getNumeroRandom(numeroCartasCampo1);
+                        int numeroCartasCampo2 = mesa.getJogador2().getCartasEmCampo().size();
+                        int posicaoAleatoria2 = ((Bot) mesa.getJogador2()).getNumeroRandom(numeroCartasCampo2);
+                        mesa.getJogador1().getCartasEmCampo().get(posicaoAleatoria1).atacarCampo(mesa.getJogador2(), (posicaoAleatoria2));
                     }else {
                         System.out.println("Não existe carta em campo para atacar");
                     }
                 }else{
                     if(!mesa.getJogador1().getCartasEmCampo().isEmpty()) {
-                        int numeroCartasCampo = mesa.getJogador2().getCartasEmCampo().size();
-                        mesa.getJogador2().getCartasEmCampo().get(pos.nextInt(numeroCartasCampo)).atacarCampo(mesa.getJogador1(), pos.nextInt(numeroCartasCampo));
+                        int numeroCartasCampo2 = mesa.getJogador2().getCartasEmCampo().size();
+                        int posicaoAleatoria2 = ((Bot) jogador).getNumeroRandom(numeroCartasCampo2);
+                        int numeroCartasCampo1 = mesa.getJogador1().getCartasEmCampo().size();
+                        int posicaoAleatoria1 = ((Bot) mesa.getJogador1()).getNumeroRandom(numeroCartasCampo1);
+                        mesa.getJogador2().getCartasEmCampo().get(posicaoAleatoria2).atacarCampo(mesa.getJogador1(), (posicaoAleatoria1));
                     }else{
                         System.out.println("Não existe carta em campo para atacar");
                     }

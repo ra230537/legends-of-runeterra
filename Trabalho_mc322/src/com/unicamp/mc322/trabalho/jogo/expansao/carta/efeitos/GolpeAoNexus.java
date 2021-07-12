@@ -8,7 +8,7 @@ import com.unicamp.mc322.trabalho.jogador.Jogador;
 import com.unicamp.mc322.trabalho.jogo.expansao.carta.Monstro;
 
 public class GolpeAoNexus extends Efeito {
-    private int danoAoNexus;
+    private final int danoAoNexus;
     public GolpeAoNexus (int danoAoNexus){
         super(MomentosDoTurno.APOS_INVOCACAO); //causa um dano definido no construtor ao nexus
         this.tipoEfeito = TipoEfeito.GolpeAoNexus;

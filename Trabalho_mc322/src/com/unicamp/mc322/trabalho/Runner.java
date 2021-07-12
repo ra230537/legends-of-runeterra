@@ -1,6 +1,5 @@
 package com.unicamp.mc322.trabalho;
 
-import com.unicamp.mc322.trabalho.jogador.Bot;
 import com.unicamp.mc322.trabalho.jogador.Deck;
 import com.unicamp.mc322.trabalho.jogo.Jogo;
 import com.unicamp.mc322.trabalho.jogo.Regiao;
@@ -250,5 +249,6 @@ public class Runner {
 		//Realiza partida bot vs bot!
 		jogo.realizarPartidaComputadorVsComputador();
 
+		jogo.fecharJogo();
 	}
 }

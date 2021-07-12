@@ -20,14 +20,14 @@ public class Sobrecarga extends Efeito {
         if(jogador == mesa.getJogador1()){
             if(mesa.getJogador2().getCartasBatalhando().get(pos) != null) {
                 if (((Monstro) carta).getAtaque() > mesa.getJogador2().getCartasBatalhando().get(pos).getVidaAtual()) {
-                    int sobredano = mesa.getJogador2().getCartasBatalhando().get(pos).getVidaAtual() - ((Monstro) carta).getAtaque();
+                    int sobredano = ((Monstro) carta).getAtaque() - mesa.getJogador2().getCartasBatalhando().get(pos).getVidaAtual();
                     mesa.getJogador2().DiminuirVida(sobredano);
                 }
             }
         }else{
             if(mesa.getJogador1().getCartasBatalhando().get(pos) != null) {
                 if (((Monstro) carta).getAtaque() > mesa.getJogador1().getCartasBatalhando().get(pos).getVidaAtual()) {
-                    int sobredano = mesa.getJogador1().getCartasBatalhando().get(pos).getVidaAtual() - ((Monstro) carta).getAtaque();
+                    int sobredano = ((Monstro) carta).getAtaque() - mesa.getJogador1().getCartasBatalhando().get(pos).getVidaAtual() ;
                     mesa.getJogador1().DiminuirVida(sobredano);
                 }
             }

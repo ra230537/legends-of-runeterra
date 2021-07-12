@@ -47,6 +47,9 @@ public class BoardManager {
             //o jogador escolhe se quer continuar jogando cartas ou se quer atacar
         } while (jogadorNaoQuerEncerrarTurno(resposta));
 
+        verificarMonstrosInvalidosCampo(jogadorAtacante);
+        verificarMonstrosInvalidosCampo(jogadorDefensor);
+
         if (jogadorPediuParaAtacar(resposta)) {
 
             turnoDeBatalha(jogadorAtacante, jogadorDefensor);
@@ -124,6 +127,9 @@ public class BoardManager {
             String nomeCarta = PerguntarQualCartaQuerVizualizar(jogador);
             Carta carta = converterNomeCartaMao(jogador,nomeCarta);
             carta.imprimirCartaDetalhada();
+        }else if (!resposta.equals("n")){
+            System.out.print("Resposta invalida, tente novamente!\n");
+            vizualizarCartaDetalhadamente(jogador);
         }
     }
     private String perguntarSeQuerVizualizar(Jogador jogador){
@@ -673,15 +679,8 @@ public class BoardManager {
 
 
     private void verificarMonstrosFimDeTurno(Jogador jogador) {
+        verificarMonstrosInvalidosCampo(jogador);
         ArrayList<Monstro> cartasEmCampo = jogador.getCartasEmCampo();
-        ArrayList <Monstro> campoAux = new ArrayList<>();
-        for (Monstro monstro : cartasEmCampo){
-            if (monstro.getVidaAtual() > 0){
-                campoAux.add(monstro);
-            }
-        }
-        jogador.substituirCampo(campoAux);
-        cartasEmCampo = jogador.getCartasEmCampo();
         for (Monstro monstro : cartasEmCampo) {
             //colocar condiçao de que se a vida do monstro for menor ou igual a 0 nao pode usar o efeito
             if(monstro!=null){
@@ -694,7 +693,16 @@ public class BoardManager {
         }
 
     }
-
+    private void verificarMonstrosInvalidosCampo(Jogador jogador){
+        ArrayList<Monstro> cartasEmCampo = jogador.getCartasEmCampo();
+        ArrayList <Monstro> campoAux = new ArrayList<>();
+        for (Monstro monstro : cartasEmCampo){
+            if (monstro.getVidaAtual() > 0){
+                campoAux.add(monstro);
+            }
+        }
+        jogador.substituirCampo(campoAux);
+    }
     private void verificarMonstrosPosBatalha(Jogador jogador) {
         ArrayList<Monstro> cartasBatalhando = jogador.getCartasBatalhando();
         for (Monstro monstro : cartasBatalhando) {

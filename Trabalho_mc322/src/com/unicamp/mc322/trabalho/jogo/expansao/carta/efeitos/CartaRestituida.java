@@ -15,11 +15,7 @@ public class CartaRestituida extends Efeito {
 
     @Override
     public void usarEfeito(Jogador jogador, Mesa mesa, Carta carta) {
-        /**
-         * verifique se a carta está com os pontos de vida iguais a 0
-         * se sim, ative o efeito dela e o seu dono puxa uma carta do baralho
-         *
-         */
+
         if( ((Monstro)carta).getVidaAtual() <= 0){
             jogador.puxarCarta();
         }

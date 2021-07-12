@@ -9,9 +9,9 @@ import com.unicamp.mc322.trabalho.jogador.Jogador;
 
 public class Carta {
 	private boolean temBarreira;
-	private boolean feitico; //False = monstro, true = feitiço
-	private String nome;
-	private int custo;
+	private final boolean feitico; //False = monstro, true = feitiço
+	private final String nome;
+	private final int custo;
 	private Regiao regiao;
 	private ArrayList<Efeito> listaEfeitos = new ArrayList<>(); //uma carta pode ter mais de um Efeito
 
