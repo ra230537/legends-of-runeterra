@@ -48,7 +48,7 @@ public class Deck {
 		}
 	}
 
-	public void removerCarta(String nomeCarta) {
+	public boolean removerCarta(String nomeCarta) {
 		if(deckMap.containsKey(nomeCarta)) {
 			if(deckStack.size() == 40) {
 				estadoDeck = EstadoDeck.Inutilizavel;
@@ -60,9 +60,12 @@ public class Deck {
 
 			deckStack.remove(carta);
 			deckMap.remove(nomeCarta);
+			return true;
 		}
 		else {
-			throw new GameException("O deck não contem uma carta com esse nome");
+
+			System.out.println("O deck não contem uma carta com esse nome");
+			return false;
 		}
 	}
 

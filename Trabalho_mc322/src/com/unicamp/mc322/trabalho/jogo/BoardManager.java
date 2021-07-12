@@ -615,6 +615,8 @@ public class BoardManager {
     }
 
     private void colocarCartasDefesaBot(Bot botDefensor, Jogador jogadorAtacante, int numeroCartasUsadasParaDefesa) {
+        //campo defesa 1
+        //ataque inimigo 3
         int numeroCartasAtacando = numeroCartasAtacando(jogadorAtacante);
         int numeroCartasCampo = numeroCartasCampo(botDefensor);
         ArrayList<Integer> listaIndicesUsadosDefesa = new ArrayList<>();
@@ -628,7 +630,8 @@ public class BoardManager {
             int posicaoDefesa = botDefensor.getNumeroRandom(numeroCartasAtacando);
             //indice aleatorio do monstro em campo que será usado para defesa
             int posicaoCampo = botDefensor.getNumeroRandom(numeroCartasCampo);
-            if (!listaIndicesUsadosDefesa.contains(posicaoDefesa)) {
+
+            if (!listaIndicesUsadosDefesa.contains(posicaoDefesa) ) {
                 if (!listaIndicesUsadosCampo.contains(posicaoCampo)) {
 
                     Monstro monstro = botDefensor.getCartasEmCampo().get(posicaoCampo);

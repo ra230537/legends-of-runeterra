@@ -279,14 +279,22 @@ public class Jogo {
         do {
 
             do {
-                System.out.println("Regiao:");
-                String respostaRegiao = comandos.nextLine();
-                System.out.println("Nome da carta:");
-                String respostaNomeCarta = comandos.nextLine();
-                carta = expansoes.getCarta(Regiao.valueOf(respostaRegiao), respostaNomeCarta);
-                if(carta == null) {
-                    System.out.println("Nao existe carta com esse nome nessa regiao. Tente adicionar outra carta.");
+                carta = null;
+                try {
+                    System.out.println("Regiao:");
+                    String respostaRegiao = comandos.nextLine();
+                    System.out.println("Nome da carta:");
+                    String respostaNomeCarta = comandos.nextLine();
+                    carta = expansoes.getCarta(Regiao.valueOf(respostaRegiao), respostaNomeCarta);
+                    if (carta == null) {
+                        System.out.println("Nao existe carta com esse nome nessa regiao. Tente adicionar outra carta.");
+                    }
                 }
+                catch (Exception IllegalArgumentException) {
+                    System.out.println("Esta regiao nao existe, de uma nova regiao:");
+                    String respostaRegiao = comandos.nextLine();
+                }
+
             } while(carta != null);
 
 
@@ -339,7 +347,11 @@ public class Jogo {
             case "Remover":
                 //Remover carta
                 System.out.println("Digite o nome da carta que deseja remover:\n");
-                deckEditado.removerCarta(comandos.nextLine());
+                boolean cartaEstaNoDeck;
+                do{
+                    cartaEstaNoDeck = deckEditado.removerCarta(comandos.nextLine());
+                }while(cartaEstaNoDeck);
+
                 break;
 
             case "Add":

@@ -226,10 +226,10 @@ public class Runner {
 		Usuario user2 = jogo.criarUsuario("Cris");
 
 		//imprimir lista de expansoes no jogo(nome);
-		jogo.imprimirListaExpansoes();
+		//jogo.imprimirListaExpansoes();
 
 		//Criar deck:
-		jogo.criarNovoDeck(user1.getId(), "Novo Deck");
+		//jogo.criarNovoDeck(user1.getId(), "Novo Deck");
 
 		//Editar deck:
 		//jogo.editarDeck(user1.getId(), "Novo Deck");
